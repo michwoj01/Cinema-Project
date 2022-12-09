@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+  db:
+    container_name: db
+    image: postgres:12.2
+    restart: on-failure
+    env_file:
+      - 'env.env'
+    environment:
+      PORT: 5432
+    ports:
+      - 5432:5432
+    volumes:
+      - ./migrations/:/docker-entrypoint-initdb.d/
+      - ./postgres:/var/lib/postgresql/data
