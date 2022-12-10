@@ -12,3 +12,5 @@ ALTER TABLE schedule
 
 alter table role
 drop column user_id;
+
+alter table permission drop column role_id;

@@ -3,19 +3,39 @@ package pl.edu.agh.ii.cinemaProject.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import pl.edu.agh.ii.cinemaProject.event.LoginEvent;
+import pl.edu.agh.ii.cinemaProject.service.LoginService;
+import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
 
+@Controller
 public class LoginPageController {
     @FXML
     public TextField email;
+    @Autowired
+    private LoginService loginService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     public static URL getFXML() {
         return LoginPageController.class.getResource("/fxml/LoginPage.fxml");
     }
 
     public void login(ActionEvent actionEvent) {
-        System.out.println("Login button clicked");
-        System.out.println("Email: " + email.getText());
+        //validate
+        //get user
+        //redirect to next stage
+        //or show error message
+        loginService.login(email.getText()).ifPresentOrElse((user) -> {
+            //happy path
+            SceneChanger.changeScene(MainPageController.getFXML());
+            applicationContext.publishEvent(new LoginEvent(user));
+        }, () -> {
+            System.err.println("No user found");
+        });
     }
 }
