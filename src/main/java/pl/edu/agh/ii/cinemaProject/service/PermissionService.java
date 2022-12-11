@@ -7,8 +7,6 @@ import pl.edu.agh.ii.cinemaProject.model.LoginUser;
 import pl.edu.agh.ii.cinemaProject.model.Permission;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
-
 @Service
 public class PermissionService {
 

@@ -9,4 +9,5 @@ import reactor.core.publisher.Mono;
 public interface UserDao extends ReactiveCrudRepository<LoginUser, Long> {
     Mono<LoginUser> getLoginUserByEmail(String email);
 
+    Mono<LoginUser> findByEmail(String email);
 }

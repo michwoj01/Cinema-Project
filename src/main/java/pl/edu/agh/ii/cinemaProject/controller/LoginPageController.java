@@ -2,6 +2,7 @@ package pl.edu.agh.ii.cinemaProject.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -11,11 +12,14 @@ import pl.edu.agh.ii.cinemaProject.service.LoginService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
+import java.util.regex.Pattern;
 
 @Controller
 public class LoginPageController {
     @FXML
     public TextField email;
+    @FXML
+    public Label errorLabel;
     @Autowired
     private LoginService loginService;
     @Autowired
@@ -26,16 +30,17 @@ public class LoginPageController {
     }
 
     public void login(ActionEvent actionEvent) {
-        //validate
-        //get user
-        //redirect to next stage
-        //or show error message
-        loginService.login(email.getText()).ifPresentOrElse((user) -> {
-            //happy path
-            SceneChanger.changeScene(MainPageController.getFXML());
-            applicationContext.publishEvent(new LoginEvent(user));
-        }, () -> {
-            System.err.println("No user found");
-        });
+        loginService.login(email.getText()).fold(
+                error -> {
+                    errorLabel.setText(error);
+                    errorLabel.setVisible(true);
+                    return null;
+                },
+                user -> {
+                    SceneChanger.changeScene(MainPageController.getFXML());
+                    applicationContext.publishEvent(new LoginEvent(user));
+                    return null;
+                }
+        );
     }
 }
