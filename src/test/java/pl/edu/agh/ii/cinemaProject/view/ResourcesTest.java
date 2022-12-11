@@ -3,6 +3,7 @@ package pl.edu.agh.ii.cinemaProject.view;
 import org.junit.jupiter.api.Test;
 import pl.edu.agh.ii.cinemaProject.controller.LoginPageController;
 import pl.edu.agh.ii.cinemaProject.controller.MainPageController;
+import pl.edu.agh.ii.cinemaProject.controller.ModifyUserController;
 
 import java.io.IOException;
 
@@ -17,5 +18,10 @@ public class ResourcesTest {
     @Test
     public void testMainPageResource() throws IOException {
         assert MainPageController.getFXML().openStream().read() != 0;
+    }
+
+    @Test
+    public void testModifyUserPageResource() throws IOException {
+        assert ModifyUserController.getFXML().openStream().read() != 0;
     }
 }
