@@ -13,10 +13,14 @@
       <VBox.margin>
          <Insets bottom="5.0" />
       </VBox.margin></Label>
-    <TextField fx:id="email" alignment="CENTER">
+    <TextField fx:id="email" alignment="CENTER" onAction="#login">
       <VBox.margin>
          <Insets bottom="5.0" left="20.0" right="20.0" />
       </VBox.margin></TextField>
+    <Label fx:id="errorLabel" text="Error" textFill="RED" visible="false">
+        <VBox.margin>
+            <Insets bottom="5.0" />
+        </VBox.margin></Label>
     <Button onAction="#login" text="Login" />
 
 </VBox>
