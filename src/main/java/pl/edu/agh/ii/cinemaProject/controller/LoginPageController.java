@@ -12,7 +12,6 @@ import pl.edu.agh.ii.cinemaProject.service.LoginService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
-import java.util.regex.Pattern;
 
 @Controller
 public class LoginPageController {

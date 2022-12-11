@@ -23,7 +23,7 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
     private PermissionService permissionService;
 
     public static URL getFXML() {
-        return LoginPageController.class.getResource("/fxml/MainPage.fxml");
+        return MainPageController.class.getResource("/fxml/MainPage.fxml");
     }
 
     @FXML

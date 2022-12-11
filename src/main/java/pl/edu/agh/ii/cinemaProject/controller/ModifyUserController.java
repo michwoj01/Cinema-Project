@@ -13,7 +13,6 @@ import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
-import pl.edu.agh.ii.cinemaProject.db.UserDao;
 import pl.edu.agh.ii.cinemaProject.model.LoginUser;
 import pl.edu.agh.ii.cinemaProject.model.Role;
 import pl.edu.agh.ii.cinemaProject.service.LoginService;
@@ -74,42 +73,32 @@ public class ModifyUserController {
             }
         };
         userRole.setCellFactory(ComboBoxTableCell.forTableColumn(stringConverter, roleList));
-        userRole.setOnEditCommit(e -> {
-            performUpdate(e, (user, role) -> {
-                user.setRoleId(role.getId());
-                return null;
-            });
-        });
+        userRole.setOnEditCommit(e -> performUpdate(e, (user, role) -> {
+            user.setRoleId(role.getId());
+            return null;
+        }));
 
         userEmail.setCellFactory(TextFieldTableCell.forTableColumn());
-        userEmail.setOnEditCommit(e -> {
-            performUpdate(e, (user, newValue) -> {
-                user.setEmail(newValue);
-                return null;
-            });
-        });
+        userEmail.setOnEditCommit(e -> performUpdate(e, (user, newValue) -> {
+            user.setEmail(newValue);
+            return null;
+        }));
 
         userFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
-        userFirstName.setOnEditCommit(e -> {
-            performUpdate(e, (user, newValue) -> {
-                user.setFirstName(newValue);
-                return null;
-            });
-        });
+        userFirstName.setOnEditCommit(e -> performUpdate(e, (user, newValue) -> {
+            user.setFirstName(newValue);
+            return null;
+        }));
 
         userLastName.setCellFactory(TextFieldTableCell.forTableColumn());
-        userLastName.setOnEditCommit(e -> {
-            performUpdate(e, (user, newValue) -> {
-                user.setLastName(newValue);
-                return null;
-            });
-        });
+        userLastName.setOnEditCommit(e -> performUpdate(e, (user, newValue) -> {
+            user.setLastName(newValue);
+            return null;
+        }));
 
         deleteButton.disableProperty().bind(Bindings.isEmpty(mainTableView.getSelectionModel().getSelectedItems()));
 
-        loginService.getAll().toStream().forEach(user -> {
-            mainTableView.getItems().add(user);
-        });
+        loginService.getAll().toStream().forEach(user -> mainTableView.getItems().add(user));
     }
 
     private <T> void performUpdate(TableColumn.CellEditEvent<LoginUser, T> cellEditEvent, BiFunction<LoginUser, T, Void> updateFunction) {

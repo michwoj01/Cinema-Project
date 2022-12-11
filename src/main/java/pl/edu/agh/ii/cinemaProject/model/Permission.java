@@ -11,6 +11,5 @@ import org.springframework.data.annotation.Id;
 public class Permission {
     @Id
     public long id;
-
     public String name;
 }
