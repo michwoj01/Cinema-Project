@@ -8,8 +8,7 @@
         <ListView fx:id="categoriesListView" prefWidth="140.0" />
     </left>
     <center>
-        <VBox fx:id="contentPane">
-        </VBox>
+        <VBox fx:id="contentPane"></VBox>
     </center>
 
 </BorderPane>
