@@ -9,12 +9,10 @@ import reactor.core.publisher.Flux;
 
 @Service
 public class PermissionService {
-
     @Autowired
     private PermissionDao permissionDao;
 
     public Flux<Permission> getPermissionsForUser(LoginUser user) {
         return permissionDao.getPermissionsByUserId(user.getId());
     }
-
 }
