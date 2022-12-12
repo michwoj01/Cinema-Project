@@ -12,10 +12,6 @@ public class SceneChanger {
     private static ConfigurableApplicationContext applicationContext;
     private static Stage mainStage;
 
-    public static void setApplicationContext(ConfigurableApplicationContext applicationContext) {
-        SceneChanger.applicationContext = applicationContext;
-    }
-
     public static void changeScene(URL fxml) {
         var fxmlLoader = new FXMLLoader(fxml);
         fxmlLoader.setControllerFactory(applicationContext::getBean);
@@ -24,7 +20,11 @@ public class SceneChanger {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        mainStage.setTitle("hello, first page");
+        mainStage.setTitle("Cinema Project");
+    }
+
+    public static void setApplicationContext(ConfigurableApplicationContext applicationContext) {
+        SceneChanger.applicationContext = applicationContext;
     }
 
     public static void setMainStage(Stage mainStage) {

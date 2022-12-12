@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -19,14 +18,13 @@ import java.net.URL;
 
 @Controller
 public class MainPageController implements ApplicationListener<LoginEvent> {
-
     @FXML
     public ListView<String> categoriesListView;
     @FXML
     public BorderPane mainPane;
+
     @Autowired
     private PermissionService permissionService;
-
     @Autowired
     private ConfigurableApplicationContext applicationContext;
 

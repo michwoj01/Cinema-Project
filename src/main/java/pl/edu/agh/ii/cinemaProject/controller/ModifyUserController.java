@@ -25,9 +25,6 @@ import java.util.function.Function;
 
 @Controller
 public class ModifyUserController {
-    @Autowired
-    private RoleService roleService;
-
     @FXML
     private TableView<LoginUser> mainTableView;
     @FXML
@@ -41,6 +38,8 @@ public class ModifyUserController {
     @FXML
     private Button deleteButton;
 
+    @Autowired
+    private RoleService roleService;
     @Autowired
     private LoginService loginService;
 
