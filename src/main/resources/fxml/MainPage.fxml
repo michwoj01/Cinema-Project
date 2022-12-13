@@ -16,6 +16,14 @@
         </BorderPane>
     </left>
     <center>
+        <VBox style="-fx-background-color: #fab54e" alignment="CENTER">
+            <Label style="-fx-font-size: 20px" alignment="CENTER">
+                Welcome to Cinema Project by ParszywaZgraja.
+            </Label>
+            <Label style="-fx-font-size: 15px" alignment="CENTER">
+                You can select the bookmark you are interested in from the panel on the left.
+            </Label>
+        </VBox>
     </center>
     <stylesheets>
         <URL value="@../css/MainPage.css" />
