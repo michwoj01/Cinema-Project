@@ -1,0 +1,50 @@
+
+root {
+    display: block;
+}
+
+.root{
+    -fx-background-image: url('../images/LoginBackgrouund.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 800 600;
+    -fx-background-position: center center;
+}
+
+.box{
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-width: 2;
+    -fx-border-color: #b90e15;
+    -fx-padding: 10px;
+    -fx-background-color: #050c1c;
+}
+
+.mainLabel,.emailLabel,.errorLabel{
+    -fx-text-fill: white;
+    -fx-text-alignment: center
+}
+
+.mainLabel{
+    -fx-font-size: 20px;
+}
+
+.emailLabel{
+    -fx-font-style: oblique;
+}
+
+.errorLabel{
+    -fx-text-fill: crimson;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px
+}
+
+.loginButton{
+    -fx-background-color: #56081A;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-width: 5;
+    -fx-border-color: red;
+    -fx-border-radius: 20;
+    -fx-pref-height: 20;
+    -fx-pref-width: 180;
+}
