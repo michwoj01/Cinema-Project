@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 @Service
 public class LoginService {
-
     private final Pattern emailPattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     @Autowired
     private UserDao userDao;
