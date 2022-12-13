@@ -36,8 +36,10 @@ $ .\gradlew run
 ```
 Można to również uczynić z poziomu IDE Intellij:
 
+<div align="center">
 <img src="images/img_2.png" alt="drawing" width="200"/>
 <img src="images/img_1.png" alt="drawing" width="150"/>
+</div>
 
 ## Model bazodanowy
 
@@ -51,7 +53,9 @@ Podczas dyskusji nad tematem przyjęliśmy następujące role:
 
 Przyjęliśmy model, którego reprezentacja w diagramie ER wygląda tak:
 
-![diagram.png](./ER_diagram.png)
+<div align="center">
+<img alt="diagram.png" src="./ER_diagram.png"/>
+</div>
 
 Skorzystamy z bazy relacyjnej przez największe obycie z taką bazą.
 Dokładną implementacją jednogłośnie przyjęliśmy PostgreSQL w wersji 12.2.
@@ -68,13 +72,17 @@ Aby ułatwić zadanie z uzyskaniem tej samej bazy przy zmianach korzystamy z kon
 Widok umożliwia zalogowanie się do aplikacji za pomocą adresu e-mail.
 Adres wpisujemy w wyznaczone pole na środku powitalnego okna.
 
-<img src="images/img.png" alt="drawing" width="300"/>
+<div align="center">
+<img src="images/img.png" alt="drawing" width="700" align="center"/>
+</div>
 
 Jeżeli zawartość pola nie spełna formatowania adresów email lub użytkownik o takim emailu nie został znaleziony w bazie, 
 odpowiednie komunikaty wyświetlą się pod polem.
 
+<div align="center">
 <img src="images/img_3.png" alt="drawing" width="300"/>
 <img src="images/img_4.png" alt="drawing" width="300"/>
+</div>
 
 W przypadku pomyślnego zalogowania zostaniemy przekierowani do [głównego menu](#menu-gwne). W celach demonstracyjnych, adresem umożliwiającym
 zalogowanie jest **admin@admin.pl**.
@@ -83,7 +91,9 @@ zalogowanie jest **admin@admin.pl**.
 
 Po zalogowaniu się do aplikacji zostajemy przekierowani do głównego widoku aplikacji.
 
+<div align="center">
 <img src="images/img_5.png" alt="drawing" width="600"/>
+</div>
 
 Po lewej strony znajduje się panel z kilkoma zakładkami, dostepnymi w zależności od uprawnień użytkownika.
 
@@ -93,11 +103,15 @@ Obecnie jedynym dostępnym narzędziem jest [menadżer użytkowników](#menader-
 
 Po kliknięciu pierwszej zakładki zostaje nam wyświetlona lista wszystkich użytkowników z bazy.
 
+<div align="center">
 <img src="images/img_8.png" alt="drawing" width="600"/>
+</div>
 
 Każdy z rekordów można edytować z poziomu klienta, zmiany pojawią się natychmiast w bazie danych.
 
+<div align="center">
 <img src="images/img_7.png" alt="drawing" width="600"/>
+</div>
 
 Z prawej strony znajdują się również przyciski, umożliwiające dodanie i usuwanie użytkowników.
 

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="pl.edu.agh.ii.cinemaProject.controller.ModifyUserController">
@@ -41,4 +42,7 @@
             </Button>
         </VBox>
     </right>
+    <stylesheets>
+        <URL value="@../css/ModifyUserPage.css" />
+    </stylesheets>
 </BorderPane>

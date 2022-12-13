@@ -1,5 +1,6 @@
 package pl.edu.agh.ii.cinemaProject.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListView;
@@ -12,6 +13,7 @@ import pl.edu.agh.ii.cinemaProject.enums.PageEnum;
 import pl.edu.agh.ii.cinemaProject.event.LoginEvent;
 import pl.edu.agh.ii.cinemaProject.model.LoginUser;
 import pl.edu.agh.ii.cinemaProject.service.PermissionService;
+import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -58,5 +60,8 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void logout(ActionEvent actionEvent) {
+        SceneChanger.changeScene(LoginPageController.getFXML());
     }
 }

@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/17.0.2-ea"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.edu.agh.ii.cinemaProject.controller.MainPageController"
-            fx:id="mainPane">
+
+<BorderPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.ii.cinemaProject.controller.MainPageController">
     <left>
-        <ListView fx:id="categoriesListView" prefWidth="160"/>
+        <BorderPane>
+            <top>
+                <ListView fx:id="categoriesListView" prefHeight="500.0" prefWidth="180" styleClass="list" />
+            </top>
+            <bottom>
+                <Button mnemonicParsing="false" onAction="#logout" styleClass="logoutButton" text="Logout" />
+            </bottom>
+        </BorderPane>
     </left>
     <center>
-        <VBox style="-fx-background-color: #fab54e" alignment="CENTER">
-            <Label style="-fx-font-size: 20px" alignment="CENTER">
-                Welcome to Cinema Project by ParszywaZgraja.
-            </Label>
-            <Label style="-fx-font-size: 15px" alignment="CENTER">
-                You can select the bookmark you are interested in from the panel on the left.
-            </Label>
+        <VBox alignment="CENTER" styleClass="frostedGlass" BorderPane.alignment="CENTER">
+            <Label styleClass="headline" text="Welcome to Cinema Project" />
+            <Label styleClass="headline" text="by ParszywaZgraja" />
+            <Label styleClass="subHeadline" text="You can select the bookmark you are interested" />
+            <Label styleClass="subHeadline" text="in from the panel on the left" />
         </VBox>
     </center>
+    <stylesheets>
+        <URL value="@../css/MainPage.css" />
+    </stylesheets>
 </BorderPane>

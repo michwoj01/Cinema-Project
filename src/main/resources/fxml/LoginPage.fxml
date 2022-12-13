@@ -4,34 +4,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" fillWidth="false" prefHeight="400.0" prefWidth="600.0"
-      xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="pl.edu.agh.ii.cinemaProject.controller.LoginPageController">
-    <VBox style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-width: 2;
-    -fx-border-color: #4b0652; -fx-padding: 10px; -fx-background-color: #fab54e">
-        <Label text="Welcome to Project Cinema" style="-fx-font-size: 20px; -fx-text-alignment: center">
+<?import java.net.URL?>
+<VBox alignment="CENTER" fillWidth="false" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.ii.cinemaProject.controller.LoginPageController">
+    <VBox styleClass="box">
+        <Label styleClass="mainLabel" text="Welcome to Project Cinema">
             <VBox.margin>
-                <Insets bottom="10.0"/>
+                <Insets bottom="10.0" />
             </VBox.margin>
         </Label>
-        <Label text="Please type your email" style="-fx-font-style: oblique;" maxWidth="Infinity" alignment="CENTER">
+        <Label alignment="CENTER" maxWidth="Infinity" styleClass="emailLabel" text="Please type your email">
             <VBox.margin>
-                <Insets bottom="5.0"/>
+                <Insets bottom="5.0" />
             </VBox.margin>
         </Label>
         <TextField fx:id="email" alignment="CENTER" onAction="#login">
             <VBox.margin>
-                <Insets bottom="10.0" left="20.0" right="20.0"/>
+                <Insets bottom="10.0" left="20.0" right="20.0" />
             </VBox.margin>
         </TextField>
-        <Label fx:id="errorLabel" text="Error" maxWidth="Infinity" textFill="RED"
-               visible="false" style="-fx-font-weight: bold; -fx-font-size: 15px" alignment="CENTER">
+        <Label fx:id="errorLabel" alignment="CENTER" maxWidth="Infinity" styleClass="errorLabel" text="Error" textFill="RED" visible="false">
             <VBox.margin>
-                <Insets bottom="10.0"/>
+                <Insets bottom="10.0" />
             </VBox.margin>
         </Label>
         <VBox alignment="CENTER">
-            <Button onAction="#login" text="Login"/>
+            <Button onAction="#login" text="Login" styleClass="loginButton"/>
         </VBox>
     </VBox>
+    <stylesheets>
+        <URL value="@../css/LoginPage.css" />
+    </stylesheets>
 </VBox>
