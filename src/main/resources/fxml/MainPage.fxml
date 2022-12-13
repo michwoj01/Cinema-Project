@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <BorderPane prefHeight="400.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -11,6 +11,13 @@
         <ListView fx:id="categoriesListView" prefWidth="160"/>
     </left>
     <center>
+        <VBox style="-fx-background-color: #fab54e" alignment="CENTER">
+            <Label style="-fx-font-size: 20px" alignment="CENTER">
+                Welcome to Cinema Project by ParszywaZgraja.
+            </Label>
+            <Label style="-fx-font-size: 15px" alignment="CENTER">
+                You can select the bookmark you are interested in from the panel on the left.
+            </Label>
+        </VBox>
     </center>
-
 </BorderPane>
