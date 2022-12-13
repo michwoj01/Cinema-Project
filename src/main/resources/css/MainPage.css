@@ -4,9 +4,6 @@ root {
 
 .root{
     -fx-background-image: url('../images/MainBackground.png');
-    /*-fx-background-repeat: no-repeat;*/
-    /*-fx-background-size: 800 600;*/
-    /*-fx-background-position: center center;*/
 }
 .list{
     -fx-background-insets: 0 ;
@@ -51,4 +48,29 @@ root {
     -fx-border-radius: 20;
     -fx-pref-height: 20;
     -fx-pref-width: 180;
+}
+
+.frostedGlass{
+    -fx-background-color: rgba(255, 255, 255, .15);
+    -fx-padding: 20;
+    -fx-max-height: 450;
+    -fx-max-width: 450;
+    -fx-border-width: 1;
+    -fx-border-color: grey;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+.headline,.subHeadline{
+    -fx-text-alignment: center;
+}
+
+.headline{
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.subHeadline{
+    -fx-text-fill: #dadada;
+    -fx-font-size: 12px;
 }

@@ -43,6 +43,6 @@
         </VBox>
     </right>
     <stylesheets>
-        <URL value="@../css/ModifyPage.css" />
+        <URL value="@../css/ModifyUserPage.css" />
     </stylesheets>
 </BorderPane>
