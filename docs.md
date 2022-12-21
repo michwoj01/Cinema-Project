@@ -54,7 +54,7 @@ Podczas dyskusji nad tematem przyjęliśmy następujące role:
 Przyjęliśmy model, którego reprezentacja w diagramie ER wygląda tak:
 
 <div align="center">
-<img alt="diagram.png" src="./ER_diagram.png"/>
+<img alt="diagram.png" src="images/ER_diagram.png"/>
 </div>
 
 Skorzystamy z bazy relacyjnej przez największe obycie z taką bazą.

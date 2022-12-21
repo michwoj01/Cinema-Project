@@ -53,7 +53,7 @@ public class ServicesTest {
 
     @Test
     void testGettingRolesFromDb() {
-        Role role = new Role(1, "admin", "zajebisty opis");
+        Role role = new Role(1, "admin", "opis roli");
         when(roleDao.findAll()).thenReturn(Flux.just(role));
         Assertions.assertEquals(roleService.getAllRoles().blockFirst(), role);
     }
