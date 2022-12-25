@@ -1,3 +1,8 @@
+ALTER TABLE movie
+    ALTER COLUMN name TYPE varchar;
+ALTER TABLE movie
+    ALTER id add generated always as identity;
+
 INSERT INTO MOVIE(NAME, DURATION, COVER_URL, DESCRIPTION) VALUES
 ('First Cow', 137, 'https://m.media-amazon.com/images/M/MV5BMGUzMGEzM2UtMDg2Ny00Yjk1LTgxMTctMWI1ZGM0ZDBiYjgxXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_SX300.jpg', 'This movie was made in 2019'),
 ('The Cow', 82, 'https://m.media-amazon.com/images/M/MV5BNzFjMDQxM2UtNDU5MC00YWU0LTlmOTUtNDFlOGU1MmI0OWE5XkEyXkFqcGdeQXVyNjkxOTM4ODY@._V1_SX300.jpg', 'This movie was made in 1969'),
