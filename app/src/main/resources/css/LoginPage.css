@@ -6,22 +6,26 @@ root {
 .root{
     -fx-background-image: url('../images/LoginBackgrouund.png');
     -fx-background-repeat: no-repeat;
-    -fx-background-size: 800 600;
+    -fx-background-size: cover;
     -fx-background-position: center center;
 }
-
+.mainBox{
+    -fx-alignment: center;
+}
 .box{
+    -fx-alignment: center;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
     -fx-border-width: 2;
     -fx-border-color: #b90e15;
-    -fx-padding: 10px;
+    -fx-padding: 20;
     -fx-background-color: #050c1c;
 }
 
 .mainLabel,.emailLabel,.errorLabel{
     -fx-text-fill: white;
-    -fx-text-alignment: center
+    -fx-padding: 10;
+    -fx-alignment: center;
 }
 
 .mainLabel{
@@ -32,6 +36,11 @@ root {
     -fx-font-style: oblique;
 }
 
+.emailTextField{
+    -fx-alignment: center;
+    -fx-border-color: #56081A;
+}
+
 .errorLabel{
     -fx-text-fill: crimson;
     -fx-font-weight: bold;
@@ -39,6 +48,7 @@ root {
 }
 
 .loginButton{
+    -fx-alignment: center;
     -fx-background-color: #56081A;
     -fx-text-fill: white;
     -fx-background-radius: 20;
