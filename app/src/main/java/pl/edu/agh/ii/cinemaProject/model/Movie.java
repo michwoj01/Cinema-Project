@@ -14,8 +14,5 @@ public class Movie {
     private String name;
     private long duration;
     private String cover_url;
-
     private String description;
-
-
 }

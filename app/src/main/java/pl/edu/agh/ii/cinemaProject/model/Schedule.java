@@ -15,7 +15,6 @@ public class Schedule {
     private long id;
     private Date start_date;
     private long currently_available;
-
     private long movie_id;
     private long cinema_hall_id;
 }

@@ -59,7 +59,7 @@ suspend fun main() {
     }
 
     val joinedInserts =
-        listOf<String>("cow", "man", "woman", "police").flatMap {
+        listOf("cow", "man", "woman", "police").flatMap {
             println("now getting $it")
             mkReq(apiKey, it)
         }.flatMap { it.Search }

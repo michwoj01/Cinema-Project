@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class MovieService {
-
     @Autowired
     private MovieDao movieDao;
 
@@ -21,12 +20,13 @@ public class MovieService {
             return movieDao.findAll();
         }
     }
+
     public Mono<Movie> getMovieWithId(long Id) {
         return movieDao.findById(Id);
     }
 
     public Mono<Movie> getMovieInfo(long movieId) {
         return movieDao
-            .findById(movieId);
+                .findById(movieId);
     }
 }
