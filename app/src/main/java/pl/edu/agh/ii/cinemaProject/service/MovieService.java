@@ -21,12 +21,15 @@ public class MovieService {
         }
     }
 
+    public Mono<Movie> getMovieByScheduleId(long id) {
+        return movieDao.getMovieByScheduleId(id);
+    }
+
     public Mono<Movie> getMovieWithId(long Id) {
         return movieDao.findById(Id);
     }
 
     public Mono<Movie> getMovieInfo(long movieId) {
-        return movieDao
-                .findById(movieId);
+        return movieDao.findById(movieId);
     }
 }

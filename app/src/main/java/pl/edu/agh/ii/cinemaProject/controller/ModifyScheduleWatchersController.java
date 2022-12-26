@@ -14,8 +14,9 @@ import pl.edu.agh.ii.cinemaProject.service.MovieService;
 import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
 
 import java.net.URL;
-import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -58,8 +59,8 @@ public class ModifyScheduleWatchersController {
 
         scheduledMoviesListView.setItems(FXCollections.observableList(
                 List.of(
-                        new Schedule(1, Date.from(Instant.ofEpochSecond(1)), 10, 1, 1),
-                        new Schedule(2, Date.from(Instant.ofEpochSecond(1)), 10, 600, 1))));
+                        new Schedule(1, LocalDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneId.systemDefault()), 10, 1, 1),
+                        new Schedule(2, LocalDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneId.systemDefault()), 10, 600, 1))));
     }
 
 }
