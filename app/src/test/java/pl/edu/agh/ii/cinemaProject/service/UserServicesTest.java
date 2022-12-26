@@ -1,4 +1,4 @@
-package pl.edu.agh.ii.cinemaProject.db;
+package pl.edu.agh.ii.cinemaProject.service;
 
 import io.vavr.control.Either;
 import org.junit.jupiter.api.Assertions;
@@ -7,6 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.edu.agh.ii.cinemaProject.db.PermissionDao;
+import pl.edu.agh.ii.cinemaProject.db.RoleDao;
+import pl.edu.agh.ii.cinemaProject.db.UserDao;
 import pl.edu.agh.ii.cinemaProject.model.LoginUser;
 import pl.edu.agh.ii.cinemaProject.model.Permission;
 import pl.edu.agh.ii.cinemaProject.model.Role;
@@ -20,7 +23,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ServicesTest {
+public class UserServicesTest {
+
     @Mock
     private RoleDao roleDao;
     @Mock

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
@@ -8,7 +7,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="pl.edu.agh.ii.cinemaProject.controller.ModifyUserController">
     <center>
-        <TableView fx:id="mainTableView" editable="true">
+        <TableView styleClass="userTableView" fx:id="mainTableView" editable="true">
             <columns>
                 <TableColumn fx:id="userFirstName" text="First Name"/>
                 <TableColumn fx:id="userLastName" text="Last Name"/>
@@ -22,24 +21,8 @@
     </center>
     <right>
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
-            <opaqueInsets>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </opaqueInsets>
-            <BorderPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-            </BorderPane.margin>
-            <Button fx:id="addButton" alignment="TOP_CENTER" maxWidth="1.7976931348623157E308"
-                    mnemonicParsing="false" onAction="#handleAddUserAction" text="Add">
-                <VBox.margin>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                </VBox.margin>
-            </Button>
-            <Button fx:id="deleteButton" alignment="TOP_CENTER" maxWidth="1.7976931348623157E308"
-                    mnemonicParsing="false" onAction="#handleDeleteUserAction" text="Delete">
-                <VBox.margin>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                </VBox.margin>
-            </Button>
+            <Button styleClass="userAddButton" fx:id="addButton" mnemonicParsing="false" onAction="#handleAddUserAction" text="Add"/>
+            <Button styleClass="userDeleteButton" fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteUserAction" text="Delete"/>
         </VBox>
     </right>
     <stylesheets>

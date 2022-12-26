@@ -9,57 +9,57 @@ Button{
     -fx-pref-width: 180;
 }
 
-.table-view{
+.userTableView{
     -fx-background-color: transparent;
 }
 
-.table-view *{
+.userTableView *{
     -fx-text-fill: white;
 }
 
-.table-view .column-header-background{
+.userTableView .column-header-background{
     -fx-background-color: rgba(255, 255, 255, .30);
 }
 
-.table-view .column-header {
+.userTableView .column-header {
     -fx-background-color: transparent;
 }
 
-.table-row-cell{
+.userTableView .table-row-cell{
     -fx-background-color: rgba(255, 255, 255, .15);
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0;
     -fx-pref-height: 30;
 }
 
-.table-row-cell:odd{
+.userTableView .table-row-cell:odd{
     -fx-background-color: rgba(200, 200, 200, .15);
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0;
 }
 
-.table-row-cell:selected {
+.userTableView .table-row-cell:selected {
     -fx-background-color: rgba(185, 14, 21, 0.15);
     -fx-background-insets: 0;
     -fx-background-radius: 1;
 }
 
-.table-row-cell:filled:hover {
+.userTableView .table-row-cell:filled:hover {
     -fx-background-color: rgba(255, 0, 0, 0.15);
 }
 
-.table-row-cell:empty {
+.userTableView .table-row-cell:empty {
     -fx-opacity: 0;
 }
 
-.list-view{
+.userTableView .list-view{
     -fx-background-color: rgba(201, 201, 201, 0.75);
 }
 
-.table-row-cell >* >*{
+.userTableView .table-row-cell >* >*{
     -fx-text-fill: black;
 }
-.list-cell {
+.userTableView .list-cell {
     -fx-pref-height: 20;
     -fx-font-size: 12px;
     -fx-padding: 0;
@@ -68,20 +68,25 @@ Button{
     -fx-border-radius: 0;
     -fx-border-width: 0;
 }
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
+.userTableView .list-cell:filled:selected:focused, .list-cell:filled:selected {
     -fx-background-color: rgba(185, 14, 21, 0.75);
 }
-.list-cell:odd {
+.userTableView .list-cell:odd {
     -fx-background-color: rgba(66, 66, 66, 0.3);
 }
-.list-cell:even {
+.userTableView .list-cell:even {
     -fx-background-color: rgba(97, 97, 97, 0.3);
 }
 
-.list-cell:filled:hover {
+.userTableView .list-cell:filled:hover {
     -fx-background-color: rgba(255, 0, 0, 0.75);
     -fx-text-fill: white;
 }
-.list-cell:empty{
+.userTableView .list-cell:empty{
     -fx-opacity: 0;
+}
+
+.userDeleteButton,.userAddButton{
+    -fx-background-insets: 10 20;
+    -fx-border-insets: 10 20;
 }

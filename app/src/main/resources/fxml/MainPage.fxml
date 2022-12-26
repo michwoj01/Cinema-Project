@@ -2,14 +2,13 @@
 
 <?import java.net.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.ii.cinemaProject.controller.MainPageController">
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.ii.cinemaProject.controller.MainPageController">
     <left>
         <BorderPane>
             <top>
-                <ListView fx:id="categoriesListView" prefHeight="500.0" prefWidth="180" styleClass="list" />
+                <ListView fx:id="categoriesListView" styleClass="menuList" />
             </top>
             <bottom>
                 <Button mnemonicParsing="false" onAction="#logout" styleClass="logoutButton" text="Logout" />
