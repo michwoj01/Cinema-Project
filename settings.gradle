@@ -1,1 +1,3 @@
 rootProject.name = 'CinemaProject'
+include 'app'
+include 'movie-scrapper'
