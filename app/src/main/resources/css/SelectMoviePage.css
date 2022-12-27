@@ -14,6 +14,10 @@ Button{
 .scheduleMovieTableView{
     -fx-background-color: transparent;
 }
+
+.scheduleMovieTableView .movieImageColumn{
+    -fx-alignment: center;
+}
 .scheduleMovieTableView *{
     -fx-text-fill: white;
 }

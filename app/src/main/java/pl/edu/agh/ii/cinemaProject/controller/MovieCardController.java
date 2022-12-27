@@ -80,7 +80,7 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent>{
     private void reloadLabels(){
         var movie = movieService.getMovieInfo(selectedSchedule.getMovie_id()).block();
         titleLabel.setText(movie.getName());
-        var image = new Image(movie.getCover_url(), 200, 0, true, true);
+        var image = new Image(movie.getCover_url(), 300, 0, true, true);
         moviePoster.setImage(image);
         descriptionLabel.setText(movie.getDescription());
         availableSeatsLabel.setText(String.valueOf(selectedSchedule.getCurrently_available()));

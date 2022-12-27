@@ -6,43 +6,69 @@
 <?import java.net.URL?>
 <?import javafx.scene.image.ImageView?>
 <VBox styleClass="mainBox" fillWidth="false" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.ii.cinemaProject.controller.MovieCardController">
-    <VBox styleClass="box">
-        <BorderPane minWidth="500" minHeight="500">
+    <VBox styleClass="frostedGlass">
+        <BorderPane>
             <left>
-                <VBox>
+                <VBox styleClass="imageBox">
                     <ImageView fx:id="moviePoster"/>
-                    <Label styleClass="titleLabel" fx:id="titleLabel" />
-                    <Label styleClass="descriptionLabel" fx:id="descriptionLabel"/>
                 </VBox>
             </left>
             <right>
-                <VBox prefWidth="Infinity">
-                    <HBox prefWidth="Infinity">
-                    <Label styleClass="InflLabel" text="Available Seats: "/>
-                    <Label styleClass="avaibleSeatsLabel" fx:id="availableSeatsLabel"/>
-                    </HBox>
-                    <HBox prefWidth="Infinity">
-                        <Label styleClass="InflLabel" text="Hall number: "/>
-                        <Label styleClass="cinemaHallLabel" fx:id="cinemaHallLabel"/>
-                    </HBox>
-                    <HBox prefWidth="Infinity">
-                        <Label styleClass="InflLabel" text="Date: "/>
-                        <Label styleClass="dateLabel" fx:id="dateLabel"/>
-                    </HBox>
-                    <HBox prefWidth="Infinity">
-                        <Label styleClass="InflLabel" text="Duration: "/>
-                        <Label styleClass="durationLabel" fx:id="durationLabel"/>
-                    </HBox>
-                    <HBox>
-                        <Button text="Buy" fx:id="buyButton" disable="true" onAction="#handleBuyTicketAction"/>
-                        <TextField fx:id="numberOfSeats"/>
-                    </HBox>
-                    <Button text="Back" fx:id="backButton" onAction="#handleBackAction"/>
-                </VBox>
+                <BorderPane>
+                    <top>
+                    <VBox styleClass="infoBox">
+                        <Label styleClass="headline" fx:id="titleLabel" />
+                        <Label styleClass="subHeadline" fx:id="descriptionLabel"/>
+                        <BorderPane>
+                            <left>
+                                <Label styleClass="normalTextLeft" text="Available Seats: "/>
+                            </left>
+                            <right>
+                                <Label styleClass="normalTextRight" fx:id="availableSeatsLabel"/>
+                            </right>
+                        </BorderPane>
+                        <BorderPane>
+                            <left>
+                                <Label styleClass="normalTextLeft" text="Hall number: "/>
+                            </left>
+                            <right>
+                                <Label styleClass="normalTextRight" fx:id="cinemaHallLabel"/>
+                            </right>
+                        </BorderPane>
+                        <BorderPane>
+                            <left>
+                                <Label styleClass="normalTextLeft" text="Date: "/>
+                            </left>
+                            <right>
+                                <Label styleClass="normalTextRight" fx:id="dateLabel"/>
+                            </right>
+                        </BorderPane>
+                        <BorderPane>
+                            <left>
+                                <Label styleClass="normalTextLeft" text="Duration: "/>
+                            </left>
+                            <right>
+                                <Label styleClass="normalTextRight" fx:id="durationLabel"/>
+                            </right>
+                        </BorderPane>
+                    </VBox>
+                    </top>
+                    <center>
+                        <VBox alignment="CENTER">
+                            <TextField fx:id="numberOfSeats" styleClass="numberTextField"/>
+                            <Button text="Buy" fx:id="buyButton" disable="true" onAction="#handleBuyTicketAction"/>
+                        </VBox>
+                    </center>
+                    <bottom>
+                        <VBox alignment="CENTER">
+                            <Button text="Back" fx:id="backButton" onAction="#handleBackAction"/>
+                        </VBox>
+                    </bottom>
+                </BorderPane>
             </right>
         </BorderPane>
     </VBox>
     <stylesheets>
-        <URL value="@../css/LoginPage.css" />
+        <URL value="@../css/MovieCardPage.css" />
     </stylesheets>
 </VBox>
