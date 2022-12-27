@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import java.net.URL?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="pl.edu.agh.ii.cinemaProject.controller.SelectMovieController">
+    <TableView styleClass="scheduleMovieTableView" fx:id="scheduleMovieTableView">
+        <columns>
+            <TableColumn fx:id="movieImage" minWidth="150" text="Image"/>
+            <TableColumn fx:id="movieTitle" text="Title"/>
+            <TableColumn fx:id="movieDate" text="Date"/>
+            <TableColumn fx:id="movieCinemaHall" text="Cinema Hall"/>
+            <TableColumn fx:id="movieAvailableSeats" text="Available Seats"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+    <stylesheets>
+        <URL value="@../css/SelectMoviePage.css" />
+    </stylesheets>
+</VBox>
+

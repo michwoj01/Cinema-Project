@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -13,7 +14,7 @@ import java.util.Date;
 public class Schedule {
     @Id
     private long id;
-    private Date start_date;
+    private LocalDate start_date;
     private long currently_available;
 
     private long movie_id;

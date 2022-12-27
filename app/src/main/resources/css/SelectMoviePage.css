@@ -1,0 +1,61 @@
+Button{
+    -fx-background-color: #56081A;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-width: 2;
+    -fx-border-color: crimson;
+    -fx-border-radius: 20;
+    -fx-pref-height: 20;
+    -fx-pref-width: 180;
+    -fx-background-insets: 10 20;
+    -fx-border-insets: 10 20;
+}
+
+.scheduleMovieTableView{
+    -fx-background-color: transparent;
+}
+.scheduleMovieTableView *{
+    -fx-text-fill: white;
+}
+
+.scheduleMovieTableView .column-header-background{
+    -fx-background-color: rgba(255, 255, 255, .30);
+}
+
+.scheduleMovieTableView .column-header {
+    -fx-background-color: transparent;
+}
+
+.scheduleMovieTableView .table-row-cell{
+    -fx-background-color: rgba(255, 255, 255, .15);
+    -fx-padding: 0.0;
+    -fx-border-width: 0;
+    -fx-border-color: white;
+}
+
+.scheduleMovieTableView .table-row-cell:odd{
+    -fx-background-color: rgba(200, 200, 200, .15);
+    -fx-padding: 0.0;
+}
+
+.scheduleMovieTableView .table-row-cell:selected {
+    -fx-background-color: rgba(185, 14, 21, 0.15);
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.scheduleMovieTableView .table-row-cell:filled:hover {
+    -fx-background-color: rgba(255, 0, 0, 0.15);
+}
+
+.scheduleMovieTableView .table-row-cell:empty {
+    -fx-opacity: 0;
+}
+
+.scheduleMovieTableView .list-view{
+    -fx-background-color: rgba(201, 201, 201, 0.75);
+}
+
+.scheduleMovieTableView .table-row-cell >* >*{
+    -fx-text-fill: black;
+}

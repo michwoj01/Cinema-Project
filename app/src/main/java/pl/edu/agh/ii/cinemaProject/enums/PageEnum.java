@@ -2,10 +2,7 @@ package pl.edu.agh.ii.cinemaProject.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import pl.edu.agh.ii.cinemaProject.controller.ErrorController;
-import pl.edu.agh.ii.cinemaProject.controller.ModifyScheduleWatchersController;
-import pl.edu.agh.ii.cinemaProject.controller.ModifyUserController;
-import pl.edu.agh.ii.cinemaProject.controller.ScheduleMoviesController;
+import pl.edu.agh.ii.cinemaProject.controller.*;
 
 import java.net.URL;
 import java.util.Collections;
@@ -18,6 +15,7 @@ public enum PageEnum {
     MODIFY_USERS("modify_users", ModifyUserController.getFXML()),
     SCHEDULE_MOVIES("schedule_movies", ScheduleMoviesController.getFXML()),
     MODIFY_SCHEDULE_WATCHERS("modify_schedule_watchers", ModifyScheduleWatchersController.getFXML()),
+    MOVIES("movies", SelectMovieController.getFXML()),
     ERROR("error", ErrorController.getFXML());
     private static final Map<String, PageEnum> ENUM_MAP;
     private final String name;

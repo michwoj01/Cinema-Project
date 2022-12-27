@@ -3,7 +3,9 @@ package pl.edu.agh.ii.cinemaProject.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.ii.cinemaProject.db.ScheduleDao;
+import pl.edu.agh.ii.cinemaProject.model.LoginUser;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -23,5 +25,9 @@ public class ScheduleService {
 
     public Mono<Schedule> insertOrUpdateSchedule(Schedule schedule) {
         return scheduleDao.save(schedule);
+    }
+
+    public Flux<Schedule> getAll() {
+        return scheduleDao.findAllAvailable();
     }
 }
