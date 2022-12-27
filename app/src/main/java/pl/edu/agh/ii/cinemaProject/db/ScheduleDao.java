@@ -3,7 +3,10 @@ package pl.edu.agh.ii.cinemaProject.db;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
 
 public interface ScheduleDao extends ReactiveCrudRepository<Schedule, Long> {
 
@@ -12,4 +15,8 @@ public interface ScheduleDao extends ReactiveCrudRepository<Schedule, Long> {
 
     @Query("SELECT schedule.currently_available-:numberOfTickets from schedule where schedule.id = :scheduleId")
     Mono<Integer> checkIfAvailable(long scheduleId, int numberOfTickets);
+
+    @Query("SELECT Distinct * from schedule s inner join movie m on m.id = s.movie_id " +
+            "where s.cinema_hall_id = :cinemaHallId and start_date between :startDate and (:startDate + m.duration)")
+    Flux<Integer> getAllByCinemaHallId(long cinemaHallId, LocalDateTime startDate);
 }

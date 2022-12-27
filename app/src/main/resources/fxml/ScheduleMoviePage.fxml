@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="pl.edu.agh.ii.cinemaProject.controller.ScheduleMoviesController">
@@ -18,4 +20,13 @@
             </columnResizePolicy>
         </TableView>
     </center>
+    <right>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+            <Button styleClass="userAddButton" fx:id="addButton" mnemonicParsing="false" onAction="#handleAddUserAction" text="Add"/>
+            <Button styleClass="userDeleteButton" fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteUserAction" text="Delete"/>
+        </VBox>
+    </right>
+    <stylesheets>
+        <URL value="@../css/ModifyUserPage.css" />
+    </stylesheets>
 </BorderPane>

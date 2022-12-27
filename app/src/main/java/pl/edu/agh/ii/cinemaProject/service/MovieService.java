@@ -33,6 +33,10 @@ public class MovieService {
         return movieDao.findById(movieId);
     }
 
+    public Flux<Movie> findAll(){
+        return movieDao.findAll();
+    }
+
     public Mono<Void> deleteMovie(long id) {
         return movieDao.deleteById(id);
     }

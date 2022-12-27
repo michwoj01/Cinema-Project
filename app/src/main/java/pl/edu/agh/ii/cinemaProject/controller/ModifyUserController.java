@@ -20,7 +20,7 @@ import pl.edu.agh.ii.cinemaProject.service.RoleService;
 
 import java.net.URL;
 import java.util.Map;
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @Controller
@@ -72,38 +72,25 @@ public class ModifyUserController {
             }
         };
         userRole.setCellFactory(ComboBoxTableCell.forTableColumn(stringConverter, roleList));
-        userRole.setOnEditCommit(e -> performUpdate(e, (user, role) -> {
-            user.setRoleId(role.getId());
-            return null;
-        }));
+        userRole.setOnEditCommit(e -> performUpdate(e, (user, role) -> user.setRoleId(role.getId())));
 
         userEmail.setCellFactory(TextFieldTableCell.forTableColumn());
-        userEmail.setOnEditCommit(e -> performUpdate(e, (user, newValue) -> {
-            user.setEmail(newValue);
-            return null;
-        }));
+        userEmail.setOnEditCommit(e -> performUpdate(e, LoginUser::setEmail));
 
         userFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
-        userFirstName.setOnEditCommit(e -> performUpdate(e, (user, newValue) -> {
-            user.setFirstName(newValue);
-            return null;
-        }));
+        userFirstName.setOnEditCommit(e -> performUpdate(e, LoginUser::setFirstName));
 
         userLastName.setCellFactory(TextFieldTableCell.forTableColumn());
-        userLastName.setOnEditCommit(e -> performUpdate(e, (user, newValue) -> {
-            user.setLastName(newValue);
-            return null;
-        }));
+        userLastName.setOnEditCommit(e -> performUpdate(e, LoginUser::setLastName));
 
         deleteButton.disableProperty().bind(Bindings.isEmpty(mainTableView.getSelectionModel().getSelectedItems()));
-
         loginService.getAll().toStream().forEach(user -> mainTableView.getItems().add(user));
     }
 
-    private <T> void performUpdate(TableColumn.CellEditEvent<LoginUser, T> cellEditEvent, BiFunction<LoginUser, T, Void> updateFunction) {
+    private <T> void performUpdate(TableColumn.CellEditEvent<LoginUser, T> cellEditEvent, BiConsumer<LoginUser, T> updateFunction) {
         var pair = getOldAndNewValue(cellEditEvent);
 
-        updateFunction.apply(pair.getFirst(), pair.getSecond());
+        updateFunction.accept(pair.getFirst(), pair.getSecond());
 
         loginService.createOrUpdateUser(pair.getFirst()).fold((error) -> {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -116,7 +103,7 @@ public class ModifyUserController {
         }, (user) -> {
             var viewModel = cellEditEvent.getTableView().getItems().get(cellEditEvent.getTablePosition().getRow());
             viewModel.setId(user.getId());
-            updateFunction.apply(viewModel, cellEditEvent.getNewValue());
+            updateFunction.accept(viewModel, cellEditEvent.getNewValue());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("OK");
             alert.setHeaderText("Succesfully saved user");

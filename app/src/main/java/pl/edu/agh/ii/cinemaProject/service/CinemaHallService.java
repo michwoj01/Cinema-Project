@@ -14,4 +14,10 @@ public class CinemaHallService {
     public Mono<CinemaHall> getCinemaHallByScheduleId(long id) {
         return cinemaHallDao.getCinemaHallById(id);
     }
+
+    public Flux<CinemaHall> findAll() {
+        return cinemaHallDao.findAll();
+    }
+
+    //TODO use config json file instead of database query
 }
