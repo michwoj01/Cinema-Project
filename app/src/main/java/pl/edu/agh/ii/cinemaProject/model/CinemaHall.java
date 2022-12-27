@@ -8,11 +8,9 @@ import org.springframework.data.annotation.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Movie {
+public class CinemaHall {
     @Id
     private long id;
-    private String name;
-    private long duration;
-    private String cover_url;
-    private String description;
+    private int size;
+    private int name;
 }

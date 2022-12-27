@@ -37,8 +37,8 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
     @FXML
     public void initialize() {
         categoriesListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null){
-                PageEnum currentPage= PageEnum.get(observable.getValue());
+            if (newValue != null) {
+                PageEnum currentPage = PageEnum.get(observable.getValue());
                 setPane(currentPage.getUrl());
             }
         }));
@@ -61,6 +61,7 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
             throw new RuntimeException(e);
         }
     }
+
     public void logout(ActionEvent actionEvent) {
         SceneChanger.changeScene(LoginPageController.getFXML());
     }
