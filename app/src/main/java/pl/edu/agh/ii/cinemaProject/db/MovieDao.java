@@ -9,14 +9,14 @@ import reactor.core.publisher.Mono;
 
 public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
 
-    @Query("SELECT * from MOVIE WHERE (duration between :minDuration and :maxDuration) and name like :nameContains")
+    @Query("SELECT * from MOVIE WHERE (duration between :minDuration and :maxDuration) and name like :nameContains limit 50")
     Flux<Movie> findAllWithFilters(int minDuration, int maxDuration, String nameContains);
 
     default Flux<Movie> findAllWithFilters(MovieFiltersDTO movieFiltersDTO) {
         return findAllWithFilters(
                 movieFiltersDTO.minDuration().orElse(0),
                 movieFiltersDTO.maxDuration().orElse(60000000),
-                "'%" + movieFiltersDTO.nameContains().orElse("") + "%'"
+                "%" + movieFiltersDTO.nameContains().orElse("") + "%"
         );
     }
 

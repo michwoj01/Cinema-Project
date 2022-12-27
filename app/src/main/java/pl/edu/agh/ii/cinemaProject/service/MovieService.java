@@ -32,4 +32,8 @@ public class MovieService {
     public Mono<Movie> getMovieInfo(long movieId) {
         return movieDao.findById(movieId);
     }
+
+    public Mono<Void> deleteMovie(long id) {
+        return movieDao.deleteById(id);
+    }
 }
