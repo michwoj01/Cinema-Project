@@ -2,8 +2,6 @@ package pl.edu.agh.ii.cinemaProject.db;
 
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
-import pl.edu.agh.ii.cinemaProject.db.dto.MovieFiltersDTO;
-import pl.edu.agh.ii.cinemaProject.model.Movie;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

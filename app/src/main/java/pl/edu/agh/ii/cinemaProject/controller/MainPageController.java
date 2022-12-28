@@ -20,7 +20,7 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
     @FXML
     public ListView<String> categoriesListView;
     @FXML
-    private BorderPane mainPane;
+    public BorderPane mainPane;
 
     @Autowired
     private PermissionService permissionService;
@@ -33,8 +33,8 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
     public void initialize() {
         SceneChanger.setMainPane(mainPane);
         categoriesListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null){
-                PageEnum currentPage= PageEnum.get(observable.getValue());
+            if (newValue != null) {
+                PageEnum currentPage = PageEnum.get(observable.getValue());
                 SceneChanger.setPane(currentPage.getUrl());
             }
         }));

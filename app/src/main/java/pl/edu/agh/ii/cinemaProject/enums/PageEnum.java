@@ -15,7 +15,7 @@ public enum PageEnum {
     MODIFY_USERS("modify_users", ModifyUserController.getFXML()),
     SCHEDULE_MOVIES("schedule_movies", ScheduleMoviesController.getFXML()),
     MODIFY_SCHEDULE_WATCHERS("modify_schedule_watchers", ModifyScheduleWatchersController.getFXML()),
-    MOVIES("movies", SelectMovieController.getFXML()),
+    MOVIES("movies", MovieController.getFXML()),
     ERROR("error", ErrorController.getFXML());
     private static final Map<String, PageEnum> ENUM_MAP;
     private final String name;

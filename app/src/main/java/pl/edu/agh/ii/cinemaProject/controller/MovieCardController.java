@@ -16,7 +16,6 @@ import pl.edu.agh.ii.cinemaProject.service.MovieService;
 import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
-
 import java.net.URL;
 
 @Controller
@@ -98,6 +97,6 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent>{
     }
 
     public void handleBackAction(ActionEvent actionEvent){
-        SceneChanger.setPane(SelectMovieController.getFXML());
+        SceneChanger.setPane(ModifyScheduleWatchersController.getFXML());
     }
 }

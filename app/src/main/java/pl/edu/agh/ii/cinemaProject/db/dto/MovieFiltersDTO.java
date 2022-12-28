@@ -11,6 +11,7 @@ public record MovieFiltersDTO(
     private boolean isFiltering(List<Optional<?>> optionals) {
         return optionals.stream().anyMatch(Optional::isPresent);
     }
+
     public boolean isFiltering() {
         return isFiltering(List.of(minDuration, maxDuration, nameContains));
     }
