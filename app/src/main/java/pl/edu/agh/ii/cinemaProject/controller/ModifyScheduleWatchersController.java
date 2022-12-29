@@ -1,34 +1,55 @@
 package pl.edu.agh.ii.cinemaProject.controller;
 
-import javafx.collections.FXCollections;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.ii.cinemaProject.event.ScheduleEvent;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
+import pl.edu.agh.ii.cinemaProject.service.CinemaHallService;
 import pl.edu.agh.ii.cinemaProject.service.MovieService;
 import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
+import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.List;
 
 @Controller
 public class ModifyScheduleWatchersController {
+
     @FXML
-    public ListView<Schedule> scheduledMoviesListView;
+    private TableView<Schedule> scheduleMovieTableView;
+    @FXML
+    private TableColumn<Schedule, Schedule> movieImage;
+    @FXML
+    private TableColumn<Schedule, String> movieTitle;
+    @FXML
+    private TableColumn<Schedule, String> movieDate;
+    @FXML
+    private TableColumn<Schedule, String> movieCinemaHall;
+
+    @FXML
+    private TableColumn<Schedule, String> movieAvailableSeats;
+
     @Autowired
-    private ConfigurableApplicationContext applicationContext;
-    @Autowired
-    private ScheduleService scheduleService;
+    private ApplicationContext applicationContext;
+
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private ScheduleService scheduleService;
+
+    @Autowired
+    private CinemaHallService cinemaHallService;
 
     public static URL getFXML() {
         return ModifyScheduleWatchersController.class.getResource("/fxml/ModifyScheduleWatchersPage.fxml");
@@ -36,31 +57,45 @@ public class ModifyScheduleWatchersController {
 
     @FXML
     public void initialize() {
-        scheduledMoviesListView.setFixedCellSize(200);
-        scheduledMoviesListView.setCellFactory(param -> new ListCell<>() {
-            private final ImageView imageView = new ImageView();
+        scheduleMovieTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-            @Override
-            public void updateItem(Schedule newSchedule, boolean empty) {
-                super.updateItem(newSchedule, empty);
-                if (empty) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    var aa = movieService.getMovieInfo(newSchedule.getMovie_id()).block();
-                    var image = new Image(aa.getCover_url(), 100, 0, true, true);
-                    imageView.setImage(image);
+        movieImage.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
 
-                    setGraphic(imageView);
-                    setPrefHeight(200);
+        movieImage.setCellFactory(param -> {
+            final ImageView imageview = new ImageView();
+            TableCell<Schedule, Schedule> cell = new TableCell<>() {
+                public void updateItem(Schedule item, boolean empty) {
+                    if (empty) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        movieService.getMovieInfo(item.getMovie_id()).mapNotNull((movie) -> {
+                            Platform.runLater(() -> {
+                                var image = new Image(movie.getCover_url(), 200, 0, true, true);
+                                imageview.setImage(image);
+                            });
+                            return null;
+                        }).block();
+                    }
                 }
-            }
+            };
+            cell.setGraphic(imageview);
+            cell.setPrefHeight(imageview.getFitHeight());
+            return cell;
         });
 
-        scheduledMoviesListView.setItems(FXCollections.observableList(
-                List.of(
-                        new Schedule(1, LocalDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneId.systemDefault()), 10, 1, 1),
-                        new Schedule(2, LocalDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneId.systemDefault()), 10, 600, 1))));
-    }
+        movieTitle.setCellValueFactory((data) -> new SimpleObjectProperty<>(movieService.getMovieInfo(data.getValue().getMovie_id()).block().getName()));
+        movieDate.setCellValueFactory(new PropertyValueFactory<>("start_date"));
+        movieCinemaHall.setCellValueFactory(data -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallById(data.getValue().getCinema_hall_id()).block().getName()));
+        movieAvailableSeats.setCellValueFactory(new PropertyValueFactory<>("currently_available"));
 
+        scheduleMovieTableView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                SceneChanger.setPane(MovieCardController.getFXML());
+                applicationContext.publishEvent(new ScheduleEvent(observable.getValue()));
+            }
+        }));
+
+        scheduleService.findAllAvailable().toStream().forEach(schedule -> scheduleMovieTableView.getItems().add(schedule));
+    }
 }

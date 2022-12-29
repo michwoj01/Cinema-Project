@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class CinemaHallInMemoryDao {
 
     private final Map<Long, CinemaHall> cinemaHalls;
-    private final CinemaHall defaultCinemaHall = new CinemaHall(0, 0, "0");
+    private final CinemaHall defaultCinemaHall = new CinemaHall(0, 0, "no.0");
 
     public CinemaHallInMemoryDao(URL resourceName) {
         var listType = new TypeToken<ArrayList<CinemaHall>>() {

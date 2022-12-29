@@ -74,7 +74,7 @@ public class MovieController {
             @Override
             protected void updateItem(Movie movie, boolean empty) {
                 super.updateItem(movie, empty);
-                if (empty) {
+                if (empty || movie==null) {
                     setText(null);
                     setGraphic(null);
                 } else {
@@ -83,7 +83,6 @@ public class MovieController {
                         ImageView imageView = new ImageView();
                         var image = new Image(movie.getCover_url(), 100, 0, true, true);
                         imageView.setImage(image);
-
                         setGraphic(imageView);
                         setPrefHeight(200);
                     });

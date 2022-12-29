@@ -72,13 +72,17 @@ public class ScheduleService {
     }
 
     private Either<String, ?> validateSchedule(Schedule schedule) {
-        return checkEmptyReferences(schedule).flatMap(__ -> checkStartDate(schedule).flatMap(___ -> checkTickets(schedule).flatMap(____ -> checkIfHallIsFree(schedule))));
+        return checkEmptyReferences(schedule)
+                .flatMap(__ -> checkStartDate(schedule))
+                .flatMap(___ -> checkTickets(schedule))
+                .flatMap(____ -> checkIfHallIsFree(schedule));
     }
 
     public Either<String, Schedule> createOrUpdateSchedule(Schedule schedule) {
-        return validateSchedule(schedule).flatMap(
-                (unused) -> Try.ofCallable(() -> scheduleDao.save(schedule).block())
-                        .fold((error) -> Either.left("Unknown error"), Either::right)
-        );
+        return validateSchedule(schedule).flatMap((unused) -> Try.ofCallable(() -> scheduleDao.save(schedule).block()).fold((error) -> Either.left("Unknown error"), Either::right));
+    }
+
+    public Flux<Schedule> findAllAvailable() {
+        return scheduleDao.findAllAvailable();
     }
 }

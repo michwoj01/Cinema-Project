@@ -103,10 +103,11 @@ public class ScheduleMoviesController {
         newSchedule.setMovie_id(1);
         newSchedule.setStart_date(LocalDateTime.of(2023, 1, 31, 12, 0, 0));
         newSchedule.setCinema_hall_id(1);
+        newSchedule.setCurrently_available(0);
         scheduleView.getItems().add(newSchedule);
     }
 
-    public void handleDeleteUserAction(ActionEvent actionEvent) {
+    public void handleDeleteScheduleAction(ActionEvent actionEvent) {
         scheduleView.getSelectionModel().getSelectedItems().forEach(schedule -> {
             if (schedule.getId() != 0) {
                 scheduleService.deleteSchedule(schedule.getId()).fold((error) -> {
@@ -139,7 +140,7 @@ public class ScheduleMoviesController {
         scheduleService.createOrUpdateSchedule(pair.getFirst()).fold((error) -> {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning");
-            alert.setHeaderText("Error while updating user");
+            alert.setHeaderText("Error while updating schedule");
             alert.setContentText("Error: " + error);
             alert.showAndWait();
             return null;
@@ -149,7 +150,7 @@ public class ScheduleMoviesController {
             updateFunction.accept(viewModel, cellEditEvent.getNewValue());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("OK");
-            alert.setHeaderText("Successfully saved user");
+            alert.setHeaderText("Successfully saved schedule");
             alert.showAndWait();
             return null;
         });
