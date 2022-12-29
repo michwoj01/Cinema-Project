@@ -29,4 +29,6 @@ public class ScheduleService {
     public Flux<Schedule> findAll() {
         return scheduleDao.findAll();
     }
+
+    public Flux<Schedule> findAllAvailable() {return scheduleDao.findAllAvailable();}
 }

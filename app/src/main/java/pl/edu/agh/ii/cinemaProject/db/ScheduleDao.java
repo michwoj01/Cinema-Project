@@ -3,6 +3,7 @@ package pl.edu.agh.ii.cinemaProject.db;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface ScheduleDao extends ReactiveCrudRepository<Schedule, Long> {
@@ -12,4 +13,7 @@ public interface ScheduleDao extends ReactiveCrudRepository<Schedule, Long> {
 
     @Query("SELECT schedule.currently_available-:numberOfTickets from schedule where schedule.id = :scheduleId")
     Mono<Integer> checkIfAvailable(long scheduleId, int numberOfTickets);
+
+    @Query("SELECT * from SCHEDULE where SCHEDULE.CURRENTLY_AVAILABLE>0 and  SCHEDULE.START_DATE>CURRENT_DATE")
+    Flux<Schedule> findAllAvailable();
 }

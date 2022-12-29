@@ -1,5 +1,6 @@
 package pl.edu.agh.ii.cinemaProject.controller;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
@@ -44,16 +45,13 @@ public class ScheduleMoviesController {
     @FXML
     private void initialize() {
         scheduleView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        scheduleMovie.setCellValueFactory(schedule -> {
-            var movie = movieService.getMovieByScheduleId(schedule.getValue().getMovie_id()).block();
-            return new SimpleStringProperty(movie.getName());
-        });
+        scheduleMovie.setCellValueFactory(schedule -> new SimpleObjectProperty<>(movieService.getMovieInfo(schedule.getValue().getMovie_id()).block().getName()));
         scheduleHall.setCellValueFactory(schedule -> {
             var cinemaHall = cinemaHallService.getCinemaHallByScheduleId(schedule.getValue().getCinema_hall_id()).block();
             return new SimpleStringProperty(String.valueOf(cinemaHall.getName()));
         });
         scheduleDate.setCellValueFactory(schedule -> new SimpleStringProperty(localDateTimeStringConverter.toString(schedule.getValue().getStart_date())));
         scheduleTickets.setCellValueFactory(new PropertyValueFactory<>("currently_available"));
-        scheduleService.findAll().toStream().forEach(user -> scheduleView.getItems().add(user));
+        scheduleService.findAll().toStream().forEach(schedule -> scheduleView.getItems().add(schedule));
     }
 }
