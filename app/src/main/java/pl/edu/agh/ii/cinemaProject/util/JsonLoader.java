@@ -6,7 +6,6 @@ import io.vavr.control.Either;
 import io.vavr.control.Try;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 
@@ -23,5 +22,4 @@ public class JsonLoader {
                 .flatMap((jsonInput) -> Try.of(() -> gson.fromJson(jsonInput, tClass)))
                 .toEither();
     }
-
 }

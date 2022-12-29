@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,27 +58,36 @@ public class ScheduleMoviesController {
     private void initialize() {
         scheduleView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        scheduleMovie.setCellValueFactory((schedule) -> new SimpleObjectProperty<>(movieService.getMovieByScheduleId(schedule.getValue().getMovie_id()).block()));
-        scheduleMovie.setCellFactory(ComboBoxTableCell.forTableColumn(FXCollections.observableArrayList(movieService.findAll().collectList().block())));
+        scheduleMovie.setCellValueFactory((schedule) -> new SimpleObjectProperty<>(movieService.getMovieInfo(schedule.getValue().getMovie_id()).block()));
+        scheduleMovie.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter<>() {
+            @Override
+            public String toString(Movie object) {
+                return object.getName();
+            }
+
+            @Override
+            public Movie fromString(String string) {
+                return movieService.findAll().filter((movie) -> movie.getName().equals(string)).blockFirst();
+            }
+        }, FXCollections.observableArrayList(movieService.findAll().collectList().block())));
         scheduleMovie.setOnEditCommit(e -> performUpdate(e, (schedule, movie) -> schedule.setMovie_id(movie.getId())));
 
-        scheduleHall.setCellValueFactory(schedule -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallByScheduleId(schedule.getValue().getCinema_hall_id()).block()));
-        scheduleHall.setCellFactory(ComboBoxTableCell.forTableColumn(FXCollections.observableArrayList(cinemaHallService.findAll().collectList().block())));
+        scheduleHall.setCellValueFactory(schedule -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallById(schedule.getValue().getCinema_hall_id()).block()));
+        scheduleHall.setCellFactory(ComboBoxTableCell.forTableColumn(new StringConverter<>() {
+            @Override
+            public String toString(CinemaHall object) {
+                return object.getName();
+            }
+
+            @Override
+            public CinemaHall fromString(String string) {
+                return cinemaHallService.findAll().filter((cinemaHall) -> cinemaHall.getName().equals(string)).blockFirst();
+            }
+        }, FXCollections.observableArrayList(cinemaHallService.findAll().collectList().block())));
         scheduleHall.setOnEditCommit(e -> performUpdate(e, (schedule, hall) -> schedule.setCinema_hall_id(hall.getId())));
 
-        scheduleDate.setCellValueFactory(schedule -> new SimpleObjectProperty<>(schedule.getValue().getStart_date()));
-        scheduleDate.setCellFactory(column ->
-                new TableCell<>() {
-                    @Override
-                    protected void updateItem(LocalDateTime item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setText(null);
-                        } else {
-                            this.setText(localDateTimeStringConverter.toString(item));
-                        }
-                    }
-                });
+        scheduleDate.setCellValueFactory(new PropertyValueFactory<>("start_date"));
+        scheduleDate.setCellFactory(TextFieldTableCell.forTableColumn(localDateTimeStringConverter));
         scheduleDate.setOnEditCommit(e -> performUpdate(e, Schedule::setStart_date));
 
         scheduleTickets.setCellValueFactory(new PropertyValueFactory<>("currently_available"));
@@ -90,7 +100,9 @@ public class ScheduleMoviesController {
 
     public void handleAddUserAction(ActionEvent actionEvent) {
         var newSchedule = new Schedule();
-        newSchedule.setStart_date(LocalDateTime.now().plusDays(1));
+        newSchedule.setMovie_id(1);
+        newSchedule.setStart_date(LocalDateTime.of(2023, 1, 31, 12, 0, 0));
+        newSchedule.setCinema_hall_id(1);
         scheduleView.getItems().add(newSchedule);
     }
 
@@ -108,7 +120,7 @@ public class ScheduleMoviesController {
                 }, (__) -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("OK");
-                    alert.setHeaderText("Succesfully deleted schedule");
+                    alert.setHeaderText("Successfully deleted schedule");
                     alert.setContentText("Schedule: " + schedule);
 
                     alert.showAndWait();
@@ -129,7 +141,6 @@ public class ScheduleMoviesController {
             alert.setTitle("Warning");
             alert.setHeaderText("Error while updating user");
             alert.setContentText("Error: " + error);
-
             alert.showAndWait();
             return null;
         }, (schedule) -> {
@@ -138,8 +149,7 @@ public class ScheduleMoviesController {
             updateFunction.accept(viewModel, cellEditEvent.getNewValue());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("OK");
-            alert.setHeaderText("Succesfully saved user");
-
+            alert.setHeaderText("Successfully saved user");
             alert.showAndWait();
             return null;
         });

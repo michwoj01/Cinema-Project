@@ -64,7 +64,7 @@ public class ScheduleService {
     }
 
     private Either<String, ?> checkIfHallIsFree(Schedule schedule) {
-        if (!scheduleDao.getAllByCinemaHallId(schedule.getCinema_hall_id(), schedule.getStart_date()).collectList().block().isEmpty()) {
+        if (!scheduleDao.getAllByCinemaHallId(schedule.getCinema_hall_id(), schedule.getStart_date(), schedule.getId()).collectList().block().isEmpty()) {
             return Either.left("There is already scheduled movie at this time and hall");
         } else {
             return Either.right(Option.none());

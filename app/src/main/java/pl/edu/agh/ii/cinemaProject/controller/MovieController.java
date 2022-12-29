@@ -24,7 +24,6 @@ import static io.vavr.API.Try;
 
 @Controller
 public class MovieController {
-
     private final String DELETE_BUTTON_TEXT = "Delete";
     private final String HIDE_BUTTON_TEXT = "Hide";
     @FXML
@@ -60,7 +59,7 @@ public class MovieController {
 
                 alert.setResultConverter((bt) -> {
                     if (bt.getText().equals(DELETE_BUTTON_TEXT)) {
-                        movieService.deleteMovie(currentItemSelected.getId()).map(x -> {
+                        movieService.deleteMovie(currentItemSelected.getId()).mapNotNull(x -> {
                             refreshList();
                             return null;
                         }).block();

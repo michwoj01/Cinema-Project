@@ -5,7 +5,6 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import pl.edu.agh.ii.cinemaProject.db.dto.MovieFiltersDTO;
 import pl.edu.agh.ii.cinemaProject.model.Movie;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
 
@@ -19,10 +18,4 @@ public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
                 "%" + movieFiltersDTO.nameContains().orElse("") + "%"
         );
     }
-
-    @Query("SELECT DISTINCT * from MOVIE mv " +
-            "inner join SCHEDULE sch on sch.movie_id = mv.id " +
-            "WHERE sch.id = :scheduleId")
-    Mono<Movie> getMovieByScheduleId(long scheduleId);
-
 }

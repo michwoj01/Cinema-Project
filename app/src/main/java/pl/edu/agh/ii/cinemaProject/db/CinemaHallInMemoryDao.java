@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.ii.cinemaProject.model.CinemaHall;
 import pl.edu.agh.ii.cinemaProject.util.JsonLoader;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class CinemaHallInMemoryDao {
 
     private final Map<Long, CinemaHall> cinemaHalls;
-    private final CinemaHall defaultCinemaHall = new CinemaHall(0, 0, 0);
+    private final CinemaHall defaultCinemaHall = new CinemaHall(0, 0, "0");
 
     public CinemaHallInMemoryDao(URL resourceName) {
         var listType = new TypeToken<ArrayList<CinemaHall>>() {
@@ -38,5 +39,7 @@ public class CinemaHallInMemoryDao {
         return Mono.just(this.cinemaHalls.getOrDefault(cinemaHallId, defaultCinemaHall));
     }
 
-
+    public Flux<CinemaHall> findAll(){
+        return Flux.fromIterable(this.cinemaHalls.values());
+    }
 }

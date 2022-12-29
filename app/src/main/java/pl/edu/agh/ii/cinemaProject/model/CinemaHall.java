@@ -12,5 +12,5 @@ public class CinemaHall {
     @Id
     private long id;
     private int size;
-    private int name;
+    private String name;
 }
