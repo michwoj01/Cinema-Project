@@ -26,7 +26,7 @@ Skorzystano również z następujących bibliotek:
 * Lombok
 
 ## Setup aplikacji
-Aby uruchomić projekt, należy postawić we własnym 
+Aby uruchomić projekt, należy postawić we własnym
 środowisku kontener Docker z bazą PostgreSQL, a następnie
 uruchomić aplikację kliencką:
 ```
@@ -76,7 +76,7 @@ Adres wpisujemy w wyznaczone pole na środku powitalnego okna.
 <img src="images/img.png" alt="drawing" width="700" align="center"/>
 </div>
 
-Jeżeli zawartość pola nie spełna formatowania adresów email lub użytkownik o takim emailu nie został znaleziony w bazie, 
+Jeżeli zawartość pola nie spełna formatowania adresów email lub użytkownik o takim emailu nie został znaleziony w bazie,
 odpowiednie komunikaty wyświetlą się pod polem.
 
 <div align="center">
@@ -115,16 +115,41 @@ Każdy z rekordów można edytować z poziomu klienta, zmiany pojawią się naty
 
 Z prawej strony znajdują się również przyciski, umożliwiające dodanie i usuwanie użytkowników.
 
+### Zarządzanie filmem
 
+Przyjęliśmy, że dodawanie filmów w kompleksach kinowych nie jest wykonywane ręcznie i prędzej jest to pobiera z pewnej bazy (od jakiegoś dostawcy danych).
+Nie dodawaliśmy więc dodatkowego widoku z możliwością dodania filmu.
+Posiadamy za to osobny skrypt w jęzku Kotlin, który ściąga filmy z bazy [The Open Movie Database](https://www.omdbapi.com/).
+Jest to raczej próba skupienia się na ważniejszych aspektach aplikacji takich jak kupowanie biletów oraz zarządzanie seansami niż stworzenie kolejnego przysłowiowego CRUD-a.
 
+Pozostawiliśmy możliwość filtrowania i usuwania filmów w przeznaczonej do tego zakładce.
 
+```
+Tutaj zdjecie movies
+```
 
+Pokazujemy tam 50 pierwszych filmów z wyszukania po tytule filmu oraz po minimalnej długości filmu.
+Po kliknięciu w dany film możemy zobaczyć więcej szczegółów o nim, lub usunąć go z bazy danych.
 
+```
+Tutaj zdjecie po kliknięciu w film
+```
 
+Pomimo możliwości asynchronicznych zapytań oferowanych przez R2DBC,
+natura Javafx powodowała, że aplikacja czasem dostaje lekkiego opoznienia,
+gdy ściąga zdjęcia filmów (w `Platform.runLater(...)`).
 
+### Sale w pliku konfiguracyjnym (json)
 
+Ze względu na zmianę koncepcji w tym miejscu, sale ładowane przy starcie aplikacji zamiast trzymane w bazie danych, utworzyliśmy usunęliśmy wymagania `foreign key` w bazie.
+Po tej zmianie dodaliśmy implementację Dao z salami jako In Memory Database, gdzie trzymamy mapę (Id, Sala) sal i wykonujemy na niej zapytania.
 
+### Zarządzanie seansami
 
+### Obsługa uprawnień
 
+Obsługujemy uprawnienia zgodnie z opisem w zakładce [Menu główne](#menu-gwne).
+Podczas pojedyńczych operacji nie sprawdzamy dodatkowo uprawnień.
+Autoryzacja do zasobów jest ustalana przy logowaniu użytkownika i nie jest zmieniana w trakcie działania programu.
 
-
+### Zarządzanie sprzedażą biletów
