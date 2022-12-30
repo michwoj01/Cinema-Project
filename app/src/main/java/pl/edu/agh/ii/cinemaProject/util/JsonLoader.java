@@ -6,7 +6,6 @@ import io.vavr.control.Either;
 import io.vavr.control.Try;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 
@@ -17,13 +16,10 @@ public class JsonLoader {
         return Try.of(() -> Files.readAllLines(new File(resourceName.toURI()).toPath()))
                 .map((lines) -> {
                     StringBuilder ret = new StringBuilder();
-                    for (var line : lines) {
-                        ret.append(line);
-                    }
+                    lines.forEach(ret::append);
                     return ret.toString();
                 })
                 .flatMap((jsonInput) -> Try.of(() -> gson.fromJson(jsonInput, tClass)))
                 .toEither();
     }
-
 }

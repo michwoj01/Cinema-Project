@@ -1,8 +1,12 @@
 package pl.edu.agh.ii.cinemaProject.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,7 +37,7 @@ public class ModifyScheduleWatchersController {
     private TableColumn<Schedule, String> movieCinemaHall;
 
     @FXML
-    private TableColumn<Schedule,String> movieAvailableSeats;
+    private TableColumn<Schedule, String> movieAvailableSeats;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -64,11 +68,14 @@ public class ModifyScheduleWatchersController {
                     if (empty) {
                         setText(null);
                         setGraphic(null);
-                    }
-                    else{
-                        var movie = movieService.getMovieInfo(item.getMovie_id()).block();
-                        var image = new Image(movie.getCover_url(), 200, 0, true, true);
-                        imageview.setImage(image);
+                    } else {
+                        movieService.getMovieInfo(item.getMovie_id()).mapNotNull((movie) -> {
+                            Platform.runLater(() -> {
+                                var image = new Image(movie.getCover_url(), 200, 0, true, true);
+                                imageview.setImage(image);
+                            });
+                            return null;
+                        }).block();
                     }
                 }
             };
@@ -79,16 +86,16 @@ public class ModifyScheduleWatchersController {
 
         movieTitle.setCellValueFactory((data) -> new SimpleObjectProperty<>(movieService.getMovieInfo(data.getValue().getMovie_id()).block().getName()));
         movieDate.setCellValueFactory(new PropertyValueFactory<>("start_date"));
-        movieCinemaHall.setCellValueFactory(data -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallByScheduleId(data.getValue().getCinema_hall_id()).block().getName()));
+        movieCinemaHall.setCellValueFactory(data -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallById(data.getValue().getCinema_hall_id()).block().getName()));
         movieAvailableSeats.setCellValueFactory(new PropertyValueFactory<>("currently_available"));
 
         scheduleMovieTableView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
-            if (newValue != null){
+            if (newValue != null) {
                 SceneChanger.setPane(MovieCardController.getFXML());
                 applicationContext.publishEvent(new ScheduleEvent(observable.getValue()));
             }
         }));
 
-        scheduleService.findAllAvailable().toStream().forEach(schedule->scheduleMovieTableView.getItems().add(schedule));
+        scheduleService.findAllAvailable().toStream().forEach(schedule -> scheduleMovieTableView.getItems().add(schedule));
     }
 }
