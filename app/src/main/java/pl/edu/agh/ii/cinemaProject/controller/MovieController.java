@@ -14,8 +14,8 @@ import pl.edu.agh.ii.cinemaProject.model.Movie;
 import pl.edu.agh.ii.cinemaProject.service.MovieService;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static io.vavr.API.Try;
 
@@ -59,13 +59,9 @@ public class MovieController {
                 alert.setHeaderText("Description: " + currentItemSelected.getDescription());
                 alert.setContentText("duration: " + currentItemSelected.getDuration());
 
-
                 alert.setResultConverter((bt) -> {
                     if (bt.getText().equals(DELETE_BUTTON_TEXT)) {
-                        movieService.deleteMovie(currentItemSelected.getId()).mapNotNull(x -> {
-                            refreshList();
-                            return null;
-                        }).block();
+                        movieService.deleteMovie(currentItemSelected.getId()).subscribe((movie) -> refreshList());
                     }
                     return bt;
                 });
@@ -80,7 +76,7 @@ public class MovieController {
             @Override
             protected void updateItem(Movie movie, boolean empty) {
                 super.updateItem(movie, empty);
-                if (empty || movie==null) {
+                if (empty || movie == null) {
                     setText(null);
                     setGraphic(null);
                 } else {
@@ -103,26 +99,26 @@ public class MovieController {
         pagination.setMaxPageIndicatorCount(10);
 
         pagination.setPageFactory((pageIndex) -> {
-                refreshList();
-                return new VBox();});
+            refreshList();
+            return new VBox();
+        });
 
         refreshList();
     }
 
     private void refreshList() {
-        Optional<String> newNameFilter =Optional.ofNullable(name.getText()).filter(s -> !s.isEmpty());
+        Optional<String> newNameFilter = Optional.ofNullable(name.getText()).filter(s -> !s.isEmpty());
         Optional<Integer> newMinDuration = textFieldToOptInt(this.minDuration);
         Optional<Integer> newMaxDuration = textFieldToOptInt(this.maxDuration);
-        Platform.runLater(() ->{
-                var numberPages =(int) Math.floor(movieService.getMovieCountWithFilter(new MovieFiltersDTO(newMinDuration, newMaxDuration, newNameFilter)).block()/pagination.getMaxPageIndicatorCount());
-                pagination.setPageCount(numberPages>0 ? numberPages : 1);
-                this.moviesListView.setItems(FXCollections.observableList(new ArrayList<>()));
-                movieService
-                .getMoviesWithFilterDTO(new MovieFiltersDTO(newMinDuration, newMaxDuration, newNameFilter),pagination.getCurrentPageIndex(),pagination.getMaxPageIndicatorCount())
-                .map((movie) -> {
-                    Platform.runLater(() -> this.moviesListView.getItems().add(movie));
-                    return movie;
-                }).collectList().block();
+        Platform.runLater(() -> {
+            var numberPages = (int) Math.floor(movieService.getMovieCountWithFilter(new MovieFiltersDTO(newMinDuration, newMaxDuration, newNameFilter)).block() / pagination.getMaxPageIndicatorCount());
+            pagination.setPageCount(numberPages > 0 ? numberPages : 1);
+            this.moviesListView.setItems(FXCollections.observableArrayList(
+                    movieService.getMoviesWithFilterDTO(
+                                    new MovieFiltersDTO(newMinDuration, newMaxDuration, newNameFilter),
+                                    pagination.getCurrentPageIndex(),
+                                    pagination.getMaxPageIndicatorCount())
+                            .toStream().collect(Collectors.toList())));
         });
     }
 
@@ -131,5 +127,4 @@ public class MovieController {
                 .toEither()
                 .fold((th) -> Optional.empty(), Optional::of);
     }
-
 }

@@ -25,7 +25,6 @@ import java.time.format.DateTimeFormatter;
 
 @Controller
 public class ModifyScheduleWatchersController {
-
     @FXML
     private TableView<Schedule> scheduleMovieTableView;
     @FXML
@@ -36,19 +35,15 @@ public class ModifyScheduleWatchersController {
     private TableColumn<Schedule, String> movieDate;
     @FXML
     private TableColumn<Schedule, String> movieCinemaHall;
-
     @FXML
     private TableColumn<Schedule, String> movieAvailableSeats;
 
     @Autowired
     private ApplicationContext applicationContext;
-
     @Autowired
     private MovieService movieService;
-
     @Autowired
     private ScheduleService scheduleService;
-
     @Autowired
     private CinemaHallService cinemaHallService;
 
@@ -70,13 +65,10 @@ public class ModifyScheduleWatchersController {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        movieService.getMovieInfo(item.getMovie_id()).mapNotNull((movie) -> {
-                            Platform.runLater(() -> {
-                                var image = new Image(movie.getCover_url(), 200, 0, true, true);
-                                imageview.setImage(image);
-                            });
-                            return null;
-                        }).block();
+                        movieService.getMovieInfo(item.getMovie_id()).subscribe((movie) -> Platform.runLater(() -> {
+                            var image = new Image(movie.getCover_url(), 200, 0, true, true);
+                            imageview.setImage(image);
+                        }));
                     }
                 }
             };
