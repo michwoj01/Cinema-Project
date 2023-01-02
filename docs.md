@@ -96,7 +96,9 @@ zalogowanie jest **admin@admin.pl**.
 
 Po zalogowaniu się do aplikacji zostajemy przekierowani do głównego widoku aplikacji.
 
+<div align="center">
 <img src="images/main.png" alt="drawing" width="600"/>
+</div>
 
 Po lewej strony znajduje się panel z kilkoma zakładkami, dostepnymi w zależności od uprawnień użytkownika.
 
@@ -104,11 +106,15 @@ Po lewej strony znajduje się panel z kilkoma zakładkami, dostepnymi w zależno
 
 Po kliknięciu pierwszej zakładki zostaje nam wyświetlona lista wszystkich użytkowników z bazy.
 
-![img.png](images/users.png)
+<div align="center">
+<img alt="img.png" src="images/users.png"/>
+</div>
 
 Każdy z rekordów można edytować z poziomu klienta, zmiany pojawią się natychmiast w bazie danych.
 
-![img.png](images/edit_users.png)
+<div align="center">
+<img alt="img.png" src="images/edit_users.png"/>
+</div>
 
 Z prawej strony znajdują się również przyciski, umożliwiające dodanie i usuwanie użytkowników.
 
@@ -119,14 +125,18 @@ Nie dodawaliśmy więc dodatkowego widoku z możliwością dodania filmu.
 Posiadamy za to osobny skrypt w jęzku Kotlin, który ściąga filmy z bazy [The Open Movie Database](https://www.omdbapi.com/).
 Jest to raczej próba skupienia się na ważniejszych aspektach aplikacji takich jak kupowanie biletów oraz zarządzanie seansami niż stworzenie kolejnego przysłowiowego CRUD-a.
 
-Pozostawiliśmy możliwość filtrowania i usuwania filmów w przeznaczonej do tego zakładce.
+Pozostawiliśmy możliwość, paginacji i usuwania filmów w przeznaczonej do tego zakładce.
 
-![img.png](images/movies.png)
+<div align="center">
+<img alt="img.png" src="images/movies.png"/>
+</div>
 
-Pokazujemy tam 50 pierwszych filmów z wyszukania po tytule filmu oraz po minimalnej długości filmu.
+Pokazujemy tam około 1300 filmów z czego na każdą stronę przypada 10, wyszukania po tytule filmu ,minimalnej oraz maksymalnej długości filmu.
 Po kliknięciu w dany film możemy zobaczyć więcej szczegółów o nim, lub usunąć go z bazy danych.
 
-![img.png](images/movie_details.png)
+<div align="center">
+<img alt="img.png" src="images/movie_details.png"/>
+</div>
 
 Pomimo możliwości asynchronicznych zapytań oferowanych przez R2DBC,
 natura Javafx powodowała, że aplikacja czasem dostaje lekkiego opoznienia,
@@ -137,18 +147,21 @@ gdy ściąga zdjęcia filmów (w `Platform.runLater(...)`).
 Ze względu na zmianę koncepcji w tym miejscu, sale ładowane przy starcie aplikacji zamiast trzymane w bazie danych, utworzyliśmy usunęliśmy wymagania `foreign key` w bazie.
 Po tej zmianie dodaliśmy implementację Dao z salami jako In Memory Database, gdzie trzymamy mapę (Id, Sala) sal i wykonujemy na niej zapytania.
 
-![img.png](images/halls.png)
+<div align="center">
+<img alt="img.png" src="images/halls.png"/>
+</div>
 
 ### Zarządzanie seansami
 
 Mając bazę filmów oraz wczytane sale jesteśmy w stanie zaplanować
 seans kinowy. Odbywa się to przez mechanizm analogiczny do
-dodawania użytkowników, ztymże sprawdzanych jest więcej warunków (czy w planowanym terminie
+dodawania użytkowników, z tymże sprawdzanych jest więcej warunków (czy w planowanym terminie
 dana sala nie jest już zajęta, czy planujemy seans w przyszłości).
 
-![img.png](images/schedule.png)
-
-![img.png](images/schedule_warning.png)
+<div align="center">
+<img alt="img.png" src="images/schedule.png"/>
+<img alt="img.png" src="images/schedule_warning.png"/>
+</div>
 
 ### Obsługa uprawnień
 
@@ -157,3 +170,17 @@ Podczas pojedyńczych operacji nie sprawdzamy dodatkowo uprawnień.
 Autoryzacja do zasobów jest ustalana przy logowaniu użytkownika i nie jest zmieniana w trakcie działania programu.
 
 ### Zarządzanie sprzedażą biletów
+
+Mając do dyspozycji ustalone seansy filmowe, jesteśmy w stanie zakupić bilety.
+
+<div align="center">
+<img alt="img.png" src="images/modify_schedule_watchers_page.png"/>
+</div>
+
+Każdy z rekordów po kliknięciu, prowadzi nas do osobnego widoku przedstawiającego szczegółowe informacje, wraz z możliwością zakupu biletów na film.
+
+<div align="center">
+<img alt="img.png" src="images/modify_schedule_watchers_card.png"/>
+</div>
+
+Pole z liczbą zakupionych biletów jest ograniczone do wpisania liczby z przedziału 0 do maksymalnej liczbą biletów dostępnych w danej chwili.
