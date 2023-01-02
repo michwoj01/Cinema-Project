@@ -13,12 +13,12 @@ public class MovieService {
     @Autowired
     private MovieDao movieDao;
 
-    public Flux<Movie> getMoviesWithFilterDTO(MovieFiltersDTO movieFiltersDTO) {
-        if (movieFiltersDTO.isFiltering()) {
-            return movieDao.findAllWithFilters(movieFiltersDTO);
-        } else {
-            return movieDao.findAll();
-        }
+    public Flux<Movie> getMoviesWithFilterDTO(MovieFiltersDTO movieFiltersDTO,int page,int maxItemsPerPage) {
+        return movieDao.findAllWithFilters(movieFiltersDTO,page,maxItemsPerPage);
+    }
+
+    public Mono<Integer> getMovieCountWithFilter(MovieFiltersDTO movieFiltersDTO){
+        return movieDao.getCountWithFilters(movieFiltersDTO);
     }
 
     public Mono<Movie> getMovieInfo(long movieId) {

@@ -52,13 +52,21 @@ public class ModifyUserController {
     @FXML
     private void initialize() {
         rolesMap = roleService.getAllRoles().collectMap(Role::getId, Function.identity()).block();
-
         mainTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        userFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        userLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        userEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        userRole.setCellValueFactory((data) -> new SimpleObjectProperty<>(rolesMap.get(data.getValue().getRoleId())));
 
+        userFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        userFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
+        userFirstName.setOnEditCommit(e -> performUpdate(e, LoginUser::setFirstName));
+
+        userLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        userLastName.setCellFactory(TextFieldTableCell.forTableColumn());
+        userLastName.setOnEditCommit(e -> performUpdate(e, LoginUser::setLastName));
+
+        userEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        userEmail.setCellFactory(TextFieldTableCell.forTableColumn());
+        userEmail.setOnEditCommit(e -> performUpdate(e, LoginUser::setEmail));
+
+        userRole.setCellValueFactory((data) -> new SimpleObjectProperty<>(rolesMap.get(data.getValue().getRoleId())));
         var roleList = FXCollections.observableArrayList(rolesMap.values());
         var stringConverter = new StringConverter<Role>() {
             @Override
@@ -73,15 +81,6 @@ public class ModifyUserController {
         };
         userRole.setCellFactory(ComboBoxTableCell.forTableColumn(stringConverter, roleList));
         userRole.setOnEditCommit(e -> performUpdate(e, (user, role) -> user.setRoleId(role.getId())));
-
-        userEmail.setCellFactory(TextFieldTableCell.forTableColumn());
-        userEmail.setOnEditCommit(e -> performUpdate(e, LoginUser::setEmail));
-
-        userFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
-        userFirstName.setOnEditCommit(e -> performUpdate(e, LoginUser::setFirstName));
-
-        userLastName.setCellFactory(TextFieldTableCell.forTableColumn());
-        userLastName.setOnEditCommit(e -> performUpdate(e, LoginUser::setLastName));
 
         deleteButton.disableProperty().bind(Bindings.isEmpty(mainTableView.getSelectionModel().getSelectedItems()));
         loginService.getAll().toStream().forEach(user -> mainTableView.getItems().add(user));

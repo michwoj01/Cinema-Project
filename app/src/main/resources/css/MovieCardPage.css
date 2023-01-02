@@ -12,44 +12,6 @@ root {
 .mainBox{
     -fx-alignment: center;
 }
-
-.mainLabel,.emailLabel,.errorLabel{
-    -fx-text-fill: white;
-    -fx-padding: 10;
-    -fx-alignment: center;
-}
-
-.mainLabel{
-    -fx-font-size: 20px;
-}
-
-.emailLabel{
-    -fx-font-style: oblique;
-}
-
-.emailTextField{
-    -fx-alignment: center;
-    -fx-border-color: #56081A;
-}
-
-.errorLabel{
-    -fx-text-fill: crimson;
-    -fx-font-weight: bold;
-    -fx-font-size: 15px
-}
-
-.loginButton{
-    -fx-alignment: center;
-    -fx-background-color: #56081A;
-    -fx-text-fill: white;
-    -fx-background-radius: 20;
-    -fx-border-width: 5;
-    -fx-border-color: red;
-    -fx-border-radius: 20;
-    -fx-pref-height: 20;
-    -fx-pref-width: 180;
-}
-
 .frostedGlass{
     -fx-background-color: rgba(255, 255, 255, .15);
     -fx-padding: 10;
@@ -68,7 +30,10 @@ root {
 .headline{
     -fx-text-fill: white;
     -fx-font-size: 30px;
+    -fx-max-width: 250;
+    -fx-wrap-text: true;
     -fx-font-weight: bold;
+    -fx-text-alignment: left;
 }
 .subHeadline{
     -fx-text-fill: #dadada;
@@ -84,12 +49,6 @@ root {
 .normalTextLeft{
     -fx-alignment: center-left;
 }
-.numberTextField{
-    -fx-padding: 20;
-    -fx-border-insets: 10;
-    -fx-background-insets: 10;
-}
-
 Button{
     -fx-background-color: #56081A;
     -fx-text-fill: white;
@@ -99,4 +58,25 @@ Button{
     -fx-border-radius: 20;
     -fx-pref-height: 20;
     -fx-pref-width: 180;
+}
+Button:hover{
+    -fx-background-color: #340609;
+    -fx-text-fill: grey;
+    -fx-border-color: #dd0000;
+    -fx-border-width: 2;
+}
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-text-box-border: transparent;
+    -fx-background:transparent;
+    -fx-border-insets: 20;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 ;
+    -fx-text-fill: white;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #56081A;
+}
+.text-field:focused {
+    -fx-border-color: red;
 }

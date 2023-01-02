@@ -27,20 +27,18 @@ root {
     -fx-border-radius: 5;
     -fx-border-width: 3;
     -fx-border-color: black;
-}
-.menuList .list-cell:odd {
-    -fx-background-color: #56081A;
-}
-.menuList .list-cell:even {
     -fx-background-color: #300C1B;
 }
-
 .menuList .list-cell:filled:hover {
     -fx-background-color: red;
     -fx-text-fill: white;
 }
 .menuList .list-cell:empty{
     -fx-opacity: 0;
+}
+.menuList .list-cell:focused {
+    -fx-background-color: #ab1212;
+    -fx-text-fill: white;
 }
 
 .logoutButton{
@@ -52,6 +50,12 @@ root {
     -fx-border-radius: 20;
     -fx-pref-height: 20;
     -fx-pref-width: 200;
+}
+.logoutButton:hover{
+    -fx-background-color: #340609;
+    -fx-text-fill: grey;
+    -fx-border-color: #dd0000;
+    -fx-border-width: 5;
 }
 
 .frostedGlass{

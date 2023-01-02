@@ -7,7 +7,7 @@
 <VBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.ii.cinemaProject.controller.ModifyScheduleWatchersController">
 <TableView fx:id="scheduleMovieTableView" styleClass="scheduleMovieTableView" VBox.vgrow="ALWAYS">
     <columns>
-        <TableColumn fx:id="movieImage" minWidth="130" styleClass="movieImageColumn" text="Image" />
+        <TableColumn fx:id="movieImage" minWidth="110" styleClass="movieImageColumn" text="Image" />
         <TableColumn fx:id="movieTitle" text="Title" />
         <TableColumn fx:id="movieDate" text="Date" />
         <TableColumn fx:id="movieCinemaHall" text="Cinema Hall" />

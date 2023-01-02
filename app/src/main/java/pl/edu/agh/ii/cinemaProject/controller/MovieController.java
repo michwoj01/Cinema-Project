@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.ii.cinemaProject.db.dto.MovieFiltersDTO;
@@ -13,11 +14,8 @@ import pl.edu.agh.ii.cinemaProject.model.Movie;
 import pl.edu.agh.ii.cinemaProject.service.MovieService;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static io.vavr.API.Try;
 
@@ -31,7 +29,12 @@ public class MovieController {
     @FXML
     public TextField minDuration;
     @FXML
+    public TextField maxDuration;
+    @FXML
     public TextField name;
+
+    @FXML
+    public Pagination pagination;
     @Autowired
     private MovieService movieService;
 
@@ -56,16 +59,15 @@ public class MovieController {
                 alert.setHeaderText("Description: " + currentItemSelected.getDescription());
                 alert.setContentText("duration: " + currentItemSelected.getDuration());
 
-
                 alert.setResultConverter((bt) -> {
                     if (bt.getText().equals(DELETE_BUTTON_TEXT)) {
-                        movieService.deleteMovie(currentItemSelected.getId()).mapNotNull(x -> {
-                            refreshList();
-                            return null;
-                        }).block();
+                        movieService.deleteMovie(currentItemSelected.getId()).subscribe((movie) -> refreshList());
                     }
                     return bt;
                 });
+                DialogPane dialogPane = alert.getDialogPane();
+                dialogPane.getStylesheets().add(getClass().getResource("/css/Alert.css").toExternalForm());
+                dialogPane.getStyleClass().add("dialogPane");
                 alert.showAndWait();
             }
         });
@@ -74,7 +76,7 @@ public class MovieController {
             @Override
             protected void updateItem(Movie movie, boolean empty) {
                 super.updateItem(movie, empty);
-                if (empty || movie==null) {
+                if (empty || movie == null) {
                     setText(null);
                     setGraphic(null);
                 } else {
@@ -91,31 +93,38 @@ public class MovieController {
         });
 
         this.name.setOnAction((value) -> refreshList());
+        this.minDuration.setOnAction((value) -> refreshList());
+        this.maxDuration.setOnAction((value) -> refreshList());
 
+        pagination.setMaxPageIndicatorCount(10);
 
-        this.moviesListView.setItems(FXCollections.observableList(
-                Stream.of(200, 201, 601, 602, 603, 604, 605, 606, 608).map((x) -> movieService.getMovieInfo(x).block()).collect(Collectors.toList())));
+        pagination.setPageFactory((pageIndex) -> {
+            refreshList();
+            return new VBox();
+        });
 
+        refreshList();
     }
 
     private void refreshList() {
-        var newNameFilter = this.name.getText();
+        Optional<String> newNameFilter = Optional.ofNullable(name.getText()).filter(s -> !s.isEmpty());
         Optional<Integer> newMinDuration = textFieldToOptInt(this.minDuration);
-        if (!Objects.equals(newNameFilter, "")) {
-            Platform.runLater(() -> this.moviesListView.setItems(FXCollections.observableList(new ArrayList<>())));
-            movieService
-                    .getMoviesWithFilterDTO(new MovieFiltersDTO(newMinDuration, Optional.empty(), Optional.of(newNameFilter)))
-                    .map((movie) -> {
-                        Platform.runLater(() -> this.moviesListView.getItems().add(movie));
-                        return movie;
-                    }).collectList().block();
-        }
+        Optional<Integer> newMaxDuration = textFieldToOptInt(this.maxDuration);
+        Platform.runLater(() -> {
+            var numberPages = (int) Math.floor(movieService.getMovieCountWithFilter(new MovieFiltersDTO(newMinDuration, newMaxDuration, newNameFilter)).block() / pagination.getMaxPageIndicatorCount());
+            pagination.setPageCount(numberPages > 0 ? numberPages : 1);
+            this.moviesListView.setItems(FXCollections.observableArrayList(
+                    movieService.getMoviesWithFilterDTO(
+                                    new MovieFiltersDTO(newMinDuration, newMaxDuration, newNameFilter),
+                                    pagination.getCurrentPageIndex(),
+                                    pagination.getMaxPageIndicatorCount())
+                            .toStream().collect(Collectors.toList())));
+        });
     }
 
     private Optional<Integer> textFieldToOptInt(TextField textField) {
-        return Try(() -> Integer.parseInt(this.minDuration.getText()))
+        return Try(() -> Integer.parseInt(textField.getText()))
                 .toEither()
                 .fold((th) -> Optional.empty(), Optional::of);
     }
-
 }

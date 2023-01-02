@@ -17,20 +17,18 @@ import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 
 @Controller
-public class MovieCardController implements ApplicationListener<ScheduleEvent>{
-
+public class MovieCardController implements ApplicationListener<ScheduleEvent> {
     @FXML
     public ImageView moviePoster;
     @FXML
     public Label titleLabel;
-
     @FXML
     public Label descriptionLabel;
     @FXML
     public Label availableSeatsLabel;
-
     @FXML
     public Label cinemaHallLabel;
     @FXML
@@ -39,17 +37,15 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent>{
     public Label durationLabel;
     @FXML
     public TextField numberOfSeats;
-
-    @Autowired
-    private MovieService movieService;
-
-    private Schedule selectedSchedule;
-
     @FXML
     public Button buyButton;
 
     @Autowired
+    private MovieService movieService;
+    @Autowired
     private ScheduleService scheduleService;
+
+    private Schedule selectedSchedule;
 
     public static URL getFXML() {
         return ModifyScheduleWatchersController.class.getResource("/fxml/MovieCardPage.fxml");
@@ -59,24 +55,24 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent>{
     public void initialize() {
         numberOfSeats.textProperty().addListener((observable, oldValue, newValue) -> {
             buyButton.setDisable(newValue.matches(""));
-            if(!newValue.matches("")){
+            if (!newValue.matches("")) {
                 if (!newValue.matches("\\d*") || newValue.matches("0")) {
                     numberOfSeats.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-                else if(Integer.parseInt(newValue)>selectedSchedule.getCurrently_available()){
+                } else if (Integer.parseInt(newValue) > selectedSchedule.getCurrently_available()) {
                     numberOfSeats.setText(String.valueOf(selectedSchedule.getCurrently_available()));
                 }
             }
         });
     }
+
     @FXML
     @Override
     public void onApplicationEvent(ScheduleEvent event) {
-        selectedSchedule=(Schedule) event.getSource();
+        selectedSchedule = (Schedule) event.getSource();
         reloadLabels();
     }
 
-    private void reloadLabels(){
+    private void reloadLabels() {
         var movie = movieService.getMovieInfo(selectedSchedule.getMovie_id()).block();
         titleLabel.setText(movie.getName());
         var image = new Image(movie.getCover_url(), 300, 0, true, true);
@@ -84,19 +80,19 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent>{
         descriptionLabel.setText(movie.getDescription());
         availableSeatsLabel.setText(String.valueOf(selectedSchedule.getCurrently_available()));
         cinemaHallLabel.setText(String.valueOf(selectedSchedule.getCinema_hall_id()));
-        dateLabel.setText(String.valueOf(selectedSchedule.getStart_date()));
+        dateLabel.setText(DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a").format(selectedSchedule.getStart_date()));
         durationLabel.setText(String.valueOf(movie.getDuration()));
     }
 
     public void handleBuyTicketAction(ActionEvent actionEvent) {
-        var number=Integer.parseInt(numberOfSeats.getText());
-        scheduleService.buyTickets(selectedSchedule.getId(),number).subscribe();
-        selectedSchedule.setCurrently_available(selectedSchedule.getCurrently_available()-number);
+        var number = Integer.parseInt(numberOfSeats.getText());
+        scheduleService.buyTickets(selectedSchedule.getId(), number).subscribe();
+        selectedSchedule.setCurrently_available(selectedSchedule.getCurrently_available() - number);
         availableSeatsLabel.setText(String.valueOf(selectedSchedule.getCurrently_available()));
         numberOfSeats.setText("");
     }
 
-    public void handleBackAction(ActionEvent actionEvent){
+    public void handleBackAction(ActionEvent actionEvent) {
         SceneChanger.setPane(ModifyScheduleWatchersController.getFXML());
     }
 }

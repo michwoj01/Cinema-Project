@@ -21,10 +21,10 @@ import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class ModifyScheduleWatchersController {
-
     @FXML
     private TableView<Schedule> scheduleMovieTableView;
     @FXML
@@ -35,19 +35,15 @@ public class ModifyScheduleWatchersController {
     private TableColumn<Schedule, String> movieDate;
     @FXML
     private TableColumn<Schedule, String> movieCinemaHall;
-
     @FXML
     private TableColumn<Schedule, String> movieAvailableSeats;
 
     @Autowired
     private ApplicationContext applicationContext;
-
     @Autowired
     private MovieService movieService;
-
     @Autowired
     private ScheduleService scheduleService;
-
     @Autowired
     private CinemaHallService cinemaHallService;
 
@@ -69,13 +65,10 @@ public class ModifyScheduleWatchersController {
                         setText(null);
                         setGraphic(null);
                     } else {
-                        movieService.getMovieInfo(item.getMovie_id()).mapNotNull((movie) -> {
-                            Platform.runLater(() -> {
-                                var image = new Image(movie.getCover_url(), 200, 0, true, true);
-                                imageview.setImage(image);
-                            });
-                            return null;
-                        }).block();
+                        movieService.getMovieInfo(item.getMovie_id()).subscribe((movie) -> Platform.runLater(() -> {
+                            var image = new Image(movie.getCover_url(), 200, 0, true, true);
+                            imageview.setImage(image);
+                        }));
                     }
                 }
             };
@@ -84,8 +77,8 @@ public class ModifyScheduleWatchersController {
             return cell;
         });
 
-        movieTitle.setCellValueFactory((data) -> new SimpleObjectProperty<>(movieService.getMovieInfo(data.getValue().getMovie_id()).block().getName()));
-        movieDate.setCellValueFactory(new PropertyValueFactory<>("start_date"));
+        movieTitle.setCellValueFactory(data -> new SimpleObjectProperty<>(movieService.getMovieInfo(data.getValue().getMovie_id()).block().getName()));
+        movieDate.setCellValueFactory(data -> new SimpleObjectProperty<>(DateTimeFormatter.ofPattern("dd/MM/yyyy \nhh:mm a").format(data.getValue().getStart_date())));
         movieCinemaHall.setCellValueFactory(data -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallById(data.getValue().getCinema_hall_id()).block().getName()));
         movieAvailableSeats.setCellValueFactory(new PropertyValueFactory<>("currently_available"));
 

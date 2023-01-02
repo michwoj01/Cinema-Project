@@ -8,12 +8,12 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="pl.edu.agh.ii.cinemaProject.controller.ScheduleMoviesController">
     <center>
-        <TableView fx:id="scheduleView" editable="true">
+        <TableView styleClass="scheduleTableView" fx:id="scheduleView" editable="true">
             <columns>
                 <TableColumn fx:id="scheduleMovie" text="Movie"/>
-                <TableColumn fx:id="scheduleHall" text="Hall nr."/>
-                <TableColumn fx:id="scheduleDate" text="Date"/>
-                <TableColumn fx:id="scheduleTickets" text="Available tickets"/>
+                <TableColumn maxWidth="1000" fx:id="scheduleHall" text="Hall nr."/>
+                <TableColumn maxWidth="3000"  fx:id="scheduleDate" text="Date"/>
+                <TableColumn maxWidth="2500" fx:id="scheduleTickets" text="Available tickets"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
@@ -22,11 +22,11 @@
     </center>
     <right>
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
-            <Button styleClass="userAddButton" fx:id="addButton" mnemonicParsing="false" onAction="#handleAddUserAction" text="Add"/>
-            <Button styleClass="userDeleteButton" fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteScheduleAction" text="Delete"/>
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#handleAddUserAction" text="Add"/>
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteScheduleAction" text="Delete"/>
         </VBox>
     </right>
     <stylesheets>
-        <URL value="@../css/ModifyUserPage.css" />
+        <URL value="@../css/ScheduleMoviePage.css" />
     </stylesheets>
 </BorderPane>
