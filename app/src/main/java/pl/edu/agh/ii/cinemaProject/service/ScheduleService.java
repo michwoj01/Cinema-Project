@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 public class ScheduleService {
@@ -64,7 +65,7 @@ public class ScheduleService {
     }
 
     private Either<String, ?> checkIfHallIsFree(Schedule schedule) {
-        if (!scheduleDao.getAllByCinemaHallId(schedule.getCinema_hall_id(), schedule.getStart_date(), schedule.getId()).collectList().block().isEmpty()) {
+        if (!Objects.equals(scheduleDao.getAllByCinemaHallId(schedule.getCinema_hall_id(), schedule.getStart_date(), schedule.getId()).block(), 0)) {
             return Either.left("There is already scheduled movie at this time and hall");
         } else {
             return Either.right(Option.none());

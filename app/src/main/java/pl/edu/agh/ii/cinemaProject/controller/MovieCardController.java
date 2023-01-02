@@ -17,6 +17,7 @@ import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class MovieCardController implements ApplicationListener<ScheduleEvent>{
@@ -84,7 +85,7 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent>{
         descriptionLabel.setText(movie.getDescription());
         availableSeatsLabel.setText(String.valueOf(selectedSchedule.getCurrently_available()));
         cinemaHallLabel.setText(String.valueOf(selectedSchedule.getCinema_hall_id()));
-        dateLabel.setText(String.valueOf(selectedSchedule.getStart_date()));
+        dateLabel.setText(DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a").format(selectedSchedule.getStart_date()));
         durationLabel.setText(String.valueOf(movie.getDuration()));
     }
 

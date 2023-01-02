@@ -34,6 +34,7 @@ root {
 
 .emailLabel{
     -fx-font-style: oblique;
+    -fx-text-fill: grey;
 }
 
 .emailTextField{
@@ -57,4 +58,26 @@ root {
     -fx-border-radius: 20;
     -fx-pref-height: 20;
     -fx-pref-width: 180;
+}
+.loginButton:hover{
+    -fx-background-color: #340609;
+    -fx-text-fill: grey;
+    -fx-border-color: #dd0000;
+    -fx-border-width: 5;
+}
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-text-box-border: transparent;
+    -fx-background:transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-background-radius: 0 ;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #56081A;
+}
+.text-field:focused {
+    -fx-border-color: red;
 }

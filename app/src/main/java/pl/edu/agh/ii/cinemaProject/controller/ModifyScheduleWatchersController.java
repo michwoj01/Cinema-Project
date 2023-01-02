@@ -21,6 +21,7 @@ import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class ModifyScheduleWatchersController {
@@ -84,8 +85,8 @@ public class ModifyScheduleWatchersController {
             return cell;
         });
 
-        movieTitle.setCellValueFactory((data) -> new SimpleObjectProperty<>(movieService.getMovieInfo(data.getValue().getMovie_id()).block().getName()));
-        movieDate.setCellValueFactory(new PropertyValueFactory<>("start_date"));
+        movieTitle.setCellValueFactory(data -> new SimpleObjectProperty<>(movieService.getMovieInfo(data.getValue().getMovie_id()).block().getName()));
+        movieDate.setCellValueFactory(data -> new SimpleObjectProperty<>(DateTimeFormatter.ofPattern("dd/MM/yyyy \nhh:mm a").format(data.getValue().getStart_date())));
         movieCinemaHall.setCellValueFactory(data -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallById(data.getValue().getCinema_hall_id()).block().getName()));
         movieAvailableSeats.setCellValueFactory(new PropertyValueFactory<>("currently_available"));
 

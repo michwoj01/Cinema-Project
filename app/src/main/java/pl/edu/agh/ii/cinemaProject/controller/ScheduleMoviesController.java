@@ -115,6 +115,9 @@ public class ScheduleMoviesController {
                     alert.setTitle("Warning");
                     alert.setHeaderText("Error while deleting schedule");
                     alert.setContentText("Error: " + error);
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.getStylesheets().add(getClass().getResource("/css/Alert.css").toExternalForm());
+                    dialogPane.getStyleClass().add("dialogPane");
 
                     alert.showAndWait();
                     return null;
@@ -123,6 +126,9 @@ public class ScheduleMoviesController {
                     alert.setTitle("OK");
                     alert.setHeaderText("Successfully deleted schedule");
                     alert.setContentText("Schedule: " + schedule);
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.getStylesheets().add(getClass().getResource("/css/Alert.css").toExternalForm());
+                    dialogPane.getStyleClass().add("dialogPane");
 
                     alert.showAndWait();
                     return null;
@@ -142,6 +148,9 @@ public class ScheduleMoviesController {
             alert.setTitle("Warning");
             alert.setHeaderText("Error while updating schedule");
             alert.setContentText("Error: " + error);
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("/css/Alert.css").toExternalForm());
+            dialogPane.getStyleClass().add("dialogPane");
             alert.showAndWait();
             return null;
         }, (schedule) -> {
@@ -151,6 +160,9 @@ public class ScheduleMoviesController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("OK");
             alert.setHeaderText("Successfully saved schedule");
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("/css/Alert.css").toExternalForm());
+            dialogPane.getStyleClass().add("dialogPane");
             alert.showAndWait();
             return null;
         });

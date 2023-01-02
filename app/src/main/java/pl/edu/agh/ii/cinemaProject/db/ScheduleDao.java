@@ -21,7 +21,7 @@ public interface ScheduleDao extends ReactiveCrudRepository<Schedule, Long> {
             "where s.cinema_hall_id = :cinemaHallId " +
             "and s.start_date between :startDate and :startDate + m.duration * interval '1 minute'" +
             "and s.id != :id")
-    Flux<Integer> getAllByCinemaHallId(long cinemaHallId, LocalDateTime startDate, long id);
+    Mono<Integer> getAllByCinemaHallId(long cinemaHallId, LocalDateTime startDate, long id);
 
     @Query("SELECT * from SCHEDULE where SCHEDULE.CURRENTLY_AVAILABLE>0 and  SCHEDULE.START_DATE>CURRENT_DATE")
     Flux<Schedule> findAllAvailable();

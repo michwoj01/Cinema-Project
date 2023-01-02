@@ -10,6 +10,12 @@ Button{
     -fx-background-insets: 10 20;
     -fx-border-insets: 10 20;
 }
+Button:hover{
+    -fx-background-color: #340609;
+    -fx-text-fill: grey;
+    -fx-border-color: #dd0000;
+    -fx-border-width: 2;
+}
 
 .scheduleMovieTableView{
     -fx-background-color: transparent;
@@ -33,7 +39,7 @@ Button{
 .scheduleMovieTableView .table-row-cell{
     -fx-background-color: rgba(255, 255, 255, .15);
     -fx-padding: 0.0;
-    -fx-border-width: 0;
+    -fx-border-width: 0 0 2;
     -fx-border-color: white;
 }
 
@@ -59,7 +65,19 @@ Button{
 .scheduleMovieTableView .list-view{
     -fx-background-color: rgba(201, 201, 201, 0.75);
 }
+.scheduleMovieTableView .table-row-cell *{
+    -fx-wrap-text: true;
+}
 
 .scheduleMovieTableView .table-row-cell >* >*{
     -fx-text-fill: black;
+}
+.scroll-bar:horizontal {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
 }

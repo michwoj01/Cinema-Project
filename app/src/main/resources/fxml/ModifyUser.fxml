@@ -21,8 +21,8 @@
     </center>
     <right>
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
-            <Button styleClass="userAddButton" fx:id="addButton" mnemonicParsing="false" onAction="#handleAddUserAction" text="Add"/>
-            <Button styleClass="userDeleteButton" fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteUserAction" text="Delete"/>
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#handleAddUserAction" text="Add"/>
+            <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#handleDeleteUserAction" text="Delete"/>
         </VBox>
     </right>
     <stylesheets>
