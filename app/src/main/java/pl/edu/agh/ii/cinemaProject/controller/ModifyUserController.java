@@ -11,8 +11,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.ii.cinemaProject.event.FiredPerson;
 import pl.edu.agh.ii.cinemaProject.model.LoginUser;
 import pl.edu.agh.ii.cinemaProject.model.Role;
 import pl.edu.agh.ii.cinemaProject.service.LoginService;
@@ -42,6 +44,9 @@ public class ModifyUserController {
     private RoleService roleService;
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private Map<Long, Role> rolesMap;
 
@@ -132,6 +137,9 @@ public class ModifyUserController {
                     alert.showAndWait();
                     return null;
                 }, (__) -> {
+                    //send notification
+                    applicationContext.publishEvent(new FiredPerson(user));
+
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("OK");
                     alert.setHeaderText("Succesfully deleted user");
@@ -142,6 +150,7 @@ public class ModifyUserController {
                 });
             }
             mainTableView.getItems().remove(user);
+
         });
 
     }
