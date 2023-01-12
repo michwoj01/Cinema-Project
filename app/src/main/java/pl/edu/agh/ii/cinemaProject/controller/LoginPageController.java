@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.ii.cinemaProject.event.LoginEvent;
+import pl.edu.agh.ii.cinemaProject.event.StartCyclicCashierNotifiJob;
 import pl.edu.agh.ii.cinemaProject.service.LoginService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
@@ -38,6 +39,8 @@ public class LoginPageController {
                 user -> {
                     SceneChanger.changeScene(MainPageController.getFXML());
                     applicationContext.publishEvent(new LoginEvent(user));
+                    applicationContext.publishEvent(new StartCyclicCashierNotifiJob());
+
                     return null;
                 }
         );

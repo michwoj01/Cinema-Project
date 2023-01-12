@@ -11,8 +11,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
+import pl.edu.agh.ii.cinemaProject.event.FiredPerson;
 import pl.edu.agh.ii.cinemaProject.model.LoginUser;
 import pl.edu.agh.ii.cinemaProject.model.Role;
 import pl.edu.agh.ii.cinemaProject.service.LoginService;
@@ -20,6 +22,7 @@ import pl.edu.agh.ii.cinemaProject.service.RoleService;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -42,6 +45,9 @@ public class ModifyUserController {
     private RoleService roleService;
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     private Map<Long, Role> rolesMap;
 
@@ -132,16 +138,22 @@ public class ModifyUserController {
                     alert.showAndWait();
                     return null;
                 }, (__) -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("OK");
-                    alert.setHeaderText("Succesfully deleted user");
-                    alert.setContentText("User: " + user);
 
-                    alert.showAndWait();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirm email sending");
+                    alert.setHeaderText("Succesfully deleted user");
+                    alert.setContentText("User: " + user + ".\n\nShould firing mail be sent??");
+
+                    Optional<ButtonType> alertResultButton = alert.showAndWait();
+                    if (alertResultButton.isPresent() && alertResultButton.get() == ButtonType.OK) {
+                        //send notification
+                        applicationContext.publishEvent(new FiredPerson(user));
+                    }
                     return null;
                 });
             }
             mainTableView.getItems().remove(user);
+
         });
 
     }

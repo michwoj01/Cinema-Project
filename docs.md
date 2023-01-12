@@ -184,3 +184,14 @@ Każdy z rekordów po kliknięciu, prowadzi nas do osobnego widoku przedstawiaj�
 </div>
 
 Pole z liczbą zakupionych biletów jest ograniczone do wpisania liczby z przedziału 0 do maksymalnej liczbą biletów dostępnych w danej chwili.
+
+### Obsługa maili
+
+Skorzystaliśmy z smtp4dev (docker container), aby móc testować wysyłanie naszym maili bez dostępu do faktycznego serwera stmp (wystawionego na świat).
+
+Komenda potrzebna do otworzenia serwera to:
+
+`docker run --rm -it -p 3000:80 -p 2525:25 rnwood/smtp4dev:v3`
+
+Następnie UI serwera znajduje się na adresie `localhost:3000`, a port do stmp to 2525.
+Po wyłączeniu serwera jest on usuwany na zawsze (łącznie z logami o naszych wiadomościach :) ).
