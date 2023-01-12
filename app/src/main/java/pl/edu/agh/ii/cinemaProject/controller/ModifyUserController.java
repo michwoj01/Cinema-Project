@@ -22,6 +22,7 @@ import pl.edu.agh.ii.cinemaProject.service.RoleService;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -137,15 +138,17 @@ public class ModifyUserController {
                     alert.showAndWait();
                     return null;
                 }, (__) -> {
-                    //send notification
-                    applicationContext.publishEvent(new FiredPerson(user));
 
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("OK");
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirm email sending");
                     alert.setHeaderText("Succesfully deleted user");
-                    alert.setContentText("User: " + user);
+                    alert.setContentText("User: " + user + ".\n\nShould firing mail be sent??");
 
-                    alert.showAndWait();
+                    Optional<ButtonType> alertResultButton = alert.showAndWait();
+                    if (alertResultButton.isPresent() && alertResultButton.get() == ButtonType.OK) {
+                        //send notification
+                        applicationContext.publishEvent(new FiredPerson(user));
+                    }
                     return null;
                 });
             }
