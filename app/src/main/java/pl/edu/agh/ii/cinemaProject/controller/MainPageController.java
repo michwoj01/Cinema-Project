@@ -34,7 +34,7 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
         SceneChanger.setMainPane(mainPane);
         categoriesListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                PageEnum currentPage = PageEnum.get(observable.getValue());
+                PageEnum currentPage = PageEnum.valueOf(observable.getValue().toUpperCase());
                 SceneChanger.setPane(currentPage.getUrl());
             }
         }));

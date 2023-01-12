@@ -14,6 +14,7 @@ public class Schedule {
     @Id
     private long id;
     private LocalDateTime start_date;
+    private long nr_of_seats;
     private long currently_available;
     private long movie_id;
     private long cinema_hall_id;

@@ -20,10 +20,9 @@ public class NotificationService {
     @Autowired
     private NotificationDao notificationDao;
 
-    public Mono<Pair<List<LoginUser>, Notification>> getCashierNotificationEmailsAndMessage() {
+    public Mono<Pair<List<String>, Notification>> getCashierNotificationEmailsAndMessage() {
         return notificationDao.getByName(cashierNotificationName)
-                .flatMap(notification -> userDao.findAllCashiers().collectList()
-                        .map(cashiers -> Pair.of(cashiers, notification)));
+                .flatMap(notification -> userDao.findAllCashiers().collectList().map(cashiers -> Pair.of(cashiers, notification)));
     }
 
     public Mono<Long> addNotificationLog(Notification notification) {
@@ -31,6 +30,6 @@ public class NotificationService {
     }
 
     public Flux<LoginUser> getAllUsersToBeNotifiedAboutFired() {
-        return userDao.findAllToBeNotifiedAboutFiring();
+        return userDao.findAll();
     }
 }

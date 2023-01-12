@@ -111,7 +111,10 @@ public class MovieController {
         Optional<Integer> newMinDuration = textFieldToOptInt(this.minDuration);
         Optional<Integer> newMaxDuration = textFieldToOptInt(this.maxDuration);
         Platform.runLater(() -> {
-            var numberPages = (int) Math.floor(movieService.getMovieCountWithFilter(new MovieFiltersDTO(newMinDuration, newMaxDuration, newNameFilter)).block() / pagination.getMaxPageIndicatorCount());
+            var numberPages = Math.floorDiv(
+                    movieService.getMovieCountWithFilter(new MovieFiltersDTO(newMinDuration, newMaxDuration, newNameFilter)).block(),
+                    pagination.getMaxPageIndicatorCount()
+            );
             pagination.setPageCount(numberPages > 0 ? numberPages : 1);
             this.moviesListView.setItems(FXCollections.observableArrayList(
                     movieService.getMoviesWithFilterDTO(

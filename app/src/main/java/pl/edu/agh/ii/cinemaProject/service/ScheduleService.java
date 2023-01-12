@@ -5,6 +5,7 @@ import io.vavr.control.Option;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.agh.ii.cinemaProject.db.CinemaHallInMemoryDao;
 import pl.edu.agh.ii.cinemaProject.db.ScheduleDao;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
 import reactor.core.publisher.Flux;
@@ -17,6 +18,8 @@ import java.util.Objects;
 public class ScheduleService {
     @Autowired
     private ScheduleDao scheduleDao;
+    @Autowired
+    private CinemaHallInMemoryDao cinemaHallInMemoryDao;
 
     public Mono<Boolean> buyTickets(long scheduleId, int numberOfTickets) {
         return scheduleDao.checkIfAvailable(scheduleId, numberOfTickets).flatMap((leftAfterSale) -> {
@@ -28,8 +31,12 @@ public class ScheduleService {
         }).map((numOfRowsUpdated) -> numOfRowsUpdated > 0);
     }
 
-    public Mono<Schedule> insertOrUpdateSchedule(Schedule schedule) {
-        return scheduleDao.save(schedule);
+    public Either<String, Schedule> createOrUpdateSchedule(Schedule schedule) {
+        return validateSchedule(schedule).flatMap((unused) -> Try.ofCallable(() -> scheduleDao.save(schedule).block()).fold((error) -> Either.left("Unknown error"), Either::right));
+    }
+
+    public Flux<Schedule> findAllAvailable() {
+        return scheduleDao.findAllAvailable();
     }
 
     public Flux<Schedule> findAll() {
@@ -41,8 +48,11 @@ public class ScheduleService {
     }
 
     private Either<String, ?> checkTickets(Schedule schedule) {
-        if (schedule.getCurrently_available() < 0) {
-            return Either.left("Invalid number of available tickets");
+        int hallCapacity = cinemaHallInMemoryDao.getCinemaHallById(schedule.getCinema_hall_id()).block().getSize();
+        if (schedule.getCurrently_available() < 0
+                || schedule.getNr_of_seats() > hallCapacity
+                || schedule.getNr_of_seats() < schedule.getCurrently_available()) {
+            return Either.left("Invalid number of seats or available tickets. Hall capacity is " + hallCapacity);
         } else {
             return Either.right(Option.none());
         }
@@ -77,13 +87,5 @@ public class ScheduleService {
                 .flatMap(__ -> checkStartDate(schedule))
                 .flatMap(___ -> checkTickets(schedule))
                 .flatMap(____ -> checkIfHallIsFree(schedule));
-    }
-
-    public Either<String, Schedule> createOrUpdateSchedule(Schedule schedule) {
-        return validateSchedule(schedule).flatMap((unused) -> Try.ofCallable(() -> scheduleDao.save(schedule).block()).fold((error) -> Either.left("Unknown error"), Either::right));
-    }
-
-    public Flux<Schedule> findAllAvailable() {
-        return scheduleDao.findAllAvailable();
     }
 }
