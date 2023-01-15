@@ -10,8 +10,7 @@ import reactor.core.publisher.Mono;
 
 public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
     @Query("""
-            SELECT
-                * 
+            SELECT* 
             FROM 
                 MOVIE 
             WHERE 
@@ -50,6 +49,22 @@ public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
     default Mono<Integer> getCountWithFilters(MovieFiltersDTO movieFiltersDTO) {
         return findAllWithFiltersFromDTO(this::getCountWithFilters, movieFiltersDTO, 0, 0);
     }
+
+    @Query("with sub as (SELECT m.name as name, m.id from movie m " +
+            "inner join schedule s on m.id = s.movie_id " +
+            "group by m.id " +
+            "order by Sum(s.nr_of_seats - s.currently_available) " +
+            "limit 5) " +
+            "select name from sub ")
+    Flux<String> getMostPopularMovies();
+
+    @Query("with sub as (SELECT m.name as name, m.id from movie m " +
+            "inner join schedule s on m.id = s.movie_id " +
+            "group by m.id " +
+            "order by count(s.id) " +
+            "limit 5) " +
+            "select name from sub")
+    Flux<String> getMostTimeDisplayedMovies();
 
     Mono<Movie> getMovieByName(String name);
 }

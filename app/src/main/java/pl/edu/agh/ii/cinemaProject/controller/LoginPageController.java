@@ -40,7 +40,6 @@ public class LoginPageController {
                     SceneChanger.changeScene(MainPageController.getFXML());
                     applicationContext.publishEvent(new LoginEvent(user));
                     applicationContext.publishEvent(new StartCyclicCashierNotifyJob());
-
                     return null;
                 }
         );

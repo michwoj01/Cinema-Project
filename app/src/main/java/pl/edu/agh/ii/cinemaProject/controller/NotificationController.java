@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import javafx.scene.web.HTMLEditor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.ii.cinemaProject.model.Notification;
@@ -17,7 +16,7 @@ import java.util.Optional;
 @Controller
 public class NotificationController {
     @FXML
-    public TextArea messageTextArea;
+    private TextArea messageTextArea;
     @Autowired
     private NotificationService notificationService;
     private Optional<Notification> maybeNotification = Optional.empty();
@@ -28,12 +27,10 @@ public class NotificationController {
 
     @FXML
     public void initialize() {
-        notificationService
-                .getCashierNotification()
-                .subscribe(notification -> {
-                    Platform.runLater(() -> messageTextArea.setText(notification.getMessage()));
-                    maybeNotification = Optional.of(notification);
-                });
+        notificationService.getCashierNotification().subscribe(notification -> {
+            Platform.runLater(() -> messageTextArea.setText(notification.getMessage()));
+            maybeNotification = Optional.of(notification);
+        });
     }
 
     public void saveMessage(ActionEvent actionEvent) {

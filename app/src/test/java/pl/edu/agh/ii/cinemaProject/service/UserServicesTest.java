@@ -13,9 +13,6 @@ import pl.edu.agh.ii.cinemaProject.db.UserDao;
 import pl.edu.agh.ii.cinemaProject.model.LoginUser;
 import pl.edu.agh.ii.cinemaProject.model.Permission;
 import pl.edu.agh.ii.cinemaProject.model.Role;
-import pl.edu.agh.ii.cinemaProject.service.LoginService;
-import pl.edu.agh.ii.cinemaProject.service.PermissionService;
-import pl.edu.agh.ii.cinemaProject.service.RoleService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -41,8 +38,8 @@ public class UserServicesTest {
     @Test
     void testLoggingAdmin() {
         LoginUser user = new LoginUser(1, "jan", "kowalski", "admin@admin.pl", 1);
-        when(userDao.getLoginUserByEmail(any())).thenReturn(Mono.empty());
-        when(userDao.getLoginUserByEmail("admin@admin.pl")).thenReturn(Mono.just(user));
+        when(userDao.findByEmail(any())).thenReturn(Mono.empty());
+        when(userDao.findByEmail("admin@admin.pl")).thenReturn(Mono.just(user));
         Assertions.assertEquals(user, loginService.login("admin@admin.pl").get());
         Assertions.assertEquals(Either.left("No user found"), loginService.login("admin1@admin.pl"));
     }
@@ -50,7 +47,7 @@ public class UserServicesTest {
     @Test
     void testPermissionForAdmin() {
         LoginUser user = new LoginUser(1, "jan", "kowalski", "admin@admin.pl", 1);
-        Permission permission = new Permission(1, "first");
+        Permission permission = new Permission(1, "first", true);
         when(permissionDao.getPermissionsByUserId(1)).thenReturn(Flux.just(permission));
         Assertions.assertEquals(permissionService.getPermissionsForUser(user).blockFirst(), permission);
     }

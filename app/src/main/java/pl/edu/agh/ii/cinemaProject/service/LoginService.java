@@ -17,6 +17,28 @@ public class LoginService {
     @Autowired
     private UserDao userDao;
 
+    public Either<String, LoginUser> createOrUpdateUser(LoginUser user) {
+        return validateUser(user).flatMap((unused) -> Try.ofCallable(() -> userDao.save(user).block()).fold((error) -> {
+            if (error instanceof org.springframework.dao.DataIntegrityViolationException) {
+                return Either.left("User with this email already exists");
+            } else {
+                return Either.left("Unknown error");
+            }
+        }, Either::right));
+    }
+
+    public Either<String, LoginUser> login(String email) {
+        return checkEmail(email).flatMap((unused) -> userDao.findByEmail(email).blockOptional().<Either<String, LoginUser>>map(Either::right).orElseGet(() -> Either.left("No user found")));
+    }
+
+    public Flux<LoginUser> getAll() {
+        return userDao.findAll();
+    }
+
+    public Either<String, Void> deleteUser(long userId) {
+        return Try.ofCallable(() -> userDao.deleteById(userId).block()).fold((error) -> Either.left("Unknown error"), (unused) -> Either.right(null));
+    }
+
     private Either<String, ?> checkEmail(String email) {
         if (!emailPattern.matcher(email).matches()) {
             return Either.left("Invalid email");
@@ -43,28 +65,8 @@ public class LoginService {
     }
 
     private Either<String, ?> validateUser(LoginUser user) {
-        return checkEmail(user.getEmail()).flatMap(__ -> checkEmptyName(user).flatMap(___ -> checkEmptyRoleId(user)));
-    }
-
-    public Either<String, LoginUser> createOrUpdateUser(LoginUser user) {
-        return validateUser(user).flatMap((unused) -> Try.ofCallable(() -> userDao.save(user).block()).fold((error) -> {
-            if (error instanceof org.springframework.dao.DataIntegrityViolationException) {
-                return Either.left("User with this email already exists");
-            } else {
-                return Either.left("Unknown error");
-            }
-        }, Either::right));
-    }
-
-    public Either<String, LoginUser> login(String email) {
-        return checkEmail(email).flatMap((unused) -> userDao.findByEmail(email).blockOptional().<Either<String, LoginUser>>map(Either::right).orElseGet(() -> Either.left("No user found")));
-    }
-
-    public Flux<LoginUser> getAll() {
-        return userDao.findAll();
-    }
-
-    public Either<String, Void> deleteUser(long userId) {
-        return Try.ofCallable(() -> userDao.deleteById(userId).block()).fold((error) -> Either.left("Unknown error"), (unused) -> Either.right(null));
+        return checkEmail(user.getEmail())
+                .flatMap(__ -> checkEmptyName(user))
+                .flatMap(___ -> checkEmptyRoleId(user));
     }
 }

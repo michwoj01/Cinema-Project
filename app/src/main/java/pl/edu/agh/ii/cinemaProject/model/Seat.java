@@ -11,8 +11,6 @@ import org.springframework.data.annotation.Id;
 public class Seat {
     @Id
     private long id;
-
     private long schedule_id;
     private int seat_no;
-
 }
