@@ -13,6 +13,7 @@ public enum PageEnum {
     SCHEDULE_MOVIES("schedule_movies", ScheduleMoviesController.getFXML()),
     MODIFY_SCHEDULE_WATCHERS("modify_schedule_watchers", ModifyScheduleWatchersController.getFXML()),
     MOVIES("movies", MovieController.getFXML()),
+    EDIT_NOTIFICATION_MESSAGE("edit_notification_message", NotificationController.getFXML()),
     ERROR("error", ErrorController.getFXML());
     private final String name;
     private final URL url;

@@ -33,7 +33,7 @@
 .movieListView .list-cell:empty {
     -fx-opacity: 0;
 }
-.text-field {
+.text-field, .check-box {
     -fx-background-color: transparent;
     -fx-text-box-border: transparent;
     -fx-background:transparent;

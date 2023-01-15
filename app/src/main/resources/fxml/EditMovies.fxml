@@ -12,18 +12,18 @@
             fx:controller="pl.edu.agh.ii.cinemaProject.controller.MovieController" VBox.vgrow="ALWAYS">
     <top>
         <VBox VBox.vgrow="ALWAYS">
-            <HBox>
+            <HBox fx:id="hBoxFilters">
                 <TextField fx:id="name" promptText="Enter search text"/>
                 <TextField fx:id="minDuration" promptText="Enter minimal duration"/>
                 <TextField fx:id="maxDuration" promptText="Enter maximal duration"/>
             </HBox>
-            <ListView styleClass="movieListView" fx:id="moviesListView" VBox.vgrow="ALWAYS" prefHeight="500" />
+            <ListView styleClass="movieListView" fx:id="moviesListView" VBox.vgrow="ALWAYS" prefHeight="500"/>
         </VBox>
     </top>
     <bottom>
         <Pagination fx:id="pagination"/>
     </bottom>
     <stylesheets>
-        <URL value="@../css/EditMoviesPage.css" />
+        <URL value="@../css/EditMoviesPage.css"/>
     </stylesheets>
 </BorderPane>

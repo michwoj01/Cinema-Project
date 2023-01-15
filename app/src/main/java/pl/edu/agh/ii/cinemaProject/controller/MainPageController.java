@@ -42,11 +42,12 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
 
     @Override
     public void onApplicationEvent(LoginEvent event) {
-        permissionService.getPermissionsForUser((LoginUser) event.getSource()).subscribe(permission -> {
+        permissionService.getPermissionsForUser((LoginUser) event.getSource()).filter((p) -> p.shouldBeDisplayed).subscribe(permission -> {
             categoriesListView.getItems().add(permission.getName());
             //Change to Permission object (with controller in each (view))
         });
     }
+
     public void logout(ActionEvent actionEvent) {
         SceneChanger.changeScene(LoginPageController.getFXML());
     }
