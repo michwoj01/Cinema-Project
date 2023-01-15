@@ -1,5 +1,7 @@
 package pl.edu.agh.ii.cinemaProject.controller;
 
+import io.vavr.Function0;
+import io.vavr.Function1;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -20,6 +22,7 @@ import pl.edu.agh.ii.cinemaProject.service.MovieService;
 import pl.edu.agh.ii.cinemaProject.service.PermissionService;
 import pl.edu.agh.ii.cinemaProject.service.RecommendationService;
 import pl.edu.agh.ii.cinemaProject.service.RoleService;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.vavr.API.Try;
+import static io.vavr.CheckedFunction8.of;
 
 
 @Controller
@@ -80,10 +84,7 @@ public class MovieController {
                     this.isRecommended = Optional.of(new CheckBox("Recommended"));
                     this.isRecommended.get().setSelected(false);
 
-                    Platform.runLater(() -> {
-                        var filterChildren = this.hBoxFilters.getChildren();
-                        filterChildren.add(this.isRecommended.get());
-                    });
+                    Platform.runLater(() -> this.hBoxFilters.getChildren().add(this.isRecommended.get()));
                     this.isRecommended.get().setOnAction(event -> this.refreshList());
                 } else {
                     if (this.isRecommended.isPresent()) {
@@ -121,16 +122,14 @@ public class MovieController {
                 alert.setContentText("duration: " + currentItemSelected.getDuration());
 
                 alert.setResultConverter((bt) -> {
-                    if (bt.getText().equals(DELETE_BUTTON_TEXT)) {
-                        movieService.deleteMovie(currentItemSelected.getId()).block();
-                        refreshList();
-                    } else if (bt.getText().equals(RECOMMENDED_ADD_BUTTON_TEXT)) {
-                        recommendationService.addRecommendation(new Recommendation(currentItemSelected.getId())).block();
-                        refreshList();
-                    } else if (bt.getText().equals(RECOMMENDED_REMOVE_BUTTON_TEXT)) {
-                        recommendationService.deleteRecommendationByMovieId(currentItemSelected.getId()).block();
-                        refreshList();
-                    }
+                    (switch (bt.getText()) {
+                        case DELETE_BUTTON_TEXT -> Function1.of(movieService::deleteMovie);
+                        case RECOMMENDED_ADD_BUTTON_TEXT ->
+                                Function1.of(Recommendation::fromMovieId).andThen(Function1.of(recommendationService::addRecommendation));
+                        case RECOMMENDED_REMOVE_BUTTON_TEXT ->
+                                Function1.of(recommendationService::deleteRecommendationByMovieId);
+                        default -> throw new IllegalStateException("Unexpected value: " + bt.getText());
+                    }).andThen(Mono::block).andThen((v) -> refreshList()).apply(currentItemSelected.getId());
                     return bt;
                 });
                 DialogPane dialogPane = alert.getDialogPane();
@@ -174,8 +173,8 @@ public class MovieController {
         refreshList();
     }
 
-    private void refreshList() {
-        this.recommendedMovies = recommendationService.getRecomendedMovies().collect(Collectors.toList()).block();
+    private Void refreshList() {
+        this.recommendedMovies = recommendationService.getRecomendedMovies().collectList().block();
         Optional<Boolean> isRecommendedFilter = this.isRecommended.map(CheckBox::isSelected);
         Optional<String> newNameFilter = Optional.ofNullable(name.getText()).filter(s -> !s.isEmpty());
         Optional<Integer> newMinDuration = textFieldToOptInt(this.minDuration);
@@ -196,6 +195,7 @@ public class MovieController {
                                     pagination.getMaxPageIndicatorCount())
                             .toStream().collect(Collectors.toList())));
         });
+        return null;
     }
 
     private Optional<Integer> textFieldToOptInt(TextField textField) {

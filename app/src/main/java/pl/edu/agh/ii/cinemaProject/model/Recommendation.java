@@ -17,4 +17,8 @@ public class Recommendation {
     public Recommendation(long movie_id) {
         this.movie_id = movie_id;
     }
+
+    public static Recommendation fromMovieId(long movie_id) {
+        return new Recommendation(movie_id);
+    }
 }
