@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,7 +27,7 @@ public class ModifyScheduleWatchersController {
     @FXML
     private TableView<Schedule> scheduleMovieTableView;
     @FXML
-    private TableColumn<Schedule, Schedule> movieImage;
+    private TableColumn<Schedule, ImageView> movieImage;
     @FXML
     private TableColumn<Schedule, String> movieTitle;
     @FXML
@@ -55,28 +54,14 @@ public class ModifyScheduleWatchersController {
     public void initialize() {
         scheduleMovieTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        movieImage.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
-
-        movieImage.setCellFactory(param -> {
+        movieImage.setCellValueFactory(cellData -> {
             final ImageView imageview = new ImageView();
-            TableCell<Schedule, Schedule> cell = new TableCell<>() {
-                public void updateItem(Schedule item, boolean empty) {
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        movieService.getMovieInfo(item.getMovie_id()).subscribe((movie) -> Platform.runLater(() -> {
-                            var image = new Image(movie.getCover_url(), 200, 0, true, true);
-                            imageview.setImage(image);
-                        }));
-                    }
-                }
-            };
-            cell.setGraphic(imageview);
-            cell.setPrefHeight(imageview.getFitHeight());
-            return cell;
+            movieService.getMovieInfo(cellData.getValue().getMovie_id()).subscribe((movie) -> Platform.runLater(() -> {
+                var image = new Image(movie.getCover_url(), 100, 0, true, true);
+                imageview.setImage(image);
+            }));
+            return new SimpleObjectProperty<>(imageview);
         });
-
         movieTitle.setCellValueFactory(data -> new SimpleObjectProperty<>(movieService.getMovieInfo(data.getValue().getMovie_id()).block().getName()));
         movieDate.setCellValueFactory(data -> new SimpleObjectProperty<>(DateTimeFormatter.ofPattern("dd/MM/yyyy \nhh:mm a").format(data.getValue().getStart_date())));
         movieCinemaHall.setCellValueFactory(data -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallById(data.getValue().getCinema_hall_id()).block().getName()));

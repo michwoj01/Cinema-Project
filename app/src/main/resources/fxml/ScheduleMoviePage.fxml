@@ -11,9 +11,10 @@
         <TableView styleClass="scheduleTableView" fx:id="scheduleView" editable="true">
             <columns>
                 <TableColumn fx:id="scheduleMovie" text="Movie"/>
-                <TableColumn maxWidth="1000" fx:id="scheduleHall" text="Hall nr."/>
-                <TableColumn maxWidth="3000"  fx:id="scheduleDate" text="Date"/>
-                <TableColumn maxWidth="2500" fx:id="scheduleTickets" text="Available tickets"/>
+                <TableColumn maxWidth="1000" fx:id="scheduleHall" text="Hall"/>
+                <TableColumn maxWidth="3000" fx:id="scheduleDate" text="Date"/>
+                <TableColumn maxWidth="1500" fx:id="scheduleCapacity" text="Capacity"/>
+                <TableColumn maxWidth="1500" fx:id="scheduleTickets" text="Available"/>
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

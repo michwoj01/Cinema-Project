@@ -13,11 +13,11 @@ public class MovieService {
     @Autowired
     private MovieDao movieDao;
 
-    public Flux<Movie> getMoviesWithFilterDTO(MovieFiltersDTO movieFiltersDTO,int page,int maxItemsPerPage) {
-        return movieDao.findAllWithFilters(movieFiltersDTO,page,maxItemsPerPage);
+    public Flux<Movie> getMoviesWithFilterDTO(MovieFiltersDTO movieFiltersDTO, int page, int maxItemsPerPage) {
+        return movieDao.findAllWithFilters(movieFiltersDTO, page, maxItemsPerPage);
     }
 
-    public Mono<Integer> getMovieCountWithFilter(MovieFiltersDTO movieFiltersDTO){
+    public Mono<Integer> getMovieCountWithFilter(MovieFiltersDTO movieFiltersDTO) {
         return movieDao.getCountWithFilters(movieFiltersDTO);
     }
 
@@ -31,5 +31,9 @@ public class MovieService {
 
     public Mono<Void> deleteMovie(long id) {
         return movieDao.deleteById(id);
+    }
+
+    public Mono<Movie> getMovieByName(String name) {
+        return movieDao.getMovieByName(name);
     }
 }

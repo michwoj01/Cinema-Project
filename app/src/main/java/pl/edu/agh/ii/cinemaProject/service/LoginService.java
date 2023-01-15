@@ -57,7 +57,7 @@ public class LoginService {
     }
 
     public Either<String, LoginUser> login(String email) {
-        return checkEmail(email).flatMap((unused) -> userDao.getLoginUserByEmail(email).blockOptional().<Either<String, LoginUser>>map(Either::right).orElseGet(() -> Either.left("No user found")));
+        return checkEmail(email).flatMap((unused) -> userDao.findByEmail(email).blockOptional().<Either<String, LoginUser>>map(Either::right).orElseGet(() -> Either.left("No user found")));
     }
 
     public Flux<LoginUser> getAll() {

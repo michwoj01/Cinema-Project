@@ -6,23 +6,11 @@ import pl.edu.agh.ii.cinemaProject.model.Notification;
 import reactor.core.publisher.Mono;
 
 public interface NotificationDao extends ReactiveCrudRepository<Notification, Long> {
-    @Query("""
-            SELECT *
-            FROM
-                NOTIFICATIONS n
-            WHERE
-                n.name = :name
-                and not exists (
-                    select *
-                    from NOTIFICATIONS_LOG ng
-                    where ng.name = n.name and date(ng.SEND_DATE) = current_date
-                    )""")
+    @Query("SELECT * FROM NOTIFICATIONS n WHERE n.name = :name and not exists(" +
+            "select * from NOTIFICATIONS_LOG ng where ng.name = n.name and date(ng.SEND_DATE) = current_date)")
     Mono<Notification> getByName(String name);
 
-    @Query("""
-            INSERT INTO NOTIFICATIONS_LOG (NAME, MESSAGE, SEND_DATE)
-            VALUES (:name, :message, current_timestamp)
-            RETURNING ID
-            """)
+    @Query("INSERT INTO NOTIFICATIONS_LOG (NAME, MESSAGE, SEND_DATE)" +
+            "VALUES (:name, :message, current_timestamp) RETURNING ID")
     Mono<Long> addNotificationLog(String name, String message);
 }

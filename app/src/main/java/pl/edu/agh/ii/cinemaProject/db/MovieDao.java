@@ -10,14 +10,14 @@ import reactor.core.publisher.Mono;
 public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
 
     @Query("SELECT * from MOVIE WHERE (duration between :minDuration and :maxDuration) and name like :nameContains limit :maxItemsPerPage offset :startIndex")
-    Flux<Movie> findAllWithFilters(int minDuration, int maxDuration, String nameContains,int startIndex,int maxItemsPerPage);
+    Flux<Movie> findAllWithFilters(int minDuration, int maxDuration, String nameContains, int startIndex, int maxItemsPerPage);
 
-    default Flux<Movie> findAllWithFilters(MovieFiltersDTO movieFiltersDTO,int page,int maxItemsPerPage) {
+    default Flux<Movie> findAllWithFilters(MovieFiltersDTO movieFiltersDTO, int page, int maxItemsPerPage) {
         return findAllWithFilters(
                 movieFiltersDTO.minDuration().orElse(0),
                 movieFiltersDTO.maxDuration().orElse(60000000),
                 "%" + movieFiltersDTO.nameContains().orElse("") + "%",
-                maxItemsPerPage*(page),
+                maxItemsPerPage * (page),
                 maxItemsPerPage
         );
     }
@@ -32,4 +32,6 @@ public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
                 "%" + movieFiltersDTO.nameContains().orElse("") + "%"
         );
     }
+
+    Mono<Movie> getMovieByName(String name);
 }

@@ -21,10 +21,8 @@ import pl.edu.agh.ii.cinemaProject.service.LoginService;
 import pl.edu.agh.ii.cinemaProject.service.RoleService;
 
 import java.net.URL;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 @Controller
 public class ModifyUserController {
@@ -45,11 +43,20 @@ public class ModifyUserController {
     private RoleService roleService;
     @Autowired
     private LoginService loginService;
-
     @Autowired
     private ApplicationContext applicationContext;
 
-    private Map<Long, Role> rolesMap;
+    private final StringConverter<Role> roleStringConverter = new StringConverter<>() {
+        @Override
+        public String toString(Role object) {
+            return object.getName();
+        }
+
+        @Override
+        public Role fromString(String string) {
+            return roleService.getRoleByName(string).block();
+        }
+    };
 
     public static URL getFXML() {
         return ModifyUserController.class.getResource("/fxml/ModifyUser.fxml");
@@ -57,7 +64,6 @@ public class ModifyUserController {
 
     @FXML
     private void initialize() {
-        rolesMap = roleService.getAllRoles().collectMap(Role::getId, Function.identity()).block();
         mainTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         userFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -72,20 +78,8 @@ public class ModifyUserController {
         userEmail.setCellFactory(TextFieldTableCell.forTableColumn());
         userEmail.setOnEditCommit(e -> performUpdate(e, LoginUser::setEmail));
 
-        userRole.setCellValueFactory((data) -> new SimpleObjectProperty<>(rolesMap.get(data.getValue().getRoleId())));
-        var roleList = FXCollections.observableArrayList(rolesMap.values());
-        var stringConverter = new StringConverter<Role>() {
-            @Override
-            public String toString(Role object) {
-                return object.getName();
-            }
-
-            @Override
-            public Role fromString(String string) {
-                return rolesMap.values().stream().filter((role) -> role.getName().equals(string)).findAny().get();
-            }
-        };
-        userRole.setCellFactory(ComboBoxTableCell.forTableColumn(stringConverter, roleList));
+        userRole.setCellValueFactory(user -> new SimpleObjectProperty<>(roleService.getRoleById(user.getValue().getRoleId()).block()));
+        userRole.setCellFactory(ComboBoxTableCell.forTableColumn(roleStringConverter, FXCollections.observableArrayList(roleService.getAllRoles().collectList().block())));
         userRole.setOnEditCommit(e -> performUpdate(e, (user, role) -> user.setRoleId(role.getId())));
 
         deleteButton.disableProperty().bind(Bindings.isEmpty(mainTableView.getSelectionModel().getSelectedItems()));
@@ -111,7 +105,7 @@ public class ModifyUserController {
             updateFunction.accept(viewModel, cellEditEvent.getNewValue());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("OK");
-            alert.setHeaderText("Succesfully saved user");
+            alert.setHeaderText("Successfully saved user");
 
             alert.showAndWait();
             return null;
@@ -141,7 +135,7 @@ public class ModifyUserController {
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Confirm email sending");
-                    alert.setHeaderText("Succesfully deleted user");
+                    alert.setHeaderText("Successfully deleted user");
                     alert.setContentText("User: " + user + ".\n\nShould firing mail be sent??");
 
                     Optional<ButtonType> alertResultButton = alert.showAndWait();

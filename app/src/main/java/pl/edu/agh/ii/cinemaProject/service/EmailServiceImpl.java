@@ -13,16 +13,14 @@ import java.util.List;
 @Service
 public class EmailServiceImpl {
     private static final String DOMAIN = "parszywazgraja.pl";
-    private static final String FROM_CASHIER_NOTIFICATION = "notify+recomendations@" + DOMAIN;
+    private static final String FROM_CASHIER_NOTIFICATION = "notify+recommendations@" + DOMAIN;
     private static final String FROM_FIRED_PERSON = "notify+firedperson@" + DOMAIN;
     @Autowired
     private JavaMailSender emailSender;
 
     @SneakyThrows
     public void sendRemainderToCashiers(List<String> cashiersEmails, String message) {
-        for (String email : cashiersEmails) {
-            sendMail(message, email, "Cashier remainder", FROM_CASHIER_NOTIFICATION);
-        }
+        cashiersEmails.forEach(email -> sendMail(message, email, "Cashier remainder", FROM_CASHIER_NOTIFICATION));
     }
 
     @SneakyThrows

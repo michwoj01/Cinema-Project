@@ -24,11 +24,12 @@ public class CinemaHallInMemoryDao {
         var listType = new TypeToken<ArrayList<CinemaHall>>() {
         };
 
-        List<CinemaHall> aa = JsonLoader.loadJsonResource(resourceName, listType).mapLeft((thr) -> {
+        List<CinemaHall> cinemaHallList = JsonLoader.loadJsonResource(resourceName, listType).mapLeft((thr) -> {
             System.err.println(thr);
             return thr;
         }).get();
-        this.cinemaHalls = aa.stream().collect(Collectors.toMap(CinemaHall::getId, Function.identity()));
+        this.cinemaHalls = cinemaHallList.stream()
+                .collect(Collectors.toMap(CinemaHall::getId, Function.identity()));
     }
 
     public CinemaHallInMemoryDao() {
