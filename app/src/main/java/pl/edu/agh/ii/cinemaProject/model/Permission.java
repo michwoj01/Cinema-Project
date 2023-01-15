@@ -12,4 +12,5 @@ public class Permission {
     @Id
     public long id;
     public String name;
+    public boolean shouldBeDisplayed;
 }

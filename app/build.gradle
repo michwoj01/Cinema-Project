@@ -30,7 +30,8 @@ javafx {
             'javafx.fxml',
             'javafx.graphics',
             'javafx.swing',
-            'javafx.media'
+            'javafx.media',
+            'javafx.web'
     ]
 }
 

@@ -1,5 +1,6 @@
 package pl.edu.agh.ii.cinemaProject.db;
 
+import io.vavr.Function6;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import pl.edu.agh.ii.cinemaProject.db.dto.MovieFiltersDTO;
@@ -8,29 +9,46 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
-
-    @Query("SELECT * from MOVIE WHERE (duration between :minDuration and :maxDuration) and name like :nameContains limit :maxItemsPerPage offset :startIndex")
-    Flux<Movie> findAllWithFilters(int minDuration, int maxDuration, String nameContains, int startIndex, int maxItemsPerPage);
+    @Query("""
+            SELECT
+                * 
+            FROM 
+                MOVIE 
+            WHERE 
+                (duration between :minDuration and :maxDuration) 
+            and name like :nameContains 
+            and case when :isRecommended then MOVIE.id in (select mr.movie_id from RECOMMENDATION mr) else 1=1 end
+            limit :maxItemsPerPage offset :startIndex
+            """)
+    Flux<Movie> findAllWithFilters(int minDuration, int maxDuration, String nameContains, Boolean isRecommended, int startIndex, int maxItemsPerPage);
 
     default Flux<Movie> findAllWithFilters(MovieFiltersDTO movieFiltersDTO, int page, int maxItemsPerPage) {
-        return findAllWithFilters(
-                movieFiltersDTO.minDuration().orElse(0),
-                movieFiltersDTO.maxDuration().orElse(60000000),
-                "%" + movieFiltersDTO.nameContains().orElse("") + "%",
-                maxItemsPerPage * (page),
-                maxItemsPerPage
-        );
+        return findAllWithFiltersFromDTO(this::findAllWithFilters, movieFiltersDTO, page, maxItemsPerPage);
     }
 
-    @Query("SELECT COUNT(*) from MOVIE WHERE (duration between :minDuration and :maxDuration) and name like :nameContains")
-    Mono<Integer> getCountWithFilters(int minDuration, int maxDuration, String nameContains);
+    private <R> R findAllWithFiltersFromDTO(Function6<Integer, Integer, String, Boolean, Integer, Integer, R> f, MovieFiltersDTO movieFiltersDTO, int page, int maxItemsPerPage) {
+        return f.apply(movieFiltersDTO.minDuration().orElse(0),
+                movieFiltersDTO.maxDuration().orElse(60000000),
+                "%" + movieFiltersDTO.nameContains().orElse("") + "%",
+                movieFiltersDTO.isRecommended().orElse(false),
+                maxItemsPerPage * (page),
+                maxItemsPerPage);
+    }
+
+    @Query("""
+            SELECT
+                count(*)
+            FROM
+                MOVIE 
+            WHERE 
+                (duration between :minDuration and :maxDuration) 
+            and name like :nameContains 
+            and case when :isRecommended then MOVIE.id in (select mr.movie_id from RECOMMENDATION mr) else 1=1 end
+            """)
+    Mono<Integer> getCountWithFilters(int minDuration, int maxDuration, String nameContains, Boolean isRecommended, int startIndex, int maxItemsPerPage);
 
     default Mono<Integer> getCountWithFilters(MovieFiltersDTO movieFiltersDTO) {
-        return getCountWithFilters(
-                movieFiltersDTO.minDuration().orElse(0),
-                movieFiltersDTO.maxDuration().orElse(60000000),
-                "%" + movieFiltersDTO.nameContains().orElse("") + "%"
-        );
+        return findAllWithFiltersFromDTO(this::getCountWithFilters, movieFiltersDTO, 0, 0);
     }
 
     Mono<Movie> getMovieByName(String name);
