@@ -1,0 +1,31 @@
+Button{
+    -fx-background-color: #56081A;
+    -fx-text-fill: white;
+    -fx-border-width: 2;
+    -fx-border-color: crimson;
+    -fx-pref-width: 80000;
+}
+Button:hover{
+    -fx-background-color: #340609;
+    -fx-text-fill: grey;
+}
+.seatBox{
+    -fx-padding: 40 40 10 40;
+}
+.clickedButton{
+    -fx-background-color: #ff6e00;
+}
+.backButton, .buyButton{
+    -fx-background-color: #56081A;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-width: 5;
+    -fx-border-color: red;
+    -fx-border-radius: 20;
+    -fx-pref-height: 20;
+    -fx-pref-width: 200;
+    -fx-background-insets: 10;
+    -fx-border-insets: 10;
+}
+
+

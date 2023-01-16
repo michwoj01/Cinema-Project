@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import pl.edu.agh.ii.cinemaProject.event.ScheduleEvent;
+import pl.edu.agh.ii.cinemaProject.event.MovieCardEvent;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
 import pl.edu.agh.ii.cinemaProject.service.CinemaHallService;
 import pl.edu.agh.ii.cinemaProject.service.MovieService;
@@ -70,7 +70,7 @@ public class ModifyScheduleWatchersController {
         scheduleMovieTableView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 SceneChanger.setPane(MovieCardController.getFXML());
-                applicationContext.publishEvent(new ScheduleEvent(observable.getValue()));
+                applicationContext.publishEvent(new MovieCardEvent(observable.getValue()));
             }
         }));
 

@@ -9,14 +9,14 @@
     <VBox styleClass="frostedGlass">
         <BorderPane>
             <left>
-                <VBox styleClass="imageBox">
+                <VBox>
                     <ImageView fx:id="moviePoster"/>
                 </VBox>
             </left>
             <right>
                 <BorderPane>
                     <top>
-                    <VBox styleClass="infoBox">
+                    <VBox>
                         <Label styleClass="headline" fx:id="titleLabel" />
                         <Label styleClass="subHeadline" fx:id="descriptionLabel"/>
                         <BorderPane>
@@ -55,13 +55,12 @@
                     </top>
                     <center>
                         <VBox alignment="CENTER">
-                            <TextField fx:id="numberOfSeats" styleClass="numberTextField"/>
-                            <Button text="Buy" fx:id="buyButton" disable="true" onAction="#handleBuyTicketAction"/>
+                            <Button text="Buy" fx:id="buyButton" onAction="#handleBuyTicketAction"/>
                         </VBox>
                     </center>
                     <bottom>
                         <VBox alignment="CENTER">
-                            <Button text="Back" fx:id="backButton" onAction="#handleBackAction"/>
+                            <Button text="Back" onAction="#handleBackAction"/>
                         </VBox>
                     </bottom>
                 </BorderPane>

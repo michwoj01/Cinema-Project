@@ -1,6 +1,5 @@
 package pl.edu.agh.ii.cinemaProject.controller;
 
-import io.vavr.Function0;
 import io.vavr.Function1;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -10,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
@@ -21,17 +21,16 @@ import pl.edu.agh.ii.cinemaProject.model.Recommendation;
 import pl.edu.agh.ii.cinemaProject.service.MovieService;
 import pl.edu.agh.ii.cinemaProject.service.PermissionService;
 import pl.edu.agh.ii.cinemaProject.service.RecommendationService;
-import pl.edu.agh.ii.cinemaProject.service.RoleService;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static io.vavr.API.Try;
-import static io.vavr.CheckedFunction8.of;
 
 
 @Controller
@@ -107,8 +106,9 @@ public class MovieController {
                 var currentItemSelected = this.moviesListView.getSelectionModel().getSelectedItem();
 
                 Alert alert = new Alert(Alert.AlertType.NONE);
+                Window window = alert.getDialogPane().getScene().getWindow();
+                window.setOnCloseRequest(e -> alert.hide());
 
-                alert.getButtonTypes().add(new ButtonType(HIDE_BUTTON_TEXT));
                 alert.getButtonTypes().add(new ButtonType(DELETE_BUTTON_TEXT));
 
                 if (recommendedMovies.stream().anyMatch(recommendation -> recommendation.getMovie_id() == currentItemSelected.getId())) {
@@ -133,7 +133,7 @@ public class MovieController {
                     return bt;
                 });
                 DialogPane dialogPane = alert.getDialogPane();
-                dialogPane.getStylesheets().add(getClass().getResource("/css/Alert.css").toExternalForm());
+                dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Alert.css")).toExternalForm());
                 dialogPane.getStyleClass().add("dialogPane");
                 alert.showAndWait();
             }

@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.web.*?>
 
+<?import java.net.URL?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="pl.edu.agh.ii.cinemaProject.controller.NotificationController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0" styleClass="mainBox">
     <top>
-        <Label>Edit the message here</Label>
+        <VBox prefWidth="600">
+            <Label styleClass="mainLabel">Edit the message here</Label>
+        </VBox>
     </top>
     <center>
-        <TextArea fx:id="messageTextArea" />
+        <TextArea fx:id="messageTextArea"/>
     </center>
     <bottom>
-        <HBox>
+        <HBox prefWidth="600">
             <Button onAction="#saveMessage">Save</Button>
             <Button onAction="#restoreMessage">Restore</Button>
         </HBox>
     </bottom>
-
+    <stylesheets>
+        <URL value="@../css/NotificationTextEdit.css" />
+    </stylesheets>
 </BorderPane>
