@@ -4,23 +4,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Controller;
-import pl.edu.agh.ii.cinemaProject.event.ScheduleEvent;
+import pl.edu.agh.ii.cinemaProject.event.MovieCardEvent;
+import pl.edu.agh.ii.cinemaProject.event.SeatsEvent;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
 import pl.edu.agh.ii.cinemaProject.service.MovieService;
-import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 
 @Controller
-public class MovieCardController implements ApplicationListener<ScheduleEvent> {
+public class MovieCardController implements ApplicationListener<MovieCardEvent> {
     @FXML
     public ImageView moviePoster;
     @FXML
@@ -36,14 +36,12 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent> {
     @FXML
     public Label durationLabel;
     @FXML
-    public TextField numberOfSeats;
-    @FXML
     public Button buyButton;
 
     @Autowired
     private MovieService movieService;
     @Autowired
-    private ScheduleService scheduleService;
+    private ApplicationContext applicationContext;
 
     private Schedule selectedSchedule;
 
@@ -52,22 +50,8 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent> {
     }
 
     @FXML
-    public void initialize() {
-        numberOfSeats.textProperty().addListener((observable, oldValue, newValue) -> {
-            buyButton.setDisable(newValue.matches(""));
-            if (!newValue.matches("")) {
-                if (!newValue.matches("\\d*") || newValue.matches("0")) {
-                    numberOfSeats.setText(newValue.replaceAll("[^\\d]", ""));
-                } else if (Integer.parseInt(newValue) > selectedSchedule.getCurrently_available()) {
-                    numberOfSeats.setText(String.valueOf(selectedSchedule.getCurrently_available()));
-                }
-            }
-        });
-    }
-
-    @FXML
     @Override
-    public void onApplicationEvent(ScheduleEvent event) {
+    public void onApplicationEvent(MovieCardEvent event) {
         selectedSchedule = (Schedule) event.getSource();
         reloadLabels();
     }
@@ -85,11 +69,8 @@ public class MovieCardController implements ApplicationListener<ScheduleEvent> {
     }
 
     public void handleBuyTicketAction(ActionEvent actionEvent) {
-        var number = Integer.parseInt(numberOfSeats.getText());
-        scheduleService.buyTickets(selectedSchedule.getId(), number).subscribe();
-        selectedSchedule.setCurrently_available(selectedSchedule.getCurrently_available() - number);
-        availableSeatsLabel.setText(String.valueOf(selectedSchedule.getCurrently_available()));
-        numberOfSeats.setText("");
+        SceneChanger.setPane(SeatPageController.getFXML());
+        applicationContext.publishEvent(new SeatsEvent(selectedSchedule));
     }
 
     public void handleBackAction(ActionEvent actionEvent) {

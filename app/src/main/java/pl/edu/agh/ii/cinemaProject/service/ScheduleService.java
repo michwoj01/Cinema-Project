@@ -5,8 +5,8 @@ import io.vavr.control.Option;
 import io.vavr.control.Try;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.agh.ii.cinemaProject.db.CinemaHallInMemoryDao;
 import pl.edu.agh.ii.cinemaProject.db.ScheduleDao;
+import pl.edu.agh.ii.cinemaProject.db.SeatDao;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,17 +18,12 @@ import java.util.Objects;
 public class ScheduleService {
     @Autowired
     private ScheduleDao scheduleDao;
-    @Autowired
-    private CinemaHallInMemoryDao cinemaHallInMemoryDao;
 
-    public Mono<Boolean> buyTickets(long scheduleId, int numberOfTickets) {
-        return scheduleDao.checkIfAvailable(scheduleId, numberOfTickets).flatMap((leftAfterSale) -> {
-            if (leftAfterSale < 0) {
-                return Mono.just(0);
-            } else {
-                return scheduleDao.buyTickets(scheduleId, numberOfTickets);
-            }
-        }).map((numOfRowsUpdated) -> numOfRowsUpdated > 0);
+    @Autowired
+    private SeatDao seatDao;
+
+    public Mono<Integer> buyTickets(long scheduleId, int numberOfTickets) {
+        return scheduleDao.buyTickets(scheduleId, numberOfTickets);
     }
 
     public Either<String, Schedule> createOrUpdateSchedule(Schedule schedule) {
@@ -44,17 +39,17 @@ public class ScheduleService {
     }
 
     public Either<String, Void> deleteSchedule(long scheduleId) {
-        return Try.ofCallable(() -> scheduleDao.deleteById(scheduleId).block()).fold((error) -> Either.left("Unknown error"), (unused) -> Either.right(null));
+        return Try.ofCallable(() -> {
+            seatDao.deleteByScheduleId(scheduleId).subscribe();
+            return scheduleDao.deleteById(scheduleId).block();
+        }).fold((error) -> Either.left("Unknown error"), (unused) -> Either.right(null));
     }
 
     private Either<String, ?> checkTickets(Schedule schedule) {
-        int hallCapacity = cinemaHallInMemoryDao.getCinemaHallById(schedule.getCinema_hall_id()).block().getSize();
-        if (schedule.getCurrently_available() < 0
-                || schedule.getNr_of_seats() > hallCapacity
-                || schedule.getNr_of_seats() < schedule.getCurrently_available()) {
-            return Either.left("Invalid number of seats or available tickets. Hall capacity is " + hallCapacity);
-        } else {
+        if (Objects.equals(seatDao.countTakenSeats(schedule.getId()).block(), 0)){
             return Either.right(Option.none());
+        } else {
+            return Either.left("Someone has already purchased a ticket changes are not possible");
         }
     }
 
