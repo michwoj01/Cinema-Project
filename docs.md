@@ -189,9 +189,53 @@ Pole z liczbą zakupionych biletów jest ograniczone do wpisania liczby z przedz
 
 Skorzystaliśmy z smtp4dev (docker container), aby móc testować wysyłanie naszym maili bez dostępu do faktycznego serwera stmp (wystawionego na świat).
 
-Komenda potrzebna do otworzenia serwera to:
-
-`docker run --rm -it -p 3000:80 -p 2525:25 rnwood/smtp4dev:v3`
-
+Dodany został do docker-compose więc odpala się wtedy kiedy baza.
 Następnie UI serwera znajduje się na adresie `localhost:3000`, a port do stmp to 2525.
 Po wyłączeniu serwera jest on usuwany na zawsze (łącznie z logami o naszych wiadomościach :) ).
+
+Zaimplementowaliśmy parę typów maili, w tym:
+- powiadomienie o rekomendowanych filmach
+- powiadomienie o zakończeniu współpracy z pracownikiem
+
+#### Rekomendowane filmy
+
+Z odpowiednią rolą `RECOMMENDED` mamy możliwość oznaczenia filmu jako rekomendowany.
+
+<div align="center">
+<img alt="img.png" src="images/recommended.png"/>
+</div>
+
+Możliwe jest filtrowanie po własności recommended (gdy włączone to tylko rekomendowane, gdy wyłączone to wszystkie).
+
+<div align="center">
+<img alt="img.png" src="images/recommended_view.png"/>
+</div>
+
+
+Następnie filmy tak oznaczone wysyłane są mailem do kasjerów. Filmy rekomendowane wysyłane są raz dziennie, co reguluje tabela `NOTIFICATION_LOG`. Wysyłanie następuje po zalogowaniu - Odpalany jest wątek niezależny od reszty aplikacji (w tym samym środowisku uruchumieniowym), po czym sprawdza co 15 sekund, czy nie wysłać powiadomienia. Zostało to zrealizowane przy pomocy biblioteki RXJava i `Observable::interval`.
+
+<div align="center">
+<img alt="img.png" src="images/recommended_mail.png"/>
+</div>
+
+Treść notifikacji może nie sprostać wymaganiam klienta, więc udostępniliśmy możliwość edycji wiadomości w postaci HTML. Opcja ta jest dostępna tylko dla administratora.
+
+<div align="center">
+<img alt="img.png" src="images/recommended_mail_edit.png"/>
+</div>
+
+#### Zakończenie współpracy z pracownikiem
+
+W przypadku zakończenia współpracy z pracownikiem, wysyłany jest mail wszystkich pracowników będących zatrudnionym.
+
+<div align="center">
+<img alt="img.png" src="images/fired_email_prompt.png"/>
+</div>
+
+Email który zostaje wysłany wygląda tak:
+
+<div align="center">
+<img alt="img.png" src="images/fired_email.png"/>
+</div>
+
+W celach humorystycznych nadaliśmy mu treść niezbyt miłą. W finalnym produkcie nigdy nie powinna się znaleźć taka wiadomość.
