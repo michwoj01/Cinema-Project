@@ -5,12 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Seat {
+public class Ticket {
     @Id
     private long id;
     private long schedule_id;
-    private int seat_no;
+    private int seat_nr;
+    private LocalDateTime date_of_purchase;
 }

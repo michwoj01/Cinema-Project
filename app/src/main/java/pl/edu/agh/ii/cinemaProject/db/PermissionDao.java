@@ -7,9 +7,11 @@ import reactor.core.publisher.Flux;
 
 public interface PermissionDao extends ReactiveCrudRepository<PermissionDao, Long> {
 
-    @Query("SELECT DISTINCT * FROM permission " +
-            "inner join permission_role pr on permission.id = pr.permission_id " +
-            "inner join login_user lu on pr.role_id = lu.role_id " +
-            "WHERE lu.id = :userId")
+    @Query("""
+            SELECT DISTINCT * FROM permission
+            inner join permission_role pr on permission.id = pr.permission_id
+            inner join login_user lu on pr.role_id = lu.role_id
+            WHERE lu.id = :userId
+            """)
     Flux<Permission> getPermissionsByUserId(long userId);
 }

@@ -22,7 +22,7 @@ public class NotificationService {
 
     public Mono<Pair<List<String>, Notification>> getCashierNotificationEmailsAndMessage() {
         return notificationsDao.getByNameWithCheckForDuplicateForDayAndFullMessage(cashierNotificationName)
-                .flatMap(notification -> userDao.findAllCashiers().collectList().map(cashiers -> Pair.of(cashiers, notification)));
+                .flatMap(notification -> userDao.findAllByRoleName("kasjer").collectList().map(cashiers -> Pair.of(cashiers, notification)));
     }
 
     public Mono<Long> addNotificationLog(Notification notification) {

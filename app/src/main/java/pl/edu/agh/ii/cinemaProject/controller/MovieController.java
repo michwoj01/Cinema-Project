@@ -36,7 +36,6 @@ import static io.vavr.API.Try;
 @Controller
 public class MovieController {
     private final String DELETE_BUTTON_TEXT = "Delete";
-    private final String HIDE_BUTTON_TEXT = "Hide";
     private final String RECOMMENDED_ADD_BUTTON_TEXT = "Add to recommended";
     private final String RECOMMENDED_REMOVE_BUTTON_TEXT = "Remove from recommended";
     @FXML

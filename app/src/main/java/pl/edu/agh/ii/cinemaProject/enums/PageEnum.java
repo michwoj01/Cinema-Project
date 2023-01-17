@@ -15,7 +15,7 @@ public enum PageEnum {
     MOVIES("movies", MovieController.getFXML()),
     EDIT_NOTIFICATION_MESSAGE("edit_notification_message", NotificationController.getFXML()),
     ERROR("error", ErrorController.getFXML()),
-    SEND_REPORTS("send_reports", SendReportsController.getFXML());
+    SEND_REPORTS("send_reports", ReportsController.getFXML());
     private final String name;
     private final URL url;
 }

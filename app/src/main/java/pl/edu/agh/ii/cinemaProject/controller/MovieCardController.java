@@ -15,7 +15,6 @@ import pl.edu.agh.ii.cinemaProject.event.SeatsEvent;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
 import pl.edu.agh.ii.cinemaProject.service.MovieService;
 import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
-import pl.edu.agh.ii.cinemaProject.service.TicketService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
@@ -42,7 +41,6 @@ public class MovieCardController implements ApplicationListener<MovieCardEvent> 
 
     @Autowired
     private MovieService movieService;
-
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
