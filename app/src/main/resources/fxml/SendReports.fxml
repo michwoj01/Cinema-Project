@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox fx:id="mainBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0"
+      prefWidth="600.0" spacing="10.0" style="-fx-background-color: wihte;" xmlns="http://javafx.com/javafx/19"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.ii.cinemaProject.controller.ReportsController">
+    <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0"
+          prefWidth="580.0" spacing="5.0" style="-fx-padding: 0;">
+        <BarChart fx:id="ticketsSoldPerDay" legendVisible="false" prefHeight="191.0" prefWidth="324.0"
+                  style="-fx-background-color: white;" title="Tickets Sold per Day">
+            <xAxis>
+                <CategoryAxis/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </BarChart>
+        <BarChart fx:id="moviesDisplayedPerDay" layoutX="10.0" layoutY="10.0" legendVisible="false" prefHeight="191.0"
+                  prefWidth="326.0" style="-fx-background-color: white;" title="Movies Displayed per Day">
+            <xAxis>
+                <CategoryAxis/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT"/>
+            </yAxis>
+        </BarChart>
+    </HBox>
+    <HBox prefHeight="230.0" prefWidth="600.0" spacing="5.0">
+        <VBox prefHeight="193.0" prefWidth="375.0">
+            <TextField alignment="TOP_CENTER" text="Most Popular Movies"/>
+            <ListView fx:id="mostDisplayedMovies" prefHeight="123.0" prefWidth="292.0"/>
+        </VBox>
+        <VBox layoutX="10.0" layoutY="10.0" prefHeight="193.0" prefWidth="375.0">
+            <TextField alignment="TOP_CENTER" text="Most Displayed Movies"/>
+            <ListView fx:id="mostPopularMovies" prefHeight="123.0" prefWidth="293.0"/>
+        </VBox>
+    </HBox>
+    <HBox style="-fx-alignment: center;">
+        <Button fx:id="sendButton" alignment="TOP_CENTER" defaultButton="true" mnemonicParsing="false" prefWidth="88.0"
+                text="Send Report"
+                onAction="#sendReportToManagers" textAlignment="CENTER"/>
+    </HBox>
+    <opaqueInsets>
+        <Insets/>
+    </opaqueInsets>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</VBox>

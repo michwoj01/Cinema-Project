@@ -12,8 +12,11 @@ public interface TicketDao extends ReactiveCrudRepository<Ticket, Long> {
             "inner join schedule s on s.id = ticket.schedule_id " +
             "WHERE s.id = :scheduleId")
     Flux<Ticket> getTakenSeats(long scheduleId);
-    @Query("SELECT COUNT(*) FROM ticket " +
-            "inner join schedule s on s.id = ticket.schedule_id " +
-            "WHERE s.id = :scheduleId")
+
+    @Query("""
+            SELECT COUNT(*) FROM ticket 
+            inner join schedule s on s.id = ticket.schedule_id 
+            WHERE s.id = :scheduleId
+            """)
     Mono<Integer> countTakenSeats(long scheduleId);
 }

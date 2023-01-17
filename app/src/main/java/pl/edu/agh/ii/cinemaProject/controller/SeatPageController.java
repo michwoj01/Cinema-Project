@@ -10,10 +10,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.ii.cinemaProject.event.SeatsEvent;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
-import pl.edu.agh.ii.cinemaProject.model.Seat;
+import pl.edu.agh.ii.cinemaProject.model.Ticket;
 import pl.edu.agh.ii.cinemaProject.service.CinemaHallService;
-import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
-import pl.edu.agh.ii.cinemaProject.service.SeatService;
+import pl.edu.agh.ii.cinemaProject.service.TicketService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
@@ -25,20 +24,15 @@ import java.util.Set;
 public class SeatPageController implements ApplicationListener<SeatsEvent> {
     @FXML
     public VBox seatBox;
-
     @FXML
-    public Button buyButton;
-
+    private Button buyButton;
     @Autowired
-    public SeatService seatService;
+    private TicketService ticketService;
     @Autowired
-    public ScheduleService scheduleService;
-
-    @Autowired
-    public CinemaHallService cinemaHallService;
+    private CinemaHallService cinemaHallService;
 
     private HashMap<Integer, Button> seatMap;
-    private Set<Seat> selectedSeats;
+    private Set<Ticket> selectedTickets;
     private Schedule selectedSchedule;
 
     public static URL getFXML() {
@@ -49,7 +43,7 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
     @Override
     public void onApplicationEvent(SeatsEvent event) {
         selectedSchedule = (Schedule) event.getSource();
-        selectedSeats = new HashSet<>();
+        selectedTickets = new HashSet<>();
         seatMap = new HashMap<>();
 
         var size = cinemaHallService.getCinemaHallById(selectedSchedule.getCinema_hall_id()).block().getSize();
@@ -70,26 +64,23 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
 
             button.setOnAction(selectEvent -> {
                 if (button.getStyleClass().size() == 1) {
-                    if (selectedSeats.isEmpty()) buyButton.setDisable(false);
+                    if (selectedTickets.isEmpty()) buyButton.setDisable(false);
                     button.getStyleClass().add("clickedButton");
-                    var ticket = new Seat();
+                    var ticket = new Ticket();
                     ticket.setSchedule_id(selectedSchedule.getId());
-                    ticket.setSeat_no(Integer.parseInt(button.getText()));
-                    selectedSeats.add(ticket);
+                    ticket.setSeat_nr(Integer.parseInt(button.getText()));
+                    selectedTickets.add(ticket);
                 } else {
                     button.getStyleClass().remove(1);
-                    selectedSeats.removeIf(seat -> seat.getSeat_no() == Integer.parseInt(button.getText()));
-                    if (selectedSeats.isEmpty()) buyButton.setDisable(true);
+                    selectedTickets.removeIf(ticket -> ticket.getSeat_nr() == Integer.parseInt(button.getText()));
+                    if (selectedTickets.isEmpty()) buyButton.setDisable(true);
                 }
             });
 
             seatMap.put(number + 1, button);
             currentRow.getChildren().add(button);
         }
-        seatService.getTakenSeats(selectedSchedule.getId()).subscribe(seat -> {
-            var temp = seat.getSeat_no();
-            seatMap.get(temp).setDisable(true);
-        });
+        ticketService.getTakenSeats(selectedSchedule.getId()).subscribe(ticket -> seatMap.get(ticket.getSeat_nr()).setDisable(true));
     }
 
     public void handleBackAction(ActionEvent actionEvent) {
@@ -97,10 +88,10 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
     }
 
     public void handleBuyAction(ActionEvent actionEvent) {
-        selectedSeats.forEach(seat -> {
-            seatService.takeSeat(seat).subscribe();
-            seatMap.get(seat.getSeat_no()).setDisable(true);
+        selectedTickets.forEach(ticket -> {
+            ticketService.takeSeat(ticket).subscribe();
+            seatMap.get(ticket.getSeat_nr()).setDisable(true);
         });
-        selectedSeats.clear();
+        selectedTickets.clear();
     }
 }
