@@ -30,7 +30,7 @@ public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
                 movieFiltersDTO.maxDuration().orElse(60000000),
                 "%" + movieFiltersDTO.nameContains().orElse("") + "%",
                 movieFiltersDTO.isRecommended().orElse(false),
-                maxItemsPerPage * (page),
+                maxItemsPerPage * page,
                 maxItemsPerPage);
     }
 
@@ -42,7 +42,7 @@ public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
             WHERE 
                 (duration between :minDuration and :maxDuration) 
             and name like :nameContains 
-            and case when :isRecommended then MOVIE.id in (select mr.movie_id from RECOMMENDATION mr) else 1=1 end
+            and case when :isRecommended then MOVIE.id in (select mr.movie_id from RECOMMENDATION mr) else :startIndex=:maxItemsPerPage end
             """)
     Mono<Integer> getCountWithFilters(int minDuration, int maxDuration, String nameContains, Boolean isRecommended, int startIndex, int maxItemsPerPage);
 

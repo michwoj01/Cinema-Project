@@ -19,6 +19,7 @@ import java.util.Objects;
 public class ScheduleService {
     @Autowired
     private ScheduleDao scheduleDao;
+
     @Autowired
     private SeatDao seatDao;
 
@@ -37,6 +38,9 @@ public class ScheduleService {
     public Mono<Integer> buyTickets(long scheduleId, int numberOfTickets) {
         return scheduleDao.buyTickets(scheduleId, numberOfTickets);
     }
+
+    public Mono<Integer> countAvailableSeats(long scheduleId){return scheduleDao.countAvailableSeats(scheduleId);}
+
 
     public Either<String, Schedule> createOrUpdateSchedule(Schedule schedule) {
         return validateSchedule(schedule).flatMap((unused) -> Try.ofCallable(() -> scheduleDao.save(schedule).block()).fold((error) -> Either.left("Unknown error"), Either::right));

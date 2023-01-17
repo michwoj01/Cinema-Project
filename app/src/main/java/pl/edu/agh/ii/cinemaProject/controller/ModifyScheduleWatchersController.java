@@ -35,7 +35,7 @@ public class ModifyScheduleWatchersController {
     @FXML
     private TableColumn<Schedule, String> movieCinemaHall;
     @FXML
-    private TableColumn<Schedule, String> movieAvailableSeats;
+    private TableColumn<Schedule, Integer> movieAvailableSeats;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -65,7 +65,7 @@ public class ModifyScheduleWatchersController {
         movieTitle.setCellValueFactory(data -> new SimpleObjectProperty<>(movieService.getMovieById(data.getValue().getMovie_id()).block().getName()));
         movieDate.setCellValueFactory(data -> new SimpleObjectProperty<>(DateTimeFormatter.ofPattern("dd/MM/yyyy \nhh:mm a").format(data.getValue().getStart_date())));
         movieCinemaHall.setCellValueFactory(data -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallById(data.getValue().getCinema_hall_id()).block().getName()));
-        movieAvailableSeats.setCellValueFactory(new PropertyValueFactory<>("currently_available"));
+        movieAvailableSeats.setCellValueFactory(data -> new SimpleObjectProperty<>(scheduleService.countAvailableSeats(data.getValue().getId()).block()));
 
         scheduleMovieTableView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             if (newValue != null) {

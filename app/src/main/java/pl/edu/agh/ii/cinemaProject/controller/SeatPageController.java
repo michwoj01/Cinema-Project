@@ -25,6 +25,7 @@ import java.util.Set;
 public class SeatPageController implements ApplicationListener<SeatsEvent> {
     @FXML
     public VBox seatBox;
+
     @FXML
     public Button buyButton;
 
@@ -32,6 +33,7 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
     public SeatService seatService;
     @Autowired
     public ScheduleService scheduleService;
+
     @Autowired
     public CinemaHallService cinemaHallService;
 
@@ -99,7 +101,6 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
             seatService.takeSeat(seat).subscribe();
             seatMap.get(seat.getSeat_no()).setDisable(true);
         });
-        scheduleService.buyTickets(selectedSchedule.getId(), selectedSeats.size()).subscribe();
         selectedSeats.clear();
     }
 }
