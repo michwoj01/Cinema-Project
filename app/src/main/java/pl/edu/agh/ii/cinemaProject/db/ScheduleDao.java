@@ -10,12 +10,6 @@ import java.time.LocalDateTime;
 
 public interface ScheduleDao extends ReactiveCrudRepository<Schedule, Long> {
 
-    @Query("UPDATE SCHEDULE SET CURRENTLY_AVAILABLE = CURRENTLY_AVAILABLE - :numberOfTickets WHERE schedule.id = :scheduleId")
-    Mono<Integer> buyTickets(long scheduleId, int numberOfTickets);
-
-    @Query("SELECT schedule.currently_available-:numberOfTickets from schedule where schedule.id = :scheduleId")
-    Mono<Integer> checkIfAvailable(long scheduleId, int numberOfTickets);
-
     @Query("SELECT count(*) from schedule s " +
             "inner join movie m on m.id = s.movie_id " +
             "where s.cinema_hall_id = :cinemaHallId " +
@@ -23,6 +17,9 @@ public interface ScheduleDao extends ReactiveCrudRepository<Schedule, Long> {
             "and s.id != :id")
     Mono<Integer> getAllByCinemaHallId(long cinemaHallId, LocalDateTime startDate, long id);
 
-    @Query("SELECT * from SCHEDULE where SCHEDULE.CURRENTLY_AVAILABLE>0 and  SCHEDULE.START_DATE>CURRENT_DATE")
+    @Query("SELECT * from SCHEDULE where SCHEDULE.START_DATE>CURRENT_DATE")
     Flux<Schedule> findAllAvailable();
+
+    @Query("Select (SELECT nr_of_seats FROM SCHEDULE WHERE SCHEDULE.id=:scheduleId)-(SELECT COUNT(*) from TICKET where TICKET.Schedule_id=:scheduleId)")
+    Mono<Integer> countAvailableSeats(long scheduleId);
 }

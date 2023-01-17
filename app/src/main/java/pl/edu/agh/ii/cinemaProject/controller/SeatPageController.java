@@ -105,7 +105,6 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
             ticketService.takeSeat(ticket).subscribe();
             seatMap.get(ticket.getSeat_nr()).setDisable(true);
         });
-        scheduleService.buyTickets(selectedSchedule.getId(), selectedTickets.size()).subscribe();
         selectedTickets.clear();
     }
 }

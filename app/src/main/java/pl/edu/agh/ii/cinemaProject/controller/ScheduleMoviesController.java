@@ -87,7 +87,6 @@ public class ScheduleMoviesController {
         scheduleHall.setCellFactory(ComboBoxTableCell.forTableColumn(cinemaHallStringConverter, FXCollections.observableArrayList(cinemaHallService.findAll().collectList().block())));
         scheduleHall.setOnEditCommit(e -> performUpdate(e, (schedule, hall) -> {
             schedule.setCinema_hall_id(hall.getId());
-            schedule.setCurrently_available(hall.getSize());
             schedule.setNr_of_seats(hall.getSize());
         }));
 
@@ -105,7 +104,6 @@ public class ScheduleMoviesController {
         newSchedule.setMovie_id(1);
         newSchedule.setStart_date(LocalDateTime.of(2023, 1, 31, 12, 0, 0));
         newSchedule.setCinema_hall_id(1);
-        newSchedule.setCurrently_available(hall != null ? hall.getSize() : 0);
         newSchedule.setNr_of_seats(hall != null ? hall.getSize() : 0);
         scheduleView.getItems().add(newSchedule);
     }
@@ -125,6 +123,7 @@ public class ScheduleMoviesController {
                     alert.showAndWait();
                     return null;
                 }, (__) -> {
+                    scheduleView.getItems().remove(schedule);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("OK");
                     alert.setHeaderText("Successfully deleted schedule");
@@ -137,7 +136,6 @@ public class ScheduleMoviesController {
                     return null;
                 });
             }
-            scheduleView.getItems().remove(schedule);
         });
 
     }

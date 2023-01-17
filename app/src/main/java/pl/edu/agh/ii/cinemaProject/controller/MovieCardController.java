@@ -14,6 +14,8 @@ import pl.edu.agh.ii.cinemaProject.event.MovieCardEvent;
 import pl.edu.agh.ii.cinemaProject.event.SeatsEvent;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
 import pl.edu.agh.ii.cinemaProject.service.MovieService;
+import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
+import pl.edu.agh.ii.cinemaProject.service.TicketService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
@@ -40,6 +42,9 @@ public class MovieCardController implements ApplicationListener<MovieCardEvent> 
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private ScheduleService scheduleService;
     @Autowired
     private ApplicationContext applicationContext;
 
@@ -62,7 +67,7 @@ public class MovieCardController implements ApplicationListener<MovieCardEvent> 
         var image = new Image(movie.getCover_url(), 300, 0, true, true);
         moviePoster.setImage(image);
         descriptionLabel.setText(movie.getDescription());
-        availableSeatsLabel.setText(String.valueOf(selectedSchedule.getCurrently_available()));
+        availableSeatsLabel.setText(String.valueOf(scheduleService.countAvailableSeats(selectedSchedule.getId()).block()));
         cinemaHallLabel.setText(String.valueOf(selectedSchedule.getCinema_hall_id()));
         dateLabel.setText(DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm a").format(selectedSchedule.getStart_date()));
         durationLabel.setText(String.valueOf(movie.getDuration()));
