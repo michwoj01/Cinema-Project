@@ -14,11 +14,7 @@ public class JsonLoader {
         Gson gson = new Gson();
 
         return Try.of(() -> Files.readAllLines(new File(resourceName.toURI()).toPath()))
-                .map((lines) -> {
-                    StringBuilder ret = new StringBuilder();
-                    lines.forEach(ret::append);
-                    return ret.toString();
-                })
+                .map((lines) -> String.join("", lines))
                 .flatMap((jsonInput) -> Try.of(() -> gson.fromJson(jsonInput, tClass)))
                 .toEither();
     }

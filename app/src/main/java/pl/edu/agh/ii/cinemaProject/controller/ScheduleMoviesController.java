@@ -11,7 +11,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateTimeStringConverter;
-import javafx.util.converter.LongStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
@@ -46,7 +45,6 @@ public class ScheduleMoviesController {
     private CinemaHallService cinemaHallService;
 
     private final LocalDateTimeStringConverter localDateTimeStringConverter = new LocalDateTimeStringConverter();
-    private final LongStringConverter longStringConverter = new LongStringConverter();
     private final StringConverter<Movie> movieStringConverter = new StringConverter<>() {
         @Override
         public String toString(Movie object) {
@@ -79,7 +77,7 @@ public class ScheduleMoviesController {
     private void initialize() {
         scheduleView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        scheduleMovie.setCellValueFactory(schedule -> new SimpleObjectProperty<>(movieService.getMovieInfo(schedule.getValue().getMovie_id()).block()));
+        scheduleMovie.setCellValueFactory(schedule -> new SimpleObjectProperty<>(movieService.getMovieById(schedule.getValue().getMovie_id()).block()));
         scheduleMovie.setCellFactory(ComboBoxTableCell.forTableColumn(movieStringConverter, FXCollections.observableArrayList(movieService.findAll().collectList().block())));
         scheduleMovie.setOnEditCommit(e -> performUpdate(e, (schedule, movie) -> schedule.setMovie_id(movie.getId())));
 

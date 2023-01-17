@@ -21,8 +21,12 @@ public class MovieService {
         return movieDao.getCountWithFilters(movieFiltersDTO);
     }
 
-    public Mono<Movie> getMovieInfo(long movieId) {
+    public Mono<Movie> getMovieById(long movieId) {
         return movieDao.findById(movieId);
+    }
+
+    public Mono<Movie> getMovieByName(String name) {
+        return movieDao.getMovieByName(name);
     }
 
     public Flux<Movie> findAll() {
@@ -33,7 +37,11 @@ public class MovieService {
         return movieDao.deleteById(id);
     }
 
-    public Mono<Movie> getMovieByName(String name) {
-        return movieDao.getMovieByName(name);
+    public Flux<String> getMostPopularMovies() {
+        return movieDao.getMostPopularMovies();
+    }
+
+    public Flux<String> getMostDisplayedMovies() {
+        return movieDao.getMostTimeDisplayedMovies();
     }
 }
