@@ -9,11 +9,13 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class SeatService {
-
     @Autowired
     SeatDao seatDao;
 
-    public Flux<Seat> getTakenSeats(long scheduleId){return seatDao.getTakenSeats(scheduleId);}
+    public Flux<Seat> getTakenSeats(long scheduleId) {
+        return seatDao.getTakenSeats(scheduleId);
+    }
+
     public Mono<Seat> takeSeat(Seat seat) {
         return seatDao.save(seat);
     }

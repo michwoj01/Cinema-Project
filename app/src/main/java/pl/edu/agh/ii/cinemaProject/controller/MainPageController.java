@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import pl.edu.agh.ii.cinemaProject.enums.PageEnum;
 import pl.edu.agh.ii.cinemaProject.event.LoginEvent;
 import pl.edu.agh.ii.cinemaProject.model.LoginUser;
+import pl.edu.agh.ii.cinemaProject.model.Permission;
 import pl.edu.agh.ii.cinemaProject.service.PermissionService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
@@ -21,7 +22,6 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
     public ListView<String> categoriesListView;
     @FXML
     public BorderPane mainPane;
-
     @Autowired
     private PermissionService permissionService;
 
@@ -42,10 +42,9 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
 
     @Override
     public void onApplicationEvent(LoginEvent event) {
-        permissionService.getPermissionsForUser((LoginUser) event.getSource()).filter((p) -> p.shouldBeDisplayed).subscribe(permission -> {
-            categoriesListView.getItems().add(permission.getName());
-            //Change to Permission object (with controller in each (view))
-        });
+        permissionService.getPermissionsForUser((LoginUser) event.getSource())
+                .filter(Permission::isShouldBeDisplayed)
+                .subscribe(permission -> categoriesListView.getItems().add(permission.getName()));
     }
 
     public void logout(ActionEvent actionEvent) {

@@ -40,19 +40,17 @@ public class MovieController {
     private final String RECOMMENDED_ADD_BUTTON_TEXT = "Add to recommended";
     private final String RECOMMENDED_REMOVE_BUTTON_TEXT = "Remove from recommended";
     @FXML
-    public HBox hBoxFilters;
+    private HBox hBoxFilters;
     @FXML
-    public ListView<Movie> moviesListView;
+    private ListView<Movie> moviesListView;
     @FXML
-    public TextField minDuration;
+    private TextField minDuration;
     @FXML
-    public TextField maxDuration;
+    private TextField maxDuration;
     @FXML
-    public TextField name;
-    public Optional<CheckBox> isRecommended = Optional.empty();
+    private TextField name;
     @FXML
-    public Pagination pagination;
-    private Optional<LoginUser> loginUser = Optional.empty();
+    private Pagination pagination;
     @Autowired
     private MovieService movieService;
     @Autowired
@@ -60,6 +58,8 @@ public class MovieController {
     @Autowired
     private RecommendationService recommendationService;
     private List<Recommendation> recommendedMovies = new ArrayList<>();
+    private Optional<LoginUser> loginUser = Optional.empty();
+    private Optional<CheckBox> isRecommended = Optional.empty();
 
     public static URL getFXML() {
         return MovieController.class.getResource("/fxml/EditMovies.fxml");
@@ -73,31 +73,24 @@ public class MovieController {
 
     @FXML
     void initialize() {
-
-        if (loginUser.isPresent()) {
-            var user = loginUser.get();
-            permissionService.getPermissionsForUser(user).map((permission -> {
-                return permission;
-            })).any(permission -> permission.name.equals("RECOMMENDATION")).subscribe(hasPermission -> {
-                if (hasPermission) {
-                    this.isRecommended = Optional.of(new CheckBox("Recommended"));
-                    this.isRecommended.get().setSelected(false);
-
-                    Platform.runLater(() -> this.hBoxFilters.getChildren().add(this.isRecommended.get()));
-                    this.isRecommended.get().setOnAction(event -> this.refreshList());
-                } else {
-                    if (this.isRecommended.isPresent()) {
+        loginUser.ifPresent(user -> permissionService.getPermissionsForUser(user).any(permission -> permission.name.equals("RECOMMENDATION")).subscribe(hasPermission -> {
+                    if (hasPermission) {
+                        this.isRecommended = Optional.of(new CheckBox("Recommended"));
+                        this.isRecommended.get().setSelected(false);
+                        Platform.runLater(() -> this.hBoxFilters.getChildren().add(this.isRecommended.get()));
+                        this.isRecommended.get().setOnAction(event -> this.refreshList());
+                    } else {
                         this.isRecommended = Optional.empty();
+                        Platform.runLater(() -> {
+                            var filterChildren = this.hBoxFilters.getChildren();
+                            if (filterChildren.size() > 3) {
+                                filterChildren.remove(filterChildren.size() - 1);
+                            }
+                        });
                     }
-                    Platform.runLater(() -> {
-                        var filterChildren = this.hBoxFilters.getChildren();
-                        if (filterChildren.size() > 3) {
-                            filterChildren.remove(filterChildren.size() - 1);
-                        }
-                    });
-                }
-            });
-        }
+                })
+        );
+
 
         this.moviesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -110,17 +103,14 @@ public class MovieController {
                 window.setOnCloseRequest(e -> alert.hide());
 
                 alert.getButtonTypes().add(new ButtonType(DELETE_BUTTON_TEXT));
-
-                if (recommendedMovies.stream().anyMatch(recommendation -> recommendation.getMovie_id() == currentItemSelected.getId())) {
-                    alert.getButtonTypes().add(new ButtonType(RECOMMENDED_REMOVE_BUTTON_TEXT));
-                } else {
-                    alert.getButtonTypes().add(new ButtonType(RECOMMENDED_ADD_BUTTON_TEXT));
-                }
-
+                alert.getButtonTypes().add(
+                        recommendedMovies.stream().anyMatch(rec -> rec.getMovie_id() == currentItemSelected.getId())
+                                ? new ButtonType(RECOMMENDED_REMOVE_BUTTON_TEXT)
+                                : new ButtonType(RECOMMENDED_ADD_BUTTON_TEXT)
+                );
                 alert.setTitle(currentItemSelected.getName());
                 alert.setHeaderText("Description: " + currentItemSelected.getDescription());
                 alert.setContentText("duration: " + currentItemSelected.getDuration());
-
                 alert.setResultConverter((bt) -> {
                     (switch (bt.getText()) {
                         case DELETE_BUTTON_TEXT -> Function1.of(movieService::deleteMovie);
@@ -132,6 +122,7 @@ public class MovieController {
                     }).andThen(Mono::block).andThen((v) -> refreshList()).apply(currentItemSelected.getId());
                     return bt;
                 });
+
                 DialogPane dialogPane = alert.getDialogPane();
                 dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Alert.css")).toExternalForm());
                 dialogPane.getStyleClass().add("dialogPane");
@@ -163,9 +154,8 @@ public class MovieController {
         this.minDuration.setOnAction((value) -> refreshList());
         this.maxDuration.setOnAction((value) -> refreshList());
 
-        pagination.setMaxPageIndicatorCount(10);
-
-        pagination.setPageFactory((pageIndex) -> {
+        this.pagination.setMaxPageIndicatorCount(10);
+        this.pagination.setPageFactory((pageIndex) -> {
             refreshList();
             return new VBox();
         });
@@ -174,7 +164,7 @@ public class MovieController {
     }
 
     private Void refreshList() {
-        this.recommendedMovies = recommendationService.getRecomendedMovies().collectList().block();
+        this.recommendedMovies = recommendationService.getRecommendedMovies().collectList().block();
         Optional<Boolean> isRecommendedFilter = this.isRecommended.map(CheckBox::isSelected);
         Optional<String> newNameFilter = Optional.ofNullable(name.getText()).filter(s -> !s.isEmpty());
         Optional<Integer> newMinDuration = textFieldToOptInt(this.minDuration);

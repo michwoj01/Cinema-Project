@@ -56,13 +56,13 @@ public class ModifyScheduleWatchersController {
 
         movieImage.setCellValueFactory(cellData -> {
             final ImageView imageview = new ImageView();
-            movieService.getMovieInfo(cellData.getValue().getMovie_id()).subscribe((movie) -> Platform.runLater(() -> {
+            movieService.getMovieById(cellData.getValue().getMovie_id()).subscribe((movie) -> Platform.runLater(() -> {
                 var image = new Image(movie.getCover_url(), 100, 0, true, true);
                 imageview.setImage(image);
             }));
             return new SimpleObjectProperty<>(imageview);
         });
-        movieTitle.setCellValueFactory(data -> new SimpleObjectProperty<>(movieService.getMovieInfo(data.getValue().getMovie_id()).block().getName()));
+        movieTitle.setCellValueFactory(data -> new SimpleObjectProperty<>(movieService.getMovieById(data.getValue().getMovie_id()).block().getName()));
         movieDate.setCellValueFactory(data -> new SimpleObjectProperty<>(DateTimeFormatter.ofPattern("dd/MM/yyyy \nhh:mm a").format(data.getValue().getStart_date())));
         movieCinemaHall.setCellValueFactory(data -> new SimpleObjectProperty<>(cinemaHallService.getCinemaHallById(data.getValue().getCinema_hall_id()).block().getName()));
         movieAvailableSeats.setCellValueFactory(new PropertyValueFactory<>("currently_available"));

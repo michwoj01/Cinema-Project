@@ -9,12 +9,10 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class RecommendationService {
-
     @Autowired
     private RecommendationDao recommendationDao;
 
-
-    public Flux<Recommendation> getRecomendedMovies() {
+    public Flux<Recommendation> getRecommendedMovies() {
         return recommendationDao.findAll();
     }
 

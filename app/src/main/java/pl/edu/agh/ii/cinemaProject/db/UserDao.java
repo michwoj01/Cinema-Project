@@ -9,7 +9,9 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface UserDao extends ReactiveCrudRepository<LoginUser, Long> {
-    @Query("SELECT l.email FROM LOGIN_USER l WHERE l.role_id IN (SELECT r.id FROM ROLE r where r.name = 'kasjer')")
+    @Query("SELECT l.email FROM LOGIN_USER l " +
+            "WHERE l.role_id IN " +
+            "(SELECT r.id FROM ROLE r where r.name = 'kasjer')")
     Flux<String> findAllCashiers();
 
     Mono<LoginUser> findByEmail(String email);

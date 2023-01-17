@@ -11,6 +11,7 @@ import pl.edu.agh.ii.cinemaProject.model.Schedule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -18,9 +19,20 @@ import java.util.Objects;
 public class ScheduleService {
     @Autowired
     private ScheduleDao scheduleDao;
-
     @Autowired
     private SeatDao seatDao;
+
+    public Flux<Integer> getMoviesDisplayedByDays() {
+        return scheduleDao.getMoviesDisplayedByDays();
+    }
+
+    public Flux<Integer> getTicketsSoldByDays() {
+        return scheduleDao.getTicketsSoldByDays();
+    }
+
+    public Flux<Date> getDaysForMovies() {
+        return scheduleDao.getDaysForMovies();
+    }
 
     public Mono<Integer> buyTickets(long scheduleId, int numberOfTickets) {
         return scheduleDao.buyTickets(scheduleId, numberOfTickets);
@@ -46,7 +58,7 @@ public class ScheduleService {
     }
 
     private Either<String, ?> checkTickets(Schedule schedule) {
-        if (Objects.equals(seatDao.countTakenSeats(schedule.getId()).block(), 0)){
+        if (Objects.equals(seatDao.countTakenSeats(schedule.getId()).block(), 0)) {
             return Either.right(Option.none());
         } else {
             return Either.left("Someone has already purchased a ticket changes are not possible");
