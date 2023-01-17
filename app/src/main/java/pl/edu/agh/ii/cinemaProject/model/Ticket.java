@@ -8,11 +8,11 @@ import org.springframework.data.annotation.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Seat {
+public class Ticket {
     @Id
     private long id;
 
     private long schedule_id;
-    private int seat_no;
+    private int seat_nr;
 
 }

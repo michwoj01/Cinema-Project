@@ -10,10 +10,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Controller;
 import pl.edu.agh.ii.cinemaProject.event.SeatsEvent;
 import pl.edu.agh.ii.cinemaProject.model.Schedule;
-import pl.edu.agh.ii.cinemaProject.model.Seat;
+import pl.edu.agh.ii.cinemaProject.model.Ticket;
 import pl.edu.agh.ii.cinemaProject.service.CinemaHallService;
 import pl.edu.agh.ii.cinemaProject.service.ScheduleService;
-import pl.edu.agh.ii.cinemaProject.service.SeatService;
+import pl.edu.agh.ii.cinemaProject.service.TicketService;
 import pl.edu.agh.ii.cinemaProject.util.SceneChanger;
 
 import java.net.URL;
@@ -31,12 +31,12 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
 
     private HashMap<Integer,Button> seatMap;
 
-    private Set<Seat> selectedSeats;
+    private Set<Ticket> selectedTickets;
 
     private Schedule selectedSchedule;
 
     @Autowired
-    public SeatService seatService;
+    public TicketService ticketService;
 
     @Autowired
     public ScheduleService scheduleService;
@@ -52,7 +52,7 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
     @Override
     public void onApplicationEvent(SeatsEvent event) {
         selectedSchedule = (Schedule) event.getSource();
-        selectedSeats=new HashSet<>();
+        selectedTickets =new HashSet<>();
         seatMap= new HashMap<>();
 
         var size=cinemaHallService.getCinemaHallById(selectedSchedule.getCinema_hall_id()).block().getSize();
@@ -73,25 +73,25 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
 
             button.setOnAction(selectEvent -> {
                 if (button.getStyleClass().size()==1) {
-                    if(selectedSeats.isEmpty())buyButton.setDisable(false);
+                    if(selectedTickets.isEmpty())buyButton.setDisable(false);
                     button.getStyleClass().add("clickedButton");
-                    var ticket=new Seat();
+                    var ticket=new Ticket();
                     ticket.setSchedule_id(selectedSchedule.getId());
-                    ticket.setSeat_no(Integer.parseInt(button.getText()));
-                    selectedSeats.add(ticket);
+                    ticket.setSeat_nr(Integer.parseInt(button.getText()));
+                    selectedTickets.add(ticket);
                 }
                 else{
                     button.getStyleClass().remove(1);
-                    selectedSeats.removeIf(seat -> seat.getSeat_no()==Integer.parseInt(button.getText()));
-                    if(selectedSeats.isEmpty())buyButton.setDisable(true);
+                    selectedTickets.removeIf(ticket -> ticket.getSeat_nr()==Integer.parseInt(button.getText()));
+                    if(selectedTickets.isEmpty())buyButton.setDisable(true);
                 }
             });
 
             seatMap.put(number+1,button);
             currentRow.getChildren().add(button);
         }
-        seatService.getTakenSeats(selectedSchedule.getId()).subscribe(seat -> {
-            var temp= seat.getSeat_no();
+        ticketService.getTakenSeats(selectedSchedule.getId()).subscribe(ticket -> {
+            var temp= ticket.getSeat_nr();
             seatMap.get(temp).setDisable(true);
         });
     }
@@ -101,11 +101,11 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
     }
 
     public void handleBuyAction(ActionEvent actionEvent) {
-        selectedSeats.forEach(seat -> {
-            seatService.takeSeat(seat).subscribe();
-            seatMap.get(seat.getSeat_no()).setDisable(true);
+        selectedTickets.forEach(ticket -> {
+            ticketService.takeSeat(ticket).subscribe();
+            seatMap.get(ticket.getSeat_nr()).setDisable(true);
         });
-        scheduleService.buyTickets(selectedSchedule.getId(),selectedSeats.size()).subscribe();
-        selectedSeats.clear();
+        scheduleService.buyTickets(selectedSchedule.getId(), selectedTickets.size()).subscribe();
+        selectedTickets.clear();
     }
 }

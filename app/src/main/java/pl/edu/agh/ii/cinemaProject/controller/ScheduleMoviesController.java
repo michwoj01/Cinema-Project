@@ -113,7 +113,7 @@ public class ScheduleMoviesController {
     public void handleDeleteScheduleAction(ActionEvent actionEvent) {
         scheduleView.getSelectionModel().getSelectedItems().forEach(schedule -> {
             if (schedule.getId() != 0) {
-                scheduleService.deleteSchedule(schedule.getId()).fold((error) -> {
+                scheduleService.deleteSchedule(schedule).fold((error) -> {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Warning");
                     alert.setHeaderText("Error while deleting schedule");

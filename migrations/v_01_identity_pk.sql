@@ -9,9 +9,6 @@ ALTER TABLE login_user
     ALTER id add generated always as identity;
 ALTER TABLE schedule
     ALTER id add generated always as identity;
-ALTER TABLE seat
-    ALTER id add generated always as identity;
-
 
 alter table role
 drop column user_id;
