@@ -37,6 +37,7 @@ public class ScheduleMoviesController {
     private TableColumn<Schedule, LocalDateTime> scheduleDate;
     @FXML
     private Button deleteButton;
+
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
@@ -68,7 +69,6 @@ public class ScheduleMoviesController {
         }
     };
 
-
     public static URL getFXML() {
         return ScheduleMoviesController.class.getResource("/fxml/ScheduleMoviePage.fxml");
     }
@@ -97,7 +97,7 @@ public class ScheduleMoviesController {
     }
 
     public void handleAddUserAction(ActionEvent actionEvent) {
-        var hall= cinemaHallService.getCinemaHallById(1).block();
+        var hall = cinemaHallService.getCinemaHallById(1).block();
         var newSchedule = new Schedule();
         newSchedule.setMovie_id(1);
         newSchedule.setStart_date(LocalDateTime.of(2023, 1, 31, 12, 0, 0));

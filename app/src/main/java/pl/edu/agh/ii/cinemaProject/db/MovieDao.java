@@ -39,10 +39,10 @@ public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
             SELECT
                 count(*)
             FROM
-                MOVIE 
-            WHERE 
-                (duration between :minDuration and :maxDuration) 
-            and name like :nameContains 
+                MOVIE
+            WHERE
+                (duration between :minDuration and :maxDuration)
+            and name like :nameContains
             and case when :isRecommended then MOVIE.id in (select mr.movie_id from RECOMMENDATION mr) else :startIndex=:maxItemsPerPage end
             """)
     Mono<Integer> getCountWithFilters(int minDuration, int maxDuration, String nameContains, Boolean isRecommended, int startIndex, int maxItemsPerPage);

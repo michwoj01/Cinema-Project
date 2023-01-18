@@ -22,6 +22,7 @@ public class MainPageController implements ApplicationListener<LoginEvent> {
     public ListView<String> categoriesListView;
     @FXML
     public BorderPane mainPane;
+
     @Autowired
     private PermissionService permissionService;
 

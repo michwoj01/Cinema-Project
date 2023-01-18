@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 public class NotificationService {
     private final String cashierNotificationName = "Cashier Notification";
+
     @Autowired
     private UserDao userDao;
     @Autowired

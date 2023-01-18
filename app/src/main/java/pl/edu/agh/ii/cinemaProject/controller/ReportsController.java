@@ -76,12 +76,12 @@ public class ReportsController {
         graphics.drawImage(bufferedImage, 0, 0, null);
         File file;
         try {
-            file = File.createTempFile("snap", ".jpg");
+            file = File.createTempFile("report", ".png");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         try {
-            ImageIO.write(imageRGB, "jpg", file);
+            ImageIO.write(imageRGB, "png", file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
