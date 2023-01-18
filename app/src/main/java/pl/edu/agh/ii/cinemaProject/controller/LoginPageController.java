@@ -20,6 +20,7 @@ public class LoginPageController {
     public TextField email;
     @FXML
     public Label errorLabel;
+
     @Autowired
     private LoginService loginService;
     @Autowired
