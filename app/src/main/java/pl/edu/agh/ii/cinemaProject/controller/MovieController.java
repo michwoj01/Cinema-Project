@@ -38,6 +38,7 @@ public class MovieController {
     private final String DELETE_BUTTON_TEXT = "Delete";
     private final String RECOMMENDED_ADD_BUTTON_TEXT = "Add to recommended";
     private final String RECOMMENDED_REMOVE_BUTTON_TEXT = "Remove from recommended";
+
     @FXML
     private HBox hBoxFilters;
     @FXML
@@ -50,12 +51,14 @@ public class MovieController {
     private TextField name;
     @FXML
     private Pagination pagination;
+
     @Autowired
     private MovieService movieService;
     @Autowired
     private PermissionService permissionService;
     @Autowired
     private RecommendationService recommendationService;
+
     private List<Recommendation> recommendedMovies = new ArrayList<>();
     private Optional<LoginUser> loginUser = Optional.empty();
     private Optional<CheckBox> isRecommended = Optional.empty();
@@ -72,7 +75,9 @@ public class MovieController {
 
     @FXML
     void initialize() {
-        loginUser.ifPresent(user -> permissionService.getPermissionsForUser(user).any(permission -> permission.name.equals("RECOMMENDATION")).subscribe(hasPermission -> {
+        loginUser.ifPresent(user ->
+                permissionService.getPermissionsForUser(user).any(permission ->
+                        permission.name.equals("RECOMMENDATION")).subscribe(hasPermission -> {
                     if (hasPermission) {
                         this.isRecommended = Optional.of(new CheckBox("Recommended"));
                         this.isRecommended.get().setSelected(false);

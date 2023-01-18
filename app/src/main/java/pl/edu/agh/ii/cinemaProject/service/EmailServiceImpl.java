@@ -17,6 +17,7 @@ public class EmailServiceImpl {
     private static final String FROM_CASHIER_NOTIFICATION = "notify+recommendations@" + DOMAIN;
     private static final String FROM_REPORT_DELIVERY = "send+reports@" + DOMAIN;
     private static final String FROM_FIRED_PERSON = "notify+firedperson@" + DOMAIN;
+
     @Autowired
     private JavaMailSender emailSender;
 
@@ -27,7 +28,7 @@ public class EmailServiceImpl {
 
     @SneakyThrows
     public void sendReportsToManagers(List<String> managersEmails, File file) {
-        managersEmails.forEach(email -> sendReport(file));
+        managersEmails.forEach(email -> sendReport(file, email));
     }
 
     public void sendNotificationAboutFired(String email, LoginUser firedPerson) {
@@ -38,12 +39,12 @@ public class EmailServiceImpl {
     }
 
     @SneakyThrows
-    private void sendReport(File file) {
+    private void sendReport(File file, String to) {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.addAttachment("snap.jpg", file);
+        helper.addAttachment("report.png", file);
         helper.setFrom(EmailServiceImpl.FROM_REPORT_DELIVERY);
-        helper.setTo("michwoj01@gmail.com");
+        helper.setTo(to);
         helper.setSubject("Manager Report");
         helper.setText("Report for last few days", false);
         emailSender.send(mimeMessage);

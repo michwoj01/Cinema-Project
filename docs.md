@@ -71,6 +71,7 @@ Aby ułatwić zadanie z uzyskaniem tej samej bazy przy zmianach korzystamy z kon
 5. [Zarządzanie seansami](#zarzdzanie-seansami)
 6. [Obsługa uprawnień](#obsuga-uprawnie)
 7. [Zarządzanie sprzedażą biletów](#zarzdzanie-sprzeda-biletw)
+8. [Obsługa maili](#obsluga-maili)
 
 ### Strona logowania
 
@@ -177,19 +178,31 @@ Mając do dyspozycji ustalone seansy filmowe, jesteśmy w stanie zakupić bilety
 <img alt="img.png" src="images/modify_schedule_watchers_page.png"/>
 </div>
 
-Każdy z rekordów po kliknięciu, prowadzi nas do osobnego widoku przedstawiającego szczegółowe informacje, wraz z możliwością zakupu biletów na film.
+Każdy z rekordów po kliknięciu, prowadzi nas do osobnego widoku przedstawiającego szczegółowe informacje, wraz z
+możliwością zakupu biletów na film.
 
 <div align="center">
 <img alt="img.png" src="images/modify_schedule_watchers_card.png"/>
 </div>
 
-Pole z liczbą zakupionych biletów jest ograniczone do wpisania liczby z przedziału 0 do maksymalnej liczbą biletów dostępnych w danej chwili.
+Jeśli zdecydujemy się kupić bilety na seans, wyświetli się siatka
+z wolnymi miejscami. Preferowane miejsca zaznaczamy i zatwierdzamy
+przyciskiem 'Buy'.
+
+<div align="center">
+<img alt="img.png" src="images/tickets_preview.png"/>
+</div>
+
+<div align="center">
+<img alt="img.png" src="images/tickets_purchase.png"/>
+</div>
 
 ### Obsługa maili
 
-Skorzystaliśmy z smtp4dev (docker container), aby móc testować wysyłanie naszym maili bez dostępu do faktycznego serwera stmp (wystawionego na świat).
+Skorzystaliśmy z smtp4dev (docker container), aby móc testować wysyłanie naszym maili bez dostępu do faktycznego serwera
+stmp (wystawionego na świat).
 
-Dodany został do docker-compose więc odpala się wtedy kiedy baza.
+Dodany został do docker-compose, zatem jego kontener buduje się razem z bazą danych.
 Następnie UI serwera znajduje się na adresie `localhost:3000`, a port do stmp to 2525.
 Po wyłączeniu serwera jest on usuwany na zawsze (łącznie z logami o naszych wiadomościach :) ).
 
@@ -210,7 +223,6 @@ Możliwe jest filtrowanie po własności recommended (gdy włączone to tylko re
 <div align="center">
 <img alt="img.png" src="images/recommended_view.png"/>
 </div>
-
 
 Następnie filmy tak oznaczone wysyłane są mailem do kasjerów. Filmy rekomendowane wysyłane są raz dziennie, co reguluje tabela `NOTIFICATION_LOG`. Wysyłanie następuje po zalogowaniu - Odpalany jest wątek niezależny od reszty aplikacji (w tym samym środowisku uruchumieniowym), po czym sprawdza co 15 sekund, czy nie wysłać powiadomienia. Zostało to zrealizowane przy pomocy biblioteki RXJava i `Observable::interval`.
 
@@ -238,4 +250,21 @@ Email który zostaje wysłany wygląda tak:
 <img alt="img.png" src="images/fired_email.png"/>
 </div>
 
-W celach humorystycznych nadaliśmy mu treść niezbyt miłą. W finalnym produkcie nigdy nie powinna się znaleźć taka wiadomość.
+W celach humorystycznych nadaliśmy mu treść niezbyt miłą. W finalnym produkcie nigdy nie powinna się znaleźć taka
+wiadomość.
+
+#### Raporty z działalności kina
+
+Administrator serwisu ma również możliwość wejść w zakładkę z kilkoma statystykami dotyczącymi
+działalności kina oraz wysłać je w postaci screena do wszystkich moderatorów serwisu.
+
+<div align="center">
+<img alt="img.png" src="images/reports.png"/>
+</div>
+
+Wysyłany raport wygląda następująco:
+
+<div align="center">
+<img alt="img.png" src="images/report_message.png"/>
+</div>
+

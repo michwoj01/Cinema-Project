@@ -17,8 +17,10 @@ import java.util.Optional;
 public class NotificationController {
     @FXML
     private TextArea messageTextArea;
+
     @Autowired
     private NotificationService notificationService;
+
     private Optional<Notification> maybeNotification = Optional.empty();
 
     public static URL getFXML() {

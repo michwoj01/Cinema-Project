@@ -26,6 +26,7 @@ public class SeatPageController implements ApplicationListener<SeatsEvent> {
     public VBox seatBox;
     @FXML
     private Button buyButton;
+
     @Autowired
     private TicketService ticketService;
     @Autowired

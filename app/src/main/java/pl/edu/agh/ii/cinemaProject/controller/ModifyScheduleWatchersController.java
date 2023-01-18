@@ -56,7 +56,7 @@ public class ModifyScheduleWatchersController {
         movieImage.setCellValueFactory(cellData -> {
             final ImageView imageview = new ImageView();
             movieService.getMovieById(cellData.getValue().getMovie_id()).subscribe((movie) -> Platform.runLater(() -> {
-                var image = new Image(movie.getCover_url(), 100, 0, true, true);
+                var image = new Image(movie.getCover_url(), 50, 0, true, true);
                 imageview.setImage(image);
             }));
             return new SimpleObjectProperty<>(imageview);
