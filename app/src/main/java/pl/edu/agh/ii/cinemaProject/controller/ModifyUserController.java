@@ -21,6 +21,7 @@ import pl.edu.agh.ii.cinemaProject.service.LoginService;
 import pl.edu.agh.ii.cinemaProject.service.RoleService;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -97,6 +98,10 @@ public class ModifyUserController {
             alert.setHeaderText("Error while updating user");
             alert.setContentText("Error: " + error);
 
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Alert.css")).toExternalForm());
+            dialogPane.getStyleClass().add("dialogPane");
+
             alert.showAndWait();
             return null;
         }, (user) -> {
@@ -106,6 +111,10 @@ public class ModifyUserController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("OK");
             alert.setHeaderText("Successfully saved user");
+
+            DialogPane dialogPane = alert.getDialogPane();
+            dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Alert.css")).toExternalForm());
+            dialogPane.getStyleClass().add("dialogPane");
 
             alert.showAndWait();
             return null;
@@ -129,6 +138,10 @@ public class ModifyUserController {
                     alert.setHeaderText("Error while deleting user");
                     alert.setContentText("Error: " + error);
 
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Alert.css")).toExternalForm());
+                    dialogPane.getStyleClass().add("dialogPane");
+
                     alert.showAndWait();
                     return null;
                 }, (__) -> {
@@ -137,6 +150,10 @@ public class ModifyUserController {
                     alert.setTitle("Confirm email sending");
                     alert.setHeaderText("Successfully deleted user");
                     alert.setContentText("User: " + user + ".\n\nShould firing mail be sent??");
+
+                    DialogPane dialogPane = alert.getDialogPane();
+                    dialogPane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/Alert.css")).toExternalForm());
+                    dialogPane.getStyleClass().add("dialogPane");
 
                     Optional<ButtonType> alertResultButton = alert.showAndWait();
                     if (alertResultButton.isPresent() && alertResultButton.get() == ButtonType.OK) {

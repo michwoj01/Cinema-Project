@@ -161,7 +161,11 @@ dana sala nie jest już zajęta, czy planujemy seans w przyszłości).
 
 <div align="center">
 <img alt="img.png" src="images/schedule.png"/>
+</div>
+<div align="center">
 <img alt="img.png" src="images/schedule_warning.png"/>
+<img alt="img.png" src="images/schedule_warning2.png"/>
+<img alt="img.png" src="images/schedule_warning3.png"/>
 </div>
 
 ### Obsługa uprawnień
@@ -215,7 +219,7 @@ Zaimplementowaliśmy parę typów maili, w tym:
 Z odpowiednią rolą `RECOMMENDED` mamy możliwość oznaczenia filmu jako rekomendowany.
 
 <div align="center">
-<img alt="img.png" src="images/recommended.png"/>
+<img alt="img.png" src="images/movie_details.png"/>
 </div>
 
 Możliwe jest filtrowanie po własności recommended (gdy włączone to tylko rekomendowane, gdy wyłączone to wszystkie).
