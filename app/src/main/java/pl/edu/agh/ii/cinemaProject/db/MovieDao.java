@@ -55,7 +55,7 @@ public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
             with sub as (SELECT m.name as name, m.id from movie m
             inner join schedule s on m.id = s.movie_id
             group by m.id
-            order by Sum(s.nr_of_seats)
+            order by Sum(s.nr_of_seats) desc
             limit 5)
             select name from sub
             """)
@@ -65,7 +65,7 @@ public interface MovieDao extends ReactiveCrudRepository<Movie, Long> {
             with sub as (SELECT m.name as name, m.id from movie m
             inner join schedule s on m.id = s.movie_id
             group by m.id
-            order by count(s.id)
+            order by count(s.id) desc
             limit 5)
             select name from sub
             """)
